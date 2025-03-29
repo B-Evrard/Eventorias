@@ -22,7 +22,11 @@ class LoginViewModel: ObservableObject {
     func login() async {
         self.message = ""
         // TODO: Controle email
-    
+#if DEBUG
+        if email.isEmpty {
+            email = "be220865@gmail.com"
+        }
+#endif
         let result =  await authService.signInWithEmailLink(email: email)
         switch result {
         case .success:

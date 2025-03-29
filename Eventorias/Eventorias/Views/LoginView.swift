@@ -9,9 +9,11 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @ObservedObject var viewModel: LoginViewModel
     @State private var showLogin = false
+    
+    @ScaledMetric private var envelopeWidth: CGFloat = 23
+    @ScaledMetric private var envelopeHeight: CGFloat = 18
     
     var body: some View {
         ZStack {
@@ -23,11 +25,12 @@ struct LoginView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(
-                        width: 242 * dynamicTypeSize.scaleFactor,
-                        height: 120 * dynamicTypeSize.scaleFactor
+                        width: 242,
+                        height: 120
                     )
                     .padding(.top, 180)
                     .padding(.bottom, 40)
+                    
                 
                 if (!showLogin) {
                     Button(action: {
@@ -36,8 +39,8 @@ struct LoginView: View {
                         HStack {
                             Image("Envelope")
                                 .resizable()
-                                .frame( width: 23 * dynamicTypeSize.scaleFactor,
-                                        height: 18 * dynamicTypeSize.scaleFactor)
+                                .frame( width: envelopeWidth,
+                                        height: envelopeWidth)
                                 .padding(.leading, 20)
                             Text("Sign in with email")
                                 .foregroundColor(.white)
@@ -87,10 +90,7 @@ struct LoginView: View {
             }
             .padding(.horizontal,80.0)
             .padding(.vertical, 20)
-            
         }
-        
-        
     }
 }
 
