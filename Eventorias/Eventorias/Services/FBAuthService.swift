@@ -10,23 +10,28 @@ import FirebaseAuth
 
 public class FBAuthService {
     
-    func signInWithEmailLink(email: String) async -> Result<Bool, Error> {
-        
-        let actionCodeSettings = ActionCodeSettings()
-        actionCodeSettings.url = URL(string: "https://eventorias-47db6.firebaseapp.com")
-        
-        actionCodeSettings.handleCodeInApp = true
-        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
-        
+    private let auth = Auth.auth()
+    
+    func signIn(email: String, password: String) async -> Result<Bool, Error> {
         do {
-             try await Auth.auth().sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings)
+            _ = try await auth.signIn(withEmail: email, password: password)
             return .success(true)
-           }
-       catch {
-         print(error.localizedDescription)
-           return .failure(error)
-       }
+        }
+        catch {
+            print(error.localizedDescription)
+            return .failure(error)
+        }
         
-        
+    }
+    
+    func signUp(email: String, password: String, name: String) async -> Result<Bool, Error> {
+        do {
+            let result = try await auth.createUser(withEmail: email, password: password)
+            return .success(true)
+        }
+        catch {
+            print(error.localizedDescription)
+            return .failure(error)
+        }
     }
 }

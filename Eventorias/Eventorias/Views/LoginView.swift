@@ -11,6 +11,7 @@ struct LoginView: View {
     
     @ObservedObject var viewModel: LoginViewModel
     @State private var showLogin = false
+    @State private var isSignUp = false
     
     @ScaledMetric private var envelopeWidth: CGFloat = 23
     @ScaledMetric private var envelopeHeight: CGFloat = 18
@@ -60,19 +61,39 @@ struct LoginView: View {
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                         
+                        SecureField("Enter your password", text: $viewModel.password)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        
+                        if (isSignUp) {
+                            SecureField("Confirm your password", text: $viewModel.confirmedPassword)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                            
+                            TextField("Enter your name", text: $viewModel.name)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                
+                        }
+                        
+                        
+                        
+                        
                         Button(action: {
                             Task {
-                                await viewModel.login()
+                                if (isSignUp) {
+                                    await viewModel.signUp()
+                                    return
+                                } else  {
+                                    await viewModel.login()
+                                }
+                            
+                                
                             }
                             
                         }) {
                             HStack {
-                                
-                                Text("Sign in")
+                                Spacer()
+                                Text(isSignUp ? "Sign up" :"Sign in")
                                     .foregroundColor(.white)
                                     .bold(true)
-                                    .padding(.horizontal, 90)
-                                    
                                 Spacer()
                             }
                             .padding(.vertical, 15)
@@ -80,6 +101,15 @@ struct LoginView: View {
                             .cornerRadius(4)
                         }
                         .padding(.vertical, 20)
+                        
+                        Button(action: {
+                            isSignUp.toggle()
+                        }) {
+                            Text(isSignUp ? "Have an account? Sign in" : "Don't have an account? Sign up")
+                                .foregroundColor(.blue)
+                        }
+                        .padding(.vertical, 20)
+                        
                         Text(viewModel.message)
                     }
                     
