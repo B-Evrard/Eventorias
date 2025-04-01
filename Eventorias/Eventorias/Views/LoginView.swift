@@ -12,6 +12,8 @@ struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     @State private var showLogin = false
     @State private var isSignUp = false
+    @State private var showInfo = false
+    
     
     @ScaledMetric private var envelopeWidth: CGFloat = 23
     @ScaledMetric private var envelopeHeight: CGFloat = 18
@@ -31,7 +33,7 @@ struct LoginView: View {
                     )
                     .padding(.top, 180)
                     .padding(.bottom, 40)
-                    
+                
                 
                 if (!showLogin) {
                     Button(action: {
@@ -61,8 +63,21 @@ struct LoginView: View {
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                         
-                        SecureField("Enter your password", text: $viewModel.password)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        
+                            SecureField("Enter your password", text: $viewModel.password)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .overlay(
+                                                Button(action: {
+                                                    showInfo.toggle()
+                                                }) {
+                                                    Image(systemName: "info.circle")
+                                                        .foregroundColor(.blue)
+                                                }
+                                                .padding(.trailing, 10),
+                                                alignment: .trailing
+                                            )
+                        
+                        
                         
                         if (isSignUp) {
                             SecureField("Confirm your password", text: $viewModel.confirmedPassword)
@@ -70,12 +85,8 @@ struct LoginView: View {
                             
                             TextField("Enter your name", text: $viewModel.name)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                                
+                            
                         }
-                        
-                        
-                        
-                        
                         Button(action: {
                             Task {
                                 if (isSignUp) {
@@ -84,7 +95,7 @@ struct LoginView: View {
                                 } else  {
                                     await viewModel.login()
                                 }
-                            
+                                
                                 
                             }
                             
@@ -100,7 +111,7 @@ struct LoginView: View {
                             .background(Color("RedEventorias"))
                             .cornerRadius(4)
                         }
-                        .padding(.vertical, 20)
+                        .padding(.vertical, 10)
                         
                         Button(action: {
                             isSignUp.toggle()
@@ -108,15 +119,18 @@ struct LoginView: View {
                             Text(isSignUp ? "Have an account? Sign in" : "Don't have an account? Sign up")
                                 .foregroundColor(.blue)
                         }
-                        .padding(.vertical, 20)
+                        .padding(.vertical, 10)
                         
                         Text(viewModel.message)
+                            .foregroundColor(.red)
+                        if (viewModel.messagePassword) {
+                            Text("least one uppercase\nleast one digit\nleast one lowercase\nleast one symbol\nmin 8 characters total")
+                                .lineLimit(nil)
+                                .foregroundColor(.red)
+                        }
                     }
-                    
-                    
                 }
                 Spacer()
-                
             }
             .padding(.horizontal,80.0)
             .padding(.vertical, 20)

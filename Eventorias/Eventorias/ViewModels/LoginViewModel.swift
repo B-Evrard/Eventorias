@@ -15,6 +15,8 @@ class LoginViewModel: ObservableObject {
     @Published var name  = ""
     
     @Published var message: String = ""
+    @Published var messagePassword: Bool = false
+    
     
     private let authService: FBAuthService
     
@@ -25,21 +27,20 @@ class LoginViewModel: ObservableObject {
     @MainActor
     func login() async {
         self.message = ""
-        // TODO: Controle email
-        
-        // TODO: Control Password
-#if DEBUG
-        if email.isEmpty {
-            email = "be220865@gmail.com"
+        do {
+            try Control.login(email: email, password: password)
+        } catch let error {
+            message = error.message
+            return
         }
-#endif
+
         let result =  await authService.signIn(email: email, password: password)
         switch result {
         case .success:
             message = "Login successfull"
             print("Login successfull: \(email)")
         case .failure(let error):
-            message = "Login failed: \(error)"
+            message = "Login failed"
             print("Login failed: \(error)")
         }
     }
@@ -47,16 +48,20 @@ class LoginViewModel: ObservableObject {
     @MainActor
     func signUp() async {
         self.message = ""
-        // TODO: Controle email
-        
-        // TODO: Control Password
-        
-        // TODO: Control Name
-#if DEBUG
-        if email.isEmpty {
-            email = "be220865@gmail.com"
+        self.messagePassword = false
+        do {
+            try Control.signUp(email: email, password: password, confirmedPassword: confirmedPassword, name: name)
+        } catch let error {
+            message = error.message
+            switch error {
+            case .invalidPassword:
+                self.messagePassword = true
+            default:
+                self.messagePassword = false
+            }
+           
+            return
         }
-#endif
         let result =  await authService.signUp(email: email, password: password, name: name)
         switch result {
         case .success:
