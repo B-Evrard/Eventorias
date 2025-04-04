@@ -12,26 +12,11 @@ public class FBAuthService {
     
     private let auth = Auth.auth()
     
-    func signIn(email: String, password: String) async -> Result<Bool, Error> {
-        do {
-            _ = try await auth.signIn(withEmail: email, password: password)
-            return .success(true)
-        }
-        catch {
-            print(error.localizedDescription)
-            return .failure(error)
-        }
-        
+    func signIn(email: String, password: String) async throws {
+        let result = try await auth.signIn(withEmail: email, password: password)
     }
     
-    func signUp(email: String, password: String, name: String) async -> Result<Bool, Error> {
-        do {
-            let result = try await auth.createUser(withEmail: email, password: password)
-            return .success(true)
-        }
-        catch {
-            print(error.localizedDescription)
-            return .failure(error)
-        }
+    func signUp(email: String, password: String, name: String) async throws  {
+        let result = try await auth.createUser(withEmail: email, password: password)
     }
 }

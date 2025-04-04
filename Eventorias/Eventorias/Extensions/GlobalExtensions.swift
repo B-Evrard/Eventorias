@@ -11,6 +11,7 @@ import SwiftUI
 // MARK: DynamicTypeSize Extensions
 extension DynamicTypeSize {
     
+    // TODO: Voir si utile ???
     var scaleFactor: CGFloat {
         if (self.isAccessibilitySize)   {
             switch self {
@@ -46,4 +47,17 @@ extension DynamicTypeSize {
             return 1.0
         }
     }
+}
+
+// MARK: Date Extension
+
+extension Date {
+    
+    var formattedDate: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM d, yyyy"
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter.string(from: self)
+    }
+    
 }

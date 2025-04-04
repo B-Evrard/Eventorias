@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import FirebaseAuth
 
-class LoginViewModel: ObservableObject {
+@MainActor
+final class LoginViewModel: ObservableObject {
     
     @Published var email: String = ""
     @Published var password: String = ""
@@ -17,36 +19,39 @@ class LoginViewModel: ObservableObject {
     @Published var message: String = ""
     @Published var messagePassword: Bool = false
     
-    
     private let authService: FBAuthService
     
     init(authService: FBAuthService = FBAuthService()) {
         self.authService = authService
     }
-
-    @MainActor
-    func login() async {
+    
+    func login() async -> Bool {
+#if DEBUG
+        if password.isEmpty {
+            password = "Bruno220865&"
+        }
+#endif
+        
         self.message = ""
         do {
             try Control.login(email: email, password: password)
         } catch let error {
             message = error.message
-            return
+            return false
         }
-
-        let result =  await authService.signIn(email: email, password: password)
-        switch result {
-        case .success:
-            message = "Login successfull"
-            print("Login successfull: \(email)")
-        case .failure(let error):
+        
+        do {
+            try await authService.signIn(email: email, password: password)
+            return true
+        } catch {
             message = "Login failed"
-            print("Login failed: \(error)")
+            return false;
         }
+        
     }
     
-    @MainActor
-    func signUp() async {
+    
+    func signUp() async -> Bool {
         self.message = ""
         self.messagePassword = false
         do {
@@ -59,17 +64,21 @@ class LoginViewModel: ObservableObject {
             default:
                 self.messagePassword = false
             }
-           
-            return
+            return false
         }
-        let result =  await authService.signUp(email: email, password: password, name: name)
-        switch result {
-        case .success:
-            message = "Login successfull"
-            print("Login successfull: \(email)")
-        case .failure(let error):
-            message = "Login failed: \(error)"
-            print("Login failed: \(error)")
+        
+        do {
+            try await authService.signUp(email: email, password: password, name: name)
+            return true
+        } catch let error as NSError {
+            switch error.code {
+            case AuthErrorCode.emailAlreadyInUse.rawValue:
+                self.message = "Email already in use"
+                return false;
+            default:
+                self.message = error.localizedDescription
+                return false;
+            }
         }
     }
 }
