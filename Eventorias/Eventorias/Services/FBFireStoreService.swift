@@ -12,38 +12,26 @@ class FBFireStore {
     
     let db = Firestore.firestore()
     
-//    func fetchEvents() -> Result<[Event], Error> {
-//        var events: [Event] = []
-//        db.collection("Events").getDocuments() { (querySnapshot, error) in
-//            if let error = error {
-//                return .failure(error)
-//            } else {
-//                for document in querySnapshot!.documents {
-//                    do {
-//                        let event = try document.data(as: Event.self)
-//                        events.append(event)
-//                    } catch {
-//                        
-//                    }
-//                    
-//                }
-//                return .success(events)
-//            }
-//        }
-//    }
-    
-    func fetchEvents() async throws -> [Event] {
+    func fetchEvents(sortBy: SortOption) async throws -> [Event] {
         var events: [Event] = []
-        let snapshot = try await db.collection("Events").getDocuments()
+        
+        let FBEvents = db.collection("Events")
+        let query: Query
+        switch sortBy {
+            case .date: query = FBEvents.order(by: "dateEvent", descending: true)
+            break
+            case .category: query = FBEvents.order(by: "title", descending: false)
+            break
+        }
+        
+        let snapshot = try await query.getDocuments()
+        
         for document in snapshot.documents {
             print("\(document.documentID): \(document.data())")
             let event = try document.data(as: Event.self)
             events.append(event)
                 
         }
-        //return try snapshot.documents.compactMap({ try $0.data(as: Event.self) }
         return events
-        
-        
     }
 }

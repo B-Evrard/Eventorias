@@ -14,6 +14,8 @@ final class EventListViewModel: ObservableObject {
     
     @Published var search: String = ""
     @Published var events: [EventViewData] = []
+    @Published var selectedSortOption: SortOption = .date
+    @Published var isError: Bool = false
     
     init(fireStoreService: FBFireStore = FBFireStore()) {
         self.fireStoreService = fireStoreService
@@ -22,11 +24,14 @@ final class EventListViewModel: ObservableObject {
     
     func fetchEvents() async  {
         do {
-            let events = try await fireStoreService.fetchEvents()
+            self.isError = false
+            let events = try await fireStoreService.fetchEvents(sortBy: selectedSortOption)
+            #if DEBUG
+                sleep(2)
+            #endif
             self.events = events.map { EventTransformer.transformToViewData($0) }
-            print (events)
         } catch {
-            print(error.localizedDescription)
+            self.isError = true
         }
         
         
