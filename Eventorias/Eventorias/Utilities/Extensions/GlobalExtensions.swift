@@ -52,7 +52,6 @@ extension DynamicTypeSize {
 // MARK: Date Extension
 
 extension Date {
-    
     var formattedDate: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM d, yyyy"

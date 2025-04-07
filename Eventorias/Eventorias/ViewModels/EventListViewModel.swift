@@ -13,6 +13,7 @@ final class EventListViewModel: ObservableObject {
     private let fireStoreService: FBFireStore
     
     @Published var search: String = ""
+    @Published var events: [EventViewData] = []
     
     init(fireStoreService: FBFireStore = FBFireStore()) {
         self.fireStoreService = fireStoreService
@@ -22,6 +23,7 @@ final class EventListViewModel: ObservableObject {
     func fetchEvents() async  {
         do {
             let events = try await fireStoreService.fetchEvents()
+            self.events = events.map { EventTransformer.transformToViewData($0) }
             print (events)
         } catch {
             print(error.localizedDescription)

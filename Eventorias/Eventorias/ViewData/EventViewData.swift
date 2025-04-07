@@ -16,4 +16,6 @@ struct EventViewData: Decodable {
     var dateFormatter: String {
         return dateEvent.formattedDate
     }
+    
+    
 }
