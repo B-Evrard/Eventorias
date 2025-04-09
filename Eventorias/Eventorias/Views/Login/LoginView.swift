@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @ObservedObject var viewModel: LoginViewModel
+    @StateObject var viewModel = LoginViewModel()
     @Binding var isLogged: Bool
     
     @State private var showLogin = false
@@ -37,6 +37,7 @@ struct LoginView: View {
                 if (!showLogin) {
                     Button(action: {
                         showLogin = true
+                        
                     }) {
                         HStack {
                             Image("Envelope")
@@ -83,6 +84,6 @@ struct LoginView: View {
 
 #Preview {
     LoginView(viewModel: LoginViewModel(), isLogged: .constant(false))
-        
-
+    
+    
 }

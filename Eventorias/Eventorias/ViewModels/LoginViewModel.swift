@@ -29,6 +29,7 @@ final class LoginViewModel: ObservableObject {
 #if DEBUG
         if password.isEmpty {
             password = "Bruno220865&"
+            email = "be@be.fr"
         }
 #endif
         

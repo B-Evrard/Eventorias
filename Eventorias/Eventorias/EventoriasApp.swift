@@ -19,16 +19,11 @@ struct EventoriasApp: App {
                 if isLogged {
                     MainView()
                 } else {
-                    LoginView(viewModel: LoginViewModel(), isLogged: $isLogged)
-                    //.transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
-                    //                                                removal: .move(edge: .top).combined(with: .opacity)))
-                    
+                    LoginView(isLogged: $isLogged)
+                        .transition(.move(edge: .top))
                 }
-            }//.animation(.easeInOut(duration: 1), value: UUID())
-           
+            }
+            .animation(.easeInOut(duration: 0.5),value: isLogged)
         }
     }
-    
-    
-   
 }

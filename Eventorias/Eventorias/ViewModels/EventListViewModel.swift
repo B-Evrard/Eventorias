@@ -30,6 +30,7 @@ final class EventListViewModel: ObservableObject {
                 sleep(2)
             #endif
             self.events = events.map { EventTransformer.transformToViewData($0) }
+            //self.isError = true
         } catch {
             self.isError = true
         }

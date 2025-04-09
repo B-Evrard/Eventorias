@@ -8,94 +8,51 @@
 import SwiftUI
 
 struct EventListView: View {
-    @StateObject var viewModel: EventListViewModel
-    
+    @StateObject var viewModel = EventListViewModel()
     @State private var isLoading = true
-    @State private var selectedEvent: EventViewData?
-    @State private var isShowingDetail: Bool = false
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color("BackgroundColor").ignoresSafeArea()
-                if isLoading {
-                    Spacer()
-                    ProgressView("Loading ....")
-                        .tint(.white)
-                        .foregroundColor(.white)
-                    Spacer()
-                } else {
-                    if (!viewModel.isError) {
-                        VStack {
-                            
-                            EventListSearchView(viewModel: viewModel, isLoading: $isLoading)
-                            List($viewModel.events, id: \.id) { $event in
-                                EventRowView(event: $event)
-                                    .padding(.vertical,5)
-                                    .listRowInsets(EdgeInsets())
-                                    .listRowBackground(Color("BackgroundColor"))
-                                    .listRowSeparator(.hidden)
-                                    .onTapGesture {
-                                        selectedEvent = event
-                                        isShowingDetail = true
-                                    }
+        ZStack {
+            Color("BackgroundColor").ignoresSafeArea()
+            NavigationStack {
+                ZStack {
+                    Color("BackgroundColor").ignoresSafeArea()
+                    if isLoading {
+                        Spacer()
+                        ProgressView("Loading ....")
+                            .tint(.white)
+                            .foregroundColor(.white)
+                        Spacer()
+                    } else {
+                        if (!viewModel.isError) {
+                            VStack {
+                                EventListSearchView(viewModel: viewModel, isLoading: $isLoading)
+                                EventListContentView(viewModel: viewModel, isLoading: $isLoading)
+                                
                             }
-                            .listStyle(PlainListStyle())
-                            .scrollContentBackground(.hidden)
-                            .navigationDestination(isPresented: $isShowingDetail) {
-                                if let event = selectedEvent {
-                                    EventView()
+                            .padding(.horizontal)
+                            ButtonAddEvent(viewModel: viewModel)
+                                .zIndex(1)
+                        } else {
+                            ErrorView {
+                                Task {
+                                    isLoading = true
+                                    await self.viewModel.fetchEvents()
+                                    isLoading = false
                                 }
                             }
                         }
-                        
-                        
-                        .padding(.horizontal)
-                    } else {
-                        Spacer()
-                        ErrorView {
-                            Task {
-                                isLoading = true
-                                await self.viewModel.fetchEvents()
-                                isLoading = false
-                            }
-                        }
-                        Spacer()
                     }
                 }
-                
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            Task {
-                                await viewModel.addEventMock()
-                            }
-                        }) {
-                            Image(systemName: "plus")
-                                .font(.system(size: 24))
-                                .foregroundColor(.white)
-                        }
-                        .frame(width: 56, height: 56)
-                        .background(Color("RedEventorias"))
-                        .cornerRadius(16)
+                .onAppear() {
+                    Task {
+                        await self.viewModel.fetchEvents()
+                        isLoading = false
                     }
                 }
-                .padding(.horizontal,5)
-                .padding(.vertical,10)
-                .zIndex(1)
-                
             }
-            .onAppear() {
-                Task {
-                    await self.viewModel.fetchEvents()
-                    isLoading = false
-                }
-                
-            }
+            
         }
-        
     }
 }
 
@@ -104,4 +61,30 @@ struct EventListView: View {
 }
 
 
-
+struct ButtonAddEvent: View {
+    @ObservedObject var viewModel: EventListViewModel
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                Button(action: {
+                    Task {
+                        await viewModel.addEventMock()
+                    }
+                }) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 24))
+                        .foregroundColor(.white)
+                }
+                .frame(width: 56, height: 56)
+                .background(Color("RedEventorias"))
+                .cornerRadius(16)
+            }
+        }
+        .padding(.horizontal,5)
+        .padding(.vertical,10)
+        
+    }
+}
