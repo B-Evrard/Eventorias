@@ -12,7 +12,7 @@ struct MainView: View {
     
     var body: some View {
         TabView(selection: $selection) {
-            Group {
+            //Group {
                 EventListView(viewModel: EventListViewModel())
                     .tabItem {
                         Image(systemName: "calendar")
@@ -27,11 +27,12 @@ struct MainView: View {
                         
                     }
                     .tag(1)
-            }
-            .toolbar(.visible, for: .tabBar)
-            .toolbarBackground(Color("BackgroundColor"), for: .tabBar)
+            //}
+            
             
         }
+        .toolbar(.visible, for: .tabBar)
+        .toolbarBackground(Color("BackgroundColor"), for: .tabBar)
         .onAppear {
             selection = 0
         }

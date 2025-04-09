@@ -20,11 +20,11 @@ struct EventoriasApp: App {
                     MainView()
                 } else {
                     LoginView(viewModel: LoginViewModel(), isLogged: $isLogged)
-                    .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
-                                                                    removal: .move(edge: .top).combined(with: .opacity)))
+                    //.transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
+                    //                                                removal: .move(edge: .top).combined(with: .opacity)))
                     
                 }
-            }.animation(.easeInOut(duration: 1), value: UUID())
+            }//.animation(.easeInOut(duration: 1), value: UUID())
            
         }
     }

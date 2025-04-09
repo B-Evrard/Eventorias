@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-class FBFireStore {
+final class FBFireStore {
     
     let db = Firestore.firestore()
     
