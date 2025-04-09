@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct Event: Decodable {
+struct Event: Codable {
     @DocumentID var id: String?
     let title: String
     let dateEvent: Date

@@ -27,11 +27,14 @@ class FBFireStore {
         let snapshot = try await query.getDocuments()
         
         for document in snapshot.documents {
-            print("\(document.documentID): \(document.data())")
             let event = try document.data(as: Event.self)
             events.append(event)
-                
         }
         return events
+    }
+    
+    
+    func addEvent(_ event: Event) async throws {
+            try db.collection("Events").addDocument(from: event)
     }
 }

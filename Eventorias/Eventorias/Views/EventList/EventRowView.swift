@@ -11,7 +11,7 @@ struct EventRowView: View {
     @Binding var event: EventViewData
     
     var body: some View {
-        VStack  {
+        //VStack  {
             HStack {
                 Image("profil")
                     .resizable()
@@ -40,10 +40,10 @@ struct EventRowView: View {
             .background(Color("BackgroundGray"))
             .cornerRadius(12)
             
-        }
-        .padding(.vertical,5)
-        .listRowInsets(EdgeInsets())
-        .listRowBackground(Color("BackgroundColor"))
+        //}
+//        .padding(.vertical,5)
+//        .listRowInsets(EdgeInsets())
+//        .listRowBackground(Color("BackgroundColor"))
     }
 }
 

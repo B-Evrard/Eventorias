@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct EventListView: View {
-    @ObservedObject var viewModel: EventListViewModel
+    @StateObject var viewModel: EventListViewModel
     
     @State private var isLoading = true
-
+    
     var body: some View {
         ZStack {
             Color("BackgroundColor").ignoresSafeArea()
@@ -23,70 +23,17 @@ struct EventListView: View {
                 Spacer()
             } else {
                 if (!viewModel.isError) {
-                    VStack(spacing: 15) {
-                        HStack {
-                            Image(systemName: "magnifyingglass")
-                                .font(.system(size: 16))
-                                .foregroundColor(.white)
-                                .padding(.leading, 8)
-                                .accessibilityHidden(true)
-                            
-                            TextField("", text: $viewModel.search, prompt: Text("Search").foregroundColor(.white))
-                                .foregroundColor(.white)
-                                .font(.system(size: 16))
-                                .accessibilityLabel("Search events")
-                                .accessibilityHint("Enter text to filter events")
-                        }
-                        .padding(8)
-                        .background(Color("BackgroundGray"))
-                        .cornerRadius(20)
-                        Menu {
-                            ForEach(SortOption.allCases , id: \.self) { option in
-                                Button {
-                                    viewModel.selectedSortOption = option
-                                    Task {
-                                        isLoading = true
-                                        await self.viewModel.fetchEvents()
-                                        isLoading = false
-                                    }
-                                    
-                                } label: {
-                                    HStack {
-                                        if viewModel.selectedSortOption == option {
-                                            Image(systemName: "checkmark")
-                                                .foregroundColor(.blue)
-                                        }
-                                        Text(option.rawValue)
-                                            .foregroundColor(viewModel.selectedSortOption == option ? .blue : .black)
-                                    }
-                                }
-                            }
-                        } label: {
-                            HStack {
-                                Image(systemName: "arrow.up.arrow.down")
-                                    .font(.system(size: 16))
-                                    .foregroundColor(.white)
-                                    .accessibilityHidden(true)
-                                
-                                Text("Sorting")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 16))
-                                    .accessibilityLabel("Sort")
-                                    .accessibilityHint("Enter text to filter events")
-                            }
-                            .padding(8)
-                            .padding(.horizontal, 10)
-                            .background(Color("BackgroundGray"))
-                            .cornerRadius(20)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        }
+                    VStack {
+                        EventListSearchView(viewModel: viewModel, isLoading: $isLoading)
                         List($viewModel.events, id: \.id) { $event in
                             EventRowView(event: $event)
-                            
-                            
+                                .padding(.vertical,5)
+                                .listRowInsets(EdgeInsets())
+                                .listRowBackground(Color("BackgroundColor"))
                         }
                         .listStyle(PlainListStyle())
-                    }.padding(.horizontal)
+                    }
+                    .padding(.horizontal)
                 } else {
                     Spacer()
                     ErrorView {
@@ -99,6 +46,28 @@ struct EventListView: View {
                     Spacer()
                 }
             }
+            
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        Task {
+                            await viewModel.addEventMock()
+                        }
+                            }) {
+                                Image(systemName: "plus")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 56, height: 56)
+                            .background(Color("RedEventorias"))
+                            .cornerRadius(16)
+                }
+            }
+            .padding(.horizontal,5)
+            .padding(.vertical,10)
+            .zIndex(1)
             
         }
         .onAppear() {
@@ -115,4 +84,6 @@ struct EventListView: View {
 #Preview {
     EventListView(viewModel: EventListViewModel())
 }
+
+
 
