@@ -17,7 +17,7 @@ struct EventoriasApp: App {
         WindowGroup {
             Group {
                 if isLogged {
-                    EventListView(viewModel: EventListViewModel())
+                    MainView()
                 } else {
                     LoginView(viewModel: LoginViewModel(), isLogged: $isLogged)
                     .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
