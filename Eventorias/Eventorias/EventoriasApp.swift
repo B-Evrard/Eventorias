@@ -11,7 +11,6 @@ import SwiftUI
 struct EventoriasApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    //@StateObject var viewModel = AppViewModel()
     @State var isLogged: Bool = false
     
     var body: some Scene {

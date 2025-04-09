@@ -14,14 +14,14 @@ struct EventListSearchView: View {
         
             HStack {
                 Image(systemName: "magnifyingglass")
-                    .font(.system(size: 16))
+                    .font(.callout)
                     .foregroundColor(.white)
                     .padding(.leading, 8)
                     .accessibilityHidden(true)
                 
                 TextField("", text: $viewModel.search, prompt: Text("Search").foregroundColor(.white))
                     .foregroundColor(.white)
-                    .font(.system(size: 16))
+                    .font(.callout)
                     .accessibilityLabel("Search events")
                     .accessibilityHint("Enter text to filter events")
             }
