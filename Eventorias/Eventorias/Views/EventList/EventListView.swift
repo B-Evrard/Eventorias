@@ -9,50 +9,45 @@ import SwiftUI
 
 struct EventListView: View {
     @StateObject var viewModel = EventListViewModel()
-    @State private var isLoading = true
-    
+
     var body: some View {
-        ZStack {
-            //Color("BackgroundColor").ignoresSafeArea()
-            NavigationStack {
-                ZStack {
-                    Color("BackgroundColor").ignoresSafeArea()
-                    if isLoading {
+        NavigationStack {
+            ZStack {
+                Color("BackgroundColor").ignoresSafeArea()
+                if viewModel.isLoading {
+                    if viewModel.showProgress {
                         Spacer()
                         ProgressView("Loading ....")
                             .tint(.white)
                             .foregroundColor(.white)
                         Spacer()
+                    }
+                } else {
+                    if (!viewModel.isError) {
+                        VStack {
+                            EventListSearchView(viewModel: viewModel)
+                            EventListContentView(viewModel: viewModel)
+                        }
+                        .padding(.horizontal)
+                        ButtonAddEvent(viewModel: viewModel)
+                            .zIndex(1)
                     } else {
-                        if (!viewModel.isError) {
-                            VStack {
-                                EventListSearchView(viewModel: viewModel, isLoading: $isLoading)
-                                EventListContentView(viewModel: viewModel, isLoading: $isLoading)
-                                
-                            }
-                            .padding(.horizontal)
-                            ButtonAddEvent(viewModel: viewModel)
-                                .zIndex(1)
-                        } else {
-                            ErrorView {
-                                Task {
-                                    isLoading = true
-                                    await self.viewModel.fetchEvents()
-                                    isLoading = false
-                                }
+                        ErrorView {
+                            Task {
+                                await self.viewModel.reloadData()
                             }
                         }
                     }
                 }
-                .onAppear() {
-                    Task {
-                        await self.viewModel.fetchEvents()
-                        isLoading = false
-                    }
-                }
             }
-            
+            .onAppear() {
+                Task {
+                    await viewModel.reloadData()
+                }
+                
+            }
         }
+        
     }
 }
 

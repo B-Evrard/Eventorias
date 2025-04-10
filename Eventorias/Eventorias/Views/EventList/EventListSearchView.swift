@@ -8,7 +8,6 @@
 import SwiftUI
 struct EventListSearchView: View {
     @ObservedObject var viewModel: EventListViewModel
-    @Binding var isLoading: Bool
     
     var body: some View {
         
@@ -33,9 +32,7 @@ struct EventListSearchView: View {
                     Button {
                         viewModel.selectedSortOption = option
                         Task {
-                            isLoading = true
-                            await self.viewModel.fetchEvents()
-                            isLoading = false
+                            await self.viewModel.reloadData()
                         }
                         
                     } label: {

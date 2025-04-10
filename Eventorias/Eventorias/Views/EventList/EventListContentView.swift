@@ -9,7 +9,6 @@ import SwiftUI
 struct EventListContentView: View {
     
     @ObservedObject var viewModel: EventListViewModel
-    @Binding var isLoading: Bool
     @State private var selectedEvent: EventViewData?
     @State private var isShowingDetail: Bool = false
     
