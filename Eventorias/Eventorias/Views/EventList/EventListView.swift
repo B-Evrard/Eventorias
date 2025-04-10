@@ -13,7 +13,7 @@ struct EventListView: View {
     
     var body: some View {
         ZStack {
-            Color("BackgroundColor").ignoresSafeArea()
+            //Color("BackgroundColor").ignoresSafeArea()
             NavigationStack {
                 ZStack {
                     Color("BackgroundColor").ignoresSafeArea()
