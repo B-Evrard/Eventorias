@@ -15,12 +15,14 @@ struct SignInView: View {
     var body: some View {
         VStack {
             TextField("Enter your email", text: $viewModel.email)
+                .font(.callout)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
             
             SecureField("Enter your password", text: $viewModel.password)
+                .font(.callout)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
             Button(action: {
@@ -33,6 +35,7 @@ struct SignInView: View {
                 HStack {
                     Spacer()
                     Text("Sign in")
+                        .font(.callout)
                         .foregroundColor(.white)
                         .bold(true)
                     Spacer()

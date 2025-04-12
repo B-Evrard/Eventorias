@@ -28,7 +28,7 @@ struct EventListContentView: View {
         .scrollContentBackground(.hidden)
         .navigationDestination(isPresented: $isShowingDetail) {
             if let event = selectedEvent {
-                EventView()
+                EventView(viewModel: EventViewModel(event: event))
             }
         }
         

@@ -55,7 +55,7 @@ struct EventListSearchView: View {
                     
                     Text("Sorting")
                         .foregroundColor(.white)
-                        .font(.system(size: 16))
+                        .font(.callout)
                         .accessibilityLabel("Sort")
                         .accessibilityHint("Enter text to filter events")
                 }

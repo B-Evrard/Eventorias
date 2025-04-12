@@ -16,6 +16,7 @@ struct SignUpView: View {
         
         VStack {
             TextField("Enter your email", text: $viewModel.email)
+                .font(.callout)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
@@ -23,6 +24,7 @@ struct SignUpView: View {
             
             
             SecureField("Enter your password", text: $viewModel.password)
+                .font(.callout)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .overlay(
                     Group {
@@ -46,9 +48,11 @@ struct SignUpView: View {
                 )
             
             SecureField("Confirm your password", text: $viewModel.confirmedPassword)
+                .font(.callout)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
             TextField("Enter your name", text: $viewModel.name)
+                .font(.callout)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
             Button(action: {
@@ -60,6 +64,7 @@ struct SignUpView: View {
                 HStack {
                     Spacer()
                     Text("Sign up")
+                        .font(.callout)
                         .foregroundColor(.white)
                         .bold(true)
                     Spacer()

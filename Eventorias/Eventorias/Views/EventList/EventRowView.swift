@@ -23,11 +23,11 @@ struct EventRowView: View {
                 VStack (alignment: .leading)  {
                     Text(event.title)
                         .foregroundColor(.white)
-                        .font(.system(size: 16))
+                        .font(.callout)
                         .padding(.vertical,5)
                     Text(event.dateFormatter)
                         .foregroundColor(.white)
-                        .font(.system(size: 16))
+                        .font(.callout)
                 }
                 Spacer()
                 Image("event")
@@ -39,12 +39,7 @@ struct EventRowView: View {
             }
             .background(Color("BackgroundGray"))
             .cornerRadius(12)
-            
-        //}
-//        .padding(.vertical,5)
-//        .listRowInsets(EdgeInsets())
-//        .listRowBackground(Color("BackgroundColor"))
-    }
+        }
 }
 
 #Preview {

@@ -17,5 +17,9 @@ struct EventViewData: Hashable, Decodable {
         return dateEvent.formattedDate
     }
     
+    var timeFormatter: String {
+        return dateEvent.formattedTime
+    }
+    
     
 }

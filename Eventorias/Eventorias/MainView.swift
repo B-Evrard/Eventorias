@@ -21,11 +21,13 @@ struct MainView: View {
                     .tabItem {
                         Image(systemName: "calendar")
                         Text("Events")
+                            .font(.caption)
                     }
                 UserView()
                     .tabItem {
                         Image(systemName: "person")
                         Text("Profile")
+                            .font(.caption)
                     }
             }
         }

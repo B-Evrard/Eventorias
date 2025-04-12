@@ -47,6 +47,7 @@ struct LoginView: View {
                                 .padding(.leading, 20)
                             Text("Sign in with email")
                                 .foregroundColor(.white)
+                                .font(.callout)
                                 .bold(true)
                                 .padding(.leading, 20)
                             Spacer()
@@ -65,6 +66,7 @@ struct LoginView: View {
                         isSignUp.toggle()
                     }) {
                         Text(isSignUp ? "Have an account? Sign in" : "Don't have an account? Sign up")
+                            .font(.callout)
                             .foregroundColor(.blue)
                     }
                     .padding(.vertical, 10)
@@ -74,6 +76,7 @@ struct LoginView: View {
                 
                 Text(viewModel.message)
                     .foregroundColor(.red)
+                    .font(.callout)
             }
             .padding(.horizontal,80.0)
             
