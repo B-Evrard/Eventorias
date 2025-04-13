@@ -11,38 +11,38 @@ struct EventRowView: View {
     @Binding var event: EventViewData
     
     var body: some View {
-        //VStack  {
-            HStack {
-                Image("profil")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                    .padding(.horizontal)
-                
-                VStack (alignment: .leading)  {
-                    Text(event.title)
-                        .foregroundColor(.white)
-                        .font(.callout)
-                        .padding(.vertical,5)
-                    Text(event.dateFormatter)
-                        .foregroundColor(.white)
-                        .font(.callout)
-                }
-                Spacer()
-                Image("event")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 136, height: 80)
-                    .background(Color("BackgroundColor"))
-                    .cornerRadius(12)
+        HStack {
+            Image("profil")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+                .padding(.horizontal)
+            
+            VStack (alignment: .leading)  {
+                Text(event.title)
+                    .foregroundColor(.white)
+                    .font(.callout)
+                    .padding(.vertical,5)
+                Text(event.dateFormatter)
+                    .foregroundColor(.white)
+                    .font(.callout)
             }
-            .background(Color("BackgroundGray"))
-            .cornerRadius(12)
+            Spacer()
+            Image("event")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 136, height: 80)
+                .background(Color("BackgroundColor"))
+                .cornerRadius(12)
         }
+        .background(Color("BackgroundGray"))
+        .cornerRadius(12)
+        .accessibilityHidden(true)
+    }
 }
 
 #Preview {
-    let event = EventViewData(id: "123", title: "Ligne de titre", dateEvent: Date())
+    let event = EventViewData(id: "123", title: "Ligne de titre", dateEvent: Date(), description: "xxxx yy zzzzz hhhh")
     EventRowView(event: .constant(event))
 }

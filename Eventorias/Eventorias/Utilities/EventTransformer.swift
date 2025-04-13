@@ -12,8 +12,8 @@ struct EventTransformer {
         return EventViewData(
             id: event.id ?? "",
             title: event.title,
-            dateEvent: event.dateEvent
-            //description: event.title
+            dateEvent: event.dateEvent,
+            description: event.description
         )
     }
 }

@@ -9,45 +9,42 @@ import SwiftUI
 
 struct EventListView: View {
     @StateObject var viewModel = EventListViewModel()
-
+    
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color("BackgroundColor").ignoresSafeArea()
-                if viewModel.isLoading {
-                    if viewModel.showProgress {
-                        Spacer()
-                        ProgressView("Loading ....")
-                            .tint(.white)
-                            .foregroundColor(.white)
-                        Spacer()
+        ZStack {
+            Color("BackgroundColor").ignoresSafeArea()
+            if viewModel.isLoading {
+                if viewModel.showProgress {
+                    Spacer()
+                    ProgressView("Loading ....")
+                        .tint(.white)
+                        .foregroundColor(.white)
+                    Spacer()
+                }
+            } else {
+                if (!viewModel.isError) {
+                    VStack {
+                        EventListSearchView(viewModel: viewModel)
+                        EventListContentView(viewModel: viewModel)
                     }
+                    .padding(.horizontal)
+                    ButtonAddEvent(viewModel: viewModel)
+                        .zIndex(1)
                 } else {
-                    if (!viewModel.isError) {
-                        VStack {
-                            EventListSearchView(viewModel: viewModel)
-                            EventListContentView(viewModel: viewModel)
-                        }
-                        .padding(.horizontal)
-                        ButtonAddEvent(viewModel: viewModel)
-                            .zIndex(1)
-                    } else {
-                        ErrorView {
-                            Task {
-                                await self.viewModel.reloadData()
-                            }
+                    ErrorView {
+                        Task {
+                            await self.viewModel.reloadData()
                         }
                     }
                 }
-            }
-            .onAppear() {
-                Task {
-                    await viewModel.reloadData()
-                }
-                
             }
         }
-        
+        .onAppear() {
+            Task {
+                await viewModel.reloadData()
+            }
+            
+        }
     }
 }
 

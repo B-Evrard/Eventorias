@@ -14,15 +14,18 @@ struct EventListContentView: View {
     
     var body: some View {
         List($viewModel.events, id: \.id) { $event in
-            EventRowView(event: $event)
-                .padding(.vertical,5)
-                .listRowInsets(EdgeInsets())
-                .listRowBackground(Color("BackgroundColor"))
-                .listRowSeparator(.hidden)
-                .onTapGesture {
-                    selectedEvent = event
-                    isShowingDetail = true
-                }
+            Button {
+                selectedEvent = event
+                isShowingDetail = true
+            } label: {
+                EventRowView(event: $event)
+            }
+            .padding(.vertical,5)
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color("BackgroundColor"))
+            .listRowSeparator(.hidden)
+            .accessibilityLabel(event.accessibilityLabel)
+            .accessibilityHint("Double tap to view event details")
         }
         .listStyle(PlainListStyle())
         .scrollContentBackground(.hidden)
@@ -31,6 +34,5 @@ struct EventListContentView: View {
                 EventView(viewModel: EventViewModel(event: event))
             }
         }
-        
     }
 }

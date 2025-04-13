@@ -16,19 +16,21 @@ struct MainView: View {
     var body: some View {
         ZStack {
             Color("BackgroundColor").ignoresSafeArea()
-            TabView {
-                EventListView()
-                    .tabItem {
-                        Image(systemName: "calendar")
-                        Text("Events")
-                            .font(.caption)
-                    }
-                UserView()
-                    .tabItem {
-                        Image(systemName: "person")
-                        Text("Profile")
-                            .font(.caption)
-                    }
+            NavigationStack {
+                TabView {
+                    EventListView()
+                        .tabItem {
+                            Image(systemName: "calendar")
+                            Text("Events")
+                                .font(.caption)
+                        }
+                    UserView()
+                        .tabItem {
+                            Image(systemName: "person")
+                            Text("Profile")
+                                .font(.caption)
+                        }
+                }
             }
         }
     }

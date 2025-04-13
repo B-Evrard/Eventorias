@@ -11,7 +11,7 @@ struct EventViewData: Hashable, Decodable {
     let id: String
     let title: String
     let dateEvent: Date
-    //let description: String
+    var description: String
     
     var dateFormatter: String {
         return dateEvent.formattedDate
@@ -19,6 +19,10 @@ struct EventViewData: Hashable, Decodable {
     
     var timeFormatter: String {
         return dateEvent.formattedTime
+    }
+    
+    var accessibilityLabel: String {
+        return "Events: \(title) on \(dateFormatter) at \(timeFormatter)"
     }
     
     

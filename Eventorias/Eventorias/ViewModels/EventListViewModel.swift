@@ -60,7 +60,8 @@ final class EventListViewModel: ObservableObject {
     func addEventMock() async {
         let newEvent: Event = .init(
             title: "Event Mock \(generateRandomWord(length: 5))",
-            dateEvent: generateRandomDate()
+            dateEvent: generateRandomDate(),
+            description: "\(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) \(generateRandomWord(length: Int.random(in: 3...10))) "
         )
         
         do {
