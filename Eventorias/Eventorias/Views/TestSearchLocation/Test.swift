@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct Test: View {
-    @StateObject var viewModel: ContentViewModel
-        @FocusState private var isFocusedTextField: Bool
+    @StateObject var viewModel = ContentViewModel()
+    @FocusState private var isFocusedTextField: Bool
         
         var body: some View {
             NavigationView {

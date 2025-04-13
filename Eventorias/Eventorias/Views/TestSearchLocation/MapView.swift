@@ -20,16 +20,33 @@ struct MapView: View {
     }
     
     var body: some View {
-        Map(
-            coordinateRegion: $viewModel.region,
-            annotationItems: viewModel.annotationItems,
-            annotationContent: { item in
-                MapMarker(coordinate: item.coordinate)
-            }
-        )
+        
+        
+        Map {
+            Marker("Empire state building", coordinate: viewModel.location)
+                .tint(.orange)
+//            Annotation("Diller Civic Center Playground", coordinate: viewModel.location) {
+//                ZStack {
+//                    RoundedRectangle(cornerRadius: 5)
+//                        .fill(Color.yellow)
+//                    Text("🛝")
+//                        .padding(5)
+//                }
+//            }
+        }
+        .mapStyle(.standard)
         .onAppear {
             self.viewModel.getPlace(from: address)
         }
-        .edgesIgnoringSafeArea(.bottom)
     }
+//        Map(
+//            coordinateRegion: $viewModel.region,
+//            annotationItems: viewModel.annotationItems,
+//            annotationContent: { item in
+//                MapMarker(coordinate: item.coordinate)
+//            }
+//        )
+        
+//        .edgesIgnoringSafeArea(.bottom)
+//    }
 }

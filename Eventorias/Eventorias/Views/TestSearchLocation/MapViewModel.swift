@@ -13,6 +13,7 @@ class MapViewModel: ObservableObject {
 
     @Published var region = MKCoordinateRegion()
     @Published var annotationItems: [AnnotationItem] = []
+    @Published var location: CLLocationCoordinate2D = .init()
     
     func getPlace(from address: AddressResult) {
         let request = MKLocalSearch.Request()
@@ -33,6 +34,10 @@ class MapViewModel: ObservableObject {
                 }
                 
                 self.region = response.boundingRegion
+                location = CLLocationCoordinate2D(
+                    latitude: annotationItems[0].latitude,
+                    longitude: annotationItems[0].longitude
+                )
             }
         }
     }
