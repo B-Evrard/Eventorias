@@ -6,12 +6,18 @@
 //
 
 import Foundation
+import MapKit
+import SwiftUI
 
 struct EventViewData: Hashable, Decodable {
     let id: String
     let title: String
     let dateEvent: Date
     var description: String
+    let imageUrl: String
+    let adresse: String
+    let latitude: Double
+    let longitude: Double
     
     var dateFormatter: String {
         return dateEvent.formattedDate
@@ -25,5 +31,12 @@ struct EventViewData: Hashable, Decodable {
         return "Events: \(title) on \(dateFormatter) at \(timeFormatter)"
     }
     
+    var url: URL? {
+        return URL(string: imageUrl)
+    }
+    
+    var coordinate: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
     
 }

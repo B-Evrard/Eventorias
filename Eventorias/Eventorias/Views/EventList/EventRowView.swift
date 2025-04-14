@@ -35,6 +35,21 @@ struct EventRowView: View {
                 .frame(width: 136, height: 80)
                 .background(Color("BackgroundColor"))
                 .cornerRadius(12)
+//            AsyncImage(url: event.url ) { image in
+//                image
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fill)
+//                    .frame(width: 136, height: 80)
+//                    .background(Color("BackgroundColor"))
+//                    .cornerRadius(12)
+//                
+//            } placeholder: {
+//                ProgressView()
+//                    .frame(width: 136, height: 80)
+//                    
+//            }
+           
+                
         }
         .background(Color("BackgroundGray"))
         .cornerRadius(12)
@@ -43,6 +58,6 @@ struct EventRowView: View {
 }
 
 #Preview {
-    let event = EventViewData(id: "123", title: "Ligne de titre", dateEvent: Date(), description: "xxxx yy zzzzz hhhh")
-    EventRowView(event: .constant(event))
+    let eventData = EventViewData(id: "1", title: "Art exhibition", dateEvent: Date(), description: "xxxxxx yy zzzzzzz", imageUrl: "", adresse: "123 Rue des Métiers 60880 Jaux, France", latitude:  49.404519000000001, longitude: 2.7849428999999999)
+    EventRowView(event: .constant(eventData))
 }

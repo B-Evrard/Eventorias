@@ -13,5 +13,14 @@ struct Event: Codable {
     let title: String
     let dateEvent: Date
     let description: String
-    
+    let imageURL: String
+    let adresseEvent: AdresseEvent
+}
+
+
+struct AdresseEvent: Codable {
+    let adresse: String
+    let adresse2: String
+    let latitude: Double
+    let longitude: Double
 }

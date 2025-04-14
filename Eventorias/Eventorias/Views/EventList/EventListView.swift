@@ -26,7 +26,9 @@ struct EventListView: View {
                     VStack {
                         EventListSearchView(viewModel: viewModel)
                         EventListContentView(viewModel: viewModel)
+                        Spacer()
                     }
+                    
                     .padding(.horizontal)
                     ButtonAddEvent(viewModel: viewModel)
                         .zIndex(1)
@@ -55,28 +57,25 @@ struct EventListView: View {
 
 struct ButtonAddEvent: View {
     @ObservedObject var viewModel: EventListViewModel
+    @State private var isAddEvent: Bool = false
     
     var body: some View {
         VStack {
             Spacer()
             HStack {
                 Spacer()
-                Button(action: {
-                    Task {
-                        await viewModel.addEventMock()
-                    }
-                }) {
+                NavigationLink(destination: AddEventView()) {
                     Image(systemName: "plus")
-                        .font(.system(size: 24))
                         .foregroundColor(.white)
+                        .frame(width: 56, height: 56)
+                        .background(Color("RedEventorias"))
+                        .cornerRadius(16)
                 }
-                .frame(width: 56, height: 56)
-                .background(Color("RedEventorias"))
-                .cornerRadius(16)
+                .accessibilityLabel("Add new event")
+                .accessibilityHint("Opens form to create new event")
+                .padding(.trailing, 20)
+                .padding(.bottom, 70)
             }
         }
-        .padding(.horizontal,5)
-        .padding(.vertical,10)
-        
     }
 }

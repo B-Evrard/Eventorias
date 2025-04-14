@@ -25,6 +25,7 @@ struct MapView: View {
         Map {
             Marker("Empire state building", coordinate: viewModel.location)
                 .tint(.orange)
+            
 //            Annotation("Diller Civic Center Playground", coordinate: viewModel.location) {
 //                ZStack {
 //                    RoundedRectangle(cornerRadius: 5)

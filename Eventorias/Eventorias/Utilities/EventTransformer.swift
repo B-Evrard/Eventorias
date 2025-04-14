@@ -13,7 +13,11 @@ struct EventTransformer {
             id: event.id ?? "",
             title: event.title,
             dateEvent: event.dateEvent,
-            description: event.description
+            description: event.description,
+            imageUrl: event.imageURL,
+            adresse: "\(event.adresseEvent.adresse) \(event.adresseEvent.adresse2)",
+            latitude: event.adresseEvent.latitude,
+            longitude: event.adresseEvent.longitude
         )
     }
 }

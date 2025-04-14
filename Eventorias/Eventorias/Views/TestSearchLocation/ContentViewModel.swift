@@ -5,14 +5,6 @@
 //  Created by Bruno Evrard on 13/04/2025.
 //
 
-
-//
-//  ViewModel.swift
-//  AddressAutocomplete
-//
-//  Created by Maksim Kalik on 11/27/22.
-//
-
 import Foundation
 import MapKit
 

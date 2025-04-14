@@ -13,14 +13,14 @@ struct EventListContentView: View {
     @State private var isShowingDetail: Bool = false
     
     var body: some View {
-        List($viewModel.events, id: \.id) { $event in
+        
+        ForEach($viewModel.events, id: \.self) { $event in
             Button {
                 selectedEvent = event
                 isShowingDetail = true
             } label: {
                 EventRowView(event: $event)
             }
-            .padding(.vertical,5)
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color("BackgroundColor"))
             .listRowSeparator(.hidden)
@@ -34,5 +34,7 @@ struct EventListContentView: View {
                 EventView(viewModel: EventViewModel(event: event))
             }
         }
+        
     }
 }
+
