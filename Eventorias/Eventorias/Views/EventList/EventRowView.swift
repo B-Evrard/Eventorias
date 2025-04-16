@@ -58,6 +58,6 @@ struct EventRowView: View {
 }
 
 #Preview {
-    let eventData = EventViewData(id: "1", title: "Art exhibition", dateEvent: Date(), description: "xxxxxx yy zzzzzzz", imageUrl: "", adresse: "123 Rue des Métiers 60880 Jaux, France", latitude:  49.404519000000001, longitude: 2.7849428999999999)
+    let eventData = EventViewData(id: "1", title: "Art exhibition", dateEvent: Date(), description: "xxxxxx yy zzzzzzz", imageUrl: "", address: "123 Rue des Métiers 60880 Jaux, France", latitude:  49.404519000000001, longitude: 2.7849428999999999, category: .exhibition)
     EventRowView(event: .constant(eventData))
 }

@@ -63,7 +63,7 @@ struct EventView: View {
                     }
                     
                     HStack(spacing: 10) {
-                        Text(viewModel.event.adresse)
+                        Text(viewModel.event.address)
                             .font(.callout)
                             .foregroundStyle(.white)
                         
@@ -113,7 +113,7 @@ struct EventView: View {
 }
 
 #Preview {
-    let eventData = EventViewData(id: "1", title: "Art exhibition", dateEvent: Date(), description: "Join us for an exclusive Art Exhibition showcasing the works of the talented artist Emily Johnson. This exhibition will feature a captivating collection of her contemporary and classical pieces, offering a unique insight into her creative journey. Whether you're an art enthusiast or a casual visitor, you'll have the chance to explore a diverse range of artworks.", imageUrl: "", adresse: "123 Rue des Métiers 60880 Jaux, France", latitude:  49.404519000000001, longitude: 2.7849428999999999)
+    let eventData = EventViewData(id: "1", title: "Art exhibition", dateEvent: Date(), description: "Join us for an exclusive Art Exhibition showcasing the works of the talented artist Emily Johnson. This exhibition will feature a captivating collection of her contemporary and classical pieces, offering a unique insight into her creative journey. Whether you're an art enthusiast or a casual visitor, you'll have the chance to explore a diverse range of artworks.", imageUrl: "", address: "123 Rue des Métiers 60880 Jaux, France", latitude:  49.404519000000001, longitude: 2.7849428999999999, category: .exhibition)
     EventView(viewModel: .init(event: eventData))
     
 }

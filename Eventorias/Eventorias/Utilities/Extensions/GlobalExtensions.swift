@@ -67,3 +67,15 @@ extension Date {
     }
     
 }
+
+
+extension View {
+    @ViewBuilder func whiteDatePickerText() -> some View {
+        if UITraitCollection.current.userInterfaceStyle == .light {
+            self.colorInvert().colorMultiply(.white)
+        } else {
+            self.colorMultiply(.white)
+        }
+    }
+}
+

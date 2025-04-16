@@ -71,6 +71,7 @@ final class EventListViewModel: ObservableObject {
             description: "Join us for an exclusive Art Exhibition showcasing the works of the talented artist Emily Johnson. This exhibition will feature a captivating collection of her contemporary and classical pieces, offering a unique insight into her creative journey. Whether you're an art enthusiast or a casual visitor, you'll have the chance to explore a diverse range of artworks. Join us for an exclusive Art Exhibition showcasing the works of the talented artist Emily Johnson. This exhibition will feature a captivating collection of her contemporary and classical pieces, offering a unique insight into her creative journey. Whether you're an art enthusiast or a casual visitor, you'll have the chance to explore a diverse range of artworks.",
             imageURL: "https://firebasestorage.googleapis.com/v0/b/eventorias-47db6.firebasestorage.app/o/pexels-bertellifotografia-15138850.jpg?alt=media&token=9434ca44-bd3d-468a-a5dc-22a05a4a884a",
             adresseEvent: adresse
+            , category: "Art"
         )
         
         do {

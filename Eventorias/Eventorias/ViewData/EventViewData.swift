@@ -10,14 +10,15 @@ import MapKit
 import SwiftUI
 
 struct EventViewData: Hashable, Decodable {
-    let id: String
-    let title: String
-    let dateEvent: Date
+    var id: String
+    var title: String
+    var dateEvent: Date
     var description: String
-    let imageUrl: String
-    let adresse: String
-    let latitude: Double
-    let longitude: Double
+    var imageUrl: String
+    var address: String
+    var latitude: Double
+    var longitude: Double
+    var category: EventCategory
     
     var dateFormatter: String {
         return dateEvent.formattedDate
@@ -41,54 +42,51 @@ struct EventViewData: Hashable, Decodable {
     
 }
 
-enum Category: String,CaseIterable {
-    
-    case Music
-    case Exhibition
-    case Theater
-    case Concert
-    case Opera
-    case Dance
-    case Festival
-    case Competition
-    case Conference
-    case Tasting
-    
-    var icon: String {
+enum EventCategory: String, CaseIterable, Identifiable , Decodable{
+    case exhibition
+    case theater
+    case concert
+    case opera
+    case dance
+    case lecture
+    case bookSigning
+    case culturalFestival
+    case musicFestival
+    case conference
+    case foodTruckEvent
+    case localMarket
+    case unknown
+
+    var id: String { self.rawValue }
+
+    var displayName: String {
         switch self {
-        case .football:
-            return "sportscourt"
-        case .natation:
-            return "waveform.path.ecg"
-        case .running:
-            return "figure.run"
-        case .marche:
-            return "figure.walk"
-        case .cyclisme:
-            return "bicycle"
-        case .unknown:
-            return "questionmark"
+        case .exhibition: return "Exhibition"
+        case .theater: return "Theater"
+        case .concert: return "Concert"
+        case .opera: return "Opera"
+        case .dance: return "Dance"
+        case .lecture: return "Lecture"
+        case .bookSigning: return "Book Signing"
+        case .culturalFestival: return "Cultural Festival"
+        case .musicFestival: return "Music Festival"
+        case .conference: return "Conference"
+        case .foodTruckEvent: return "Food Truck Event"
+        case .localMarket: return "Local Market"
+        case .unknown: return "Unknown"
         }
+        
+        
     }
-    
-    init (rawValue: String) {
-        switch rawValue {
-        case "football":
-            self = .football
-        case "natation":
-            self = .natation
-        case "running":
-            self = .running
-        case "marche":
-            self = .marche
-        case "cyclisme":
-            self = .cyclisme
-        default :
-            self = .unknown
-            
-        }
-    }
-    
-   
 }
 
+extension EventCategory {
+    static func from(_ rawValue: String) -> Self {
+        Self(rawValue: rawValue) ?? .unknown
+    }
+}
+struct AddressResult: Identifiable {
+    let id = UUID()
+    let title: String
+    let subtitle: String
+}

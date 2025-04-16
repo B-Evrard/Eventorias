@@ -15,9 +15,10 @@ struct EventTransformer {
             dateEvent: event.dateEvent,
             description: event.description,
             imageUrl: event.imageURL,
-            adresse: "\(event.adresseEvent.adresse) \(event.adresseEvent.adresse2)",
+            address: "\(event.adresseEvent.adresse) \(event.adresseEvent.adresse2)",
             latitude: event.adresseEvent.latitude,
-            longitude: event.adresseEvent.longitude
+            longitude: event.adresseEvent.longitude,
+            category: EventCategory.from(event.category)
         )
     }
 }
