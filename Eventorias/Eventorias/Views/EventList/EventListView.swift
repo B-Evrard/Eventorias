@@ -14,19 +14,18 @@ struct EventListView: View {
         ZStack {
             Color("BackgroundColor").ignoresSafeArea()
             if viewModel.isLoading {
-                if viewModel.showProgress {
-                    Spacer()
-                    ProgressView("Loading ....")
-                        .tint(.white)
-                        .foregroundColor(.white)
-                    Spacer()
-                }
+                ProgressViewLoading()
             } else {
                 if (!viewModel.isError) {
                     VStack {
                         EventListSearchView(viewModel: viewModel)
                         EventListContentView(viewModel: viewModel)
                         Spacer()
+                        Button("Add Event Mock") {
+                            Task {
+                                await viewModel.addEventMock()
+                            }
+                        }
                     }
                     
                     .padding(.horizontal)
@@ -45,7 +44,6 @@ struct EventListView: View {
             Task {
                 await viewModel.reloadData()
             }
-            
         }
     }
 }
@@ -65,6 +63,8 @@ struct ButtonAddEvent: View {
             HStack {
                 Spacer()
                 NavigationLink(destination: AddEventView()) {
+                    
+                    
                     Image(systemName: "plus")
                         .foregroundColor(.white)
                         .frame(width: 56, height: 56)

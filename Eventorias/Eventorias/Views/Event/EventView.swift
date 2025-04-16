@@ -67,21 +67,34 @@ struct EventView: View {
                             .font(.callout)
                             .foregroundStyle(.white)
                         
-                        Map (position: .constant(viewModel.getEventMapCameraPosition())) {
-                            Annotation(viewModel.event.title,
-                                       coordinate: viewModel.event.coordinate) {
-                                Image(systemName: "mappin")
-                                    .foregroundColor(.red)
-                                    .font(.system(size: 16))
-                                    .accessibilityHidden(true)
-                            }
-                        }
-                        .mapStyle(.standard)
-                        .frame(width: 150, height: 72)
-                        .cornerRadius(10)
-                        .accessibilityLabel("Map event location")
+                        //                        Map (position: .constant(viewModel.getEventMapCameraPosition())) {
+                        //                            Annotation(viewModel.event.title,
+                        //                                       coordinate: viewModel.event.coordinate) {
+                        //                                Image(systemName: "mappin")
+                        //                                    .foregroundColor(.red)
+                        //                                    .font(.system(size: 16))
+                        //                                    .accessibilityHidden(true)
+                        //                            }
+                        //                        }
+                        //                        .mapStyle(.standard)
+                        //                        .frame(width: 150, height: 72)
+                        //                        .cornerRadius(10)
+                        //                        .accessibilityLabel("Map event location")
+                                                AsyncImage(url: viewModel.getMap ) { image in
+                                                    image
+                                                        .resizable()
+                                                        .scaledToFill()
+                                                        .frame(width: 150, height: 72)
+                                                        .cornerRadius(10)
+                                                        .accessibilityLabel("Map event location")
+                        
+                                            } placeholder: {
+                                                ProgressView()
+                                                    .frame(width: 150, height: 72)
+                                                    .clipShape(Circle())
+                                            }
+                        //Spacer()
                     }
-                    Spacer()
                     
                 }
                 .padding()

@@ -17,30 +17,16 @@ final class EventListViewModel: ObservableObject {
     @Published var selectedSortOption: SortOption = .date
     @Published var isError: Bool = false
     @Published var isLoading = false
-    @Published var showProgress = false
+    
     
     init(fireStoreService: FBFireStore = FBFireStore()) {
         self.fireStoreService = fireStoreService
     }
     
     func reloadData() async {
-        showProgress = false
         isLoading = true
-        let delayTask = Task {
-            do {
-                try await Task.sleep(nanoseconds: 2_000_000_000)
-                if isLoading {
-                    showProgress = true
-                }
-            } catch {
-                showProgress = true
-            }
-        }
-        
         await fetchEvents()
         isLoading = false
-        delayTask.cancel()
-        
     }
     
     func fetchEvents() async  {
@@ -76,7 +62,7 @@ final class EventListViewModel: ObservableObject {
         
         do {
             try await fireStoreService.addEvent(newEvent)
-            await fetchEvents()
+            await reloadData()
         }
         catch {
             print("Error")
