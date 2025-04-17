@@ -20,9 +20,11 @@ final class LoginViewModel: ObservableObject {
     @Published var messagePassword: Bool = false
     
     private let authService: FBAuthService
+    private let fireStoreService: FBFireStore
     
-    init(authService: FBAuthService = FBAuthService()) {
+    init(authService: FBAuthService = FBAuthService(), fireStoreService: FBFireStore = FBFireStore()) {
         self.authService = authService
+        self.fireStoreService = fireStoreService
     }
     
     func login() async -> Bool {
@@ -43,10 +45,17 @@ final class LoginViewModel: ObservableObject {
         
         do {
             try await authService.signIn(email: email, password: password)
-            return true
         } catch {
             message = "Login failed"
-            return false;
+            return false
+        }
+        
+        do {
+            try await APIKeyService.shared.apiKeyStorage = try await fireStoreService.getSecret()
+            return true
+        } catch {
+            self.message = "An error has occured"
+            return false
         }
         
     }
@@ -70,16 +79,27 @@ final class LoginViewModel: ObservableObject {
         
         do {
             try await authService.signUp(email: email, password: password, name: name)
-            return true
+            
         } catch let error as NSError {
             switch error.code {
             case AuthErrorCode.emailAlreadyInUse.rawValue:
                 self.message = "Email already in use"
-                return false;
+                return false
             default:
                 self.message = error.localizedDescription
-                return false;
+                return false
             }
         }
+        
+        do {
+            try await APIKeyService.shared.apiKeyStorage = try await fireStoreService.getSecret()
+            return true
+        } catch {
+            self.message = "An error has occured"
+            return false
+        }
     }
+    
+    
+    
 }

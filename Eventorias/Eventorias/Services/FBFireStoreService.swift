@@ -37,4 +37,14 @@ final class FBFireStore {
     func addEvent(_ event: Event) async throws {
             try db.collection("Events").addDocument(from: event)
     }
+    
+    func getSecret() async throws -> APIKeyStorage {
+        var apiKey = APIKeyStorage(googleMapApi: "")
+        let snapshot = try await db.collection("secret").getDocuments()
+        if !snapshot.documents.isEmpty {
+            let document = snapshot.documents[0]
+            apiKey = try document.data(as: APIKeyStorage.self)
+        }
+        return apiKey
+    }
 }
