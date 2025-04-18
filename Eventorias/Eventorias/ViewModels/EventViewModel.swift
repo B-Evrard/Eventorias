@@ -23,7 +23,7 @@ final class EventViewModel: ObservableObject {
     func mapURL() -> URL {
         let latitude = 49.404519000000001
         let longitude = 2.7849428999999999
-        let key = "AIzaSyBj-dLHQKsbFCPdBtM5a73hQFa61tRmDGg" //APIKeyService.shared.apiKeyStorage.googleMapApi
+        let key = APIKeyService.shared.apiKeyStorage.googleMapApi
        let urlString = "https://maps.googleapis.com/maps/api/staticmap?center=\(latitude),\(longitude)&markers=color:red%7Csize:tiny%7C\(latitude),\(longitude)&zoom=12&size=149x72&maptype=roadmap&key=\(key)"
         print (urlString)
         return URL(string: urlString)!
