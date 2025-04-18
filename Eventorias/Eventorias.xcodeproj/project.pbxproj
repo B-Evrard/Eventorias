@@ -43,12 +43,20 @@
 			);
 			target = FE42B2942D944D61001542C0 /* EventoriasTests */;
 		};
+		FEE392C12DB2528500A8ECC3 /* Exceptions for "Eventorias" folder in "Eventorias" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FE42B2842D944D60001542C0 /* Eventorias */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FE42B2872D944D60001542C0 /* Eventorias */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				FEE392C12DB2528500A8ECC3 /* Exceptions for "Eventorias" folder in "Eventorias" target */,
 				FE42B2B52D94505A001542C0 /* Exceptions for "Eventorias" folder in "EventoriasTests" target */,
 			);
 			path = Eventorias;
@@ -428,6 +436,8 @@
 				DEVELOPMENT_TEAM = C3825553HQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Eventorias/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need the camera permission";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -459,6 +469,8 @@
 				DEVELOPMENT_TEAM = C3825553HQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Eventorias/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need the camera permission";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

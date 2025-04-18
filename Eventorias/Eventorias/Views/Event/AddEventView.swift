@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct AddEventView: View {
     @Environment(\.dismiss) var dismiss
@@ -15,6 +16,8 @@ struct AddEventView: View {
     @State private var showCalendarSheet: Bool = false
     @State private var isAdressSelected: Bool = false
 
+    @State private var showCamera = false
+    @State private var capturedImage: UIImage?
     
     
     var body: some View {
@@ -195,20 +198,12 @@ struct AddEventView: View {
                     }
                         
                 }
-                
-//                .onReceive(
-//                    viewModel.$searchAddressText.debounce(
-//                        for: .seconds(1),
-//                        scheduler: DispatchQueue.main
-//                    )
-//                ) {
-//                    viewModel.searchAddress($0)
-//                }
                 .padding()
                 .background(Color("BackgroundGray"))
                 .cornerRadius(4)
                 .padding(.horizontal)
                 
+                // MARK: List Adresse
                 if (!viewModel.results.isEmpty)  {
                     List(viewModel.results) { address in
                         VStack(alignment: .leading) {
@@ -232,7 +227,39 @@ struct AddEventView: View {
                     .listStyle(.plain)
                 }
                 
+                // MARK: Photo
                 
+               HStack {
+                  
+                   
+                   VStack(spacing: 20) {
+                               if let image = capturedImage {
+                                   Image(uiImage: image)
+                                       .resizable()
+                                       .scaledToFit()
+                                       .frame(height: 300)
+                               } else {
+                                   Image(systemName: "camera")
+                                       .resizable()
+                                       .scaledToFit()
+                                       .frame(height: 100)
+                                       .foregroundColor(.gray)
+                               }
+
+                               Button(action: {
+                                   showCamera = true
+                               }) {
+                                   Label("Prendre une photo", systemImage: "camera.fill")
+                                       .padding()
+                                       .background(Color.blue.opacity(0.2))
+                                       .cornerRadius(8)
+                               }
+                           }
+                           .sheet(isPresented: $showCamera) {
+                               CameraPicker(image: $capturedImage)
+                           }
+
+                }
                 Spacer()
                 
             }
