@@ -34,6 +34,19 @@ public struct Control  {
             throw ControlError.nameEmpty()
         }
     }
+    
+    static func addEvent(event: EventViewData) throws (ControlError) {
+        guard !event.title.isEmpty else {
+            throw ControlError.emptyField(message: "Title is required")
+        }
+        
+        if (event.category == .unknown) {
+            throw ControlError.emptyField(message: "Category is required")
+        }
+        guard !event.description.isEmpty else {
+            throw ControlError.emptyField(message: "Description is required")
+        }
+    }
         
     private static func validateEmail(_ email: String) throws (ControlError) {
         guard !email.isEmpty else {

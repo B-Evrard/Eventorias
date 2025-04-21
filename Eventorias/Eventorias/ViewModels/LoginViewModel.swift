@@ -51,7 +51,7 @@ final class LoginViewModel: ObservableObject {
         }
         
         do {
-            try await APIKeyService.shared.apiKeyStorage = try await fireStoreService.getSecret()
+            try await APIKeyService.shared.apiKeyStorage = fireStoreService.getSecret()
             return true
         } catch {
             self.message = "An error has occured"
@@ -92,7 +92,7 @@ final class LoginViewModel: ObservableObject {
         }
         
         do {
-            try await APIKeyService.shared.apiKeyStorage = try await fireStoreService.getSecret()
+            try await APIKeyService.shared.apiKeyStorage =  fireStoreService.getSecret()
             return true
         } catch {
             self.message = "An error has occured"

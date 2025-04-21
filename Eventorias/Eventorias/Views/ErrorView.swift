@@ -14,7 +14,6 @@ struct ErrorView: View {
             Image(systemName: "exclamationmark")
                 .resizable()
                 .scaledToFit()
-            //.frame(width: 24, height: 24)
                 .foregroundColor(.white)
                 .padding(20)
                 .background(

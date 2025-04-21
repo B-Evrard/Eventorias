@@ -27,4 +27,4 @@ class LocationSearchService: NSObject, ObservableObject, MKLocalSearchCompleterD
     }
 }
 
-extension MKLocalSearchCompletion: Identifiable {}
+//extension MKLocalSearchCompletion: Identifiable {}

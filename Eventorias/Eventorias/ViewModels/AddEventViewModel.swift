@@ -26,7 +26,9 @@ final class AddEventViewModel: NSObject, ObservableObject {
     @Published var eventTime: String = "12:00"
     @Published var dateText: String = ""
     @Published var searchAddressText = ""
+    @Published var isAdressSelected = false
     @Published var results: Array<AddressResult> = []
+    @Published var capturedImage: UIImage?
     
     private lazy var localSearchCompleter: MKLocalSearchCompleter = {
         let completer = MKLocalSearchCompleter()
@@ -34,21 +36,25 @@ final class AddEventViewModel: NSObject, ObservableObject {
         return completer
     }()
     
-    func updateTimeEvent(_ hour: String) {
-        let calendrier = Calendar.current
-        guard let dateModifiee = calendrier.date(
-            bySettingHour: 17,
-            minute: 0,
-            second: 0,
-            of: event.dateEvent
-        ) else {
-            fatalError("Heure invalide")
-        }
-    }
+//    func updateTimeEvent(_ hour: String) {
+//        let calendrier = Calendar.current
+//        guard let dateModifiee = calendrier.date(
+//            bySettingHour: 17,
+//            minute: 0,
+//            second: 0,
+//            of: event.dateEvent
+//        ) else {
+//            fatalError("Heure invalide")
+//        }
+//    }
     
     func searchAddress(_ searchableText: String) {
         guard searchableText.isEmpty == false else { return }
         localSearchCompleter.queryFragment = searchableText
+    }
+    
+    func validate() {
+        
     }
     
 }
