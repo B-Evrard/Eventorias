@@ -15,10 +15,23 @@ struct EventTransformer {
             dateEvent: event.dateEvent,
             description: event.description,
             imageUrl: event.imageURL,
-            address: "\(event.adresseEvent.adresse) \(event.adresseEvent.adresse2)",
-            latitude: event.adresseEvent.latitude,
-            longitude: event.adresseEvent.longitude,
+            address: event.addressEvent.address,
+            latitude: event.addressEvent.latitude,
+            longitude: event.addressEvent.longitude,
             category: EventCategory.from(event.category)
         )
+    }
+    
+    static func transformToModel(_ eventViewData: EventViewData) -> Event {
+        return Event(
+            id: eventViewData.id,
+            title: eventViewData.title,
+            dateEvent: eventViewData.dateEvent,
+            description: eventViewData.description,
+            imageURL: eventViewData.imageUrl,
+            addressEvent: AddressEvent(address: eventViewData.address, latitude: eventViewData.latitude, longitude: eventViewData.longitude),
+            category: eventViewData.category.rawValue
+        )
+            
     }
 }

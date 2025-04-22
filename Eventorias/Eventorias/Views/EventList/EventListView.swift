@@ -21,11 +21,6 @@ struct EventListView: View {
                         EventListSearchView(viewModel: viewModel)
                         EventListContentView(viewModel: viewModel)
                         Spacer()
-                        Button("Add Event Mock") {
-                            Task {
-                                await viewModel.addEventMock()
-                            }
-                        }
                     }
                     
                     .padding(.horizontal)

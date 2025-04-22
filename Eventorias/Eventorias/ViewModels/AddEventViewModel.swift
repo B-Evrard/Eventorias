@@ -11,6 +11,9 @@ import MapKit
 @MainActor
 final class AddEventViewModel: NSObject, ObservableObject {
     
+    private let fireStoreService: FBFireStore
+    private let locationSearchService: LocationSearchService
+    
     @Published var event = EventViewData(
         id: "",
         title: "",
@@ -28,9 +31,15 @@ final class AddEventViewModel: NSObject, ObservableObject {
     //@Published var searchAddressText = ""
     @Published var isAdressSelected = false
     @Published var results: Array<AddressResult> = []
+    @Published var adresseResult: AddressResult?
     @Published var capturedImage: UIImage?
     @Published var showError = false
     @Published var errorMessage: String = ""
+    
+    init(fireStoreService: FBFireStore = FBFireStore(), locationSearchService: LocationSearchService = LocationSearchService() ) {
+        self.fireStoreService = fireStoreService
+        self.locationSearchService = locationSearchService
+    }
     
     private lazy var localSearchCompleter: MKLocalSearchCompleter = {
         let completer = MKLocalSearchCompleter()
@@ -46,11 +55,38 @@ final class AddEventViewModel: NSObject, ObservableObject {
     func validate() async -> Bool {
         showError = false
         do {
-            try Control.addEvent(event: event, image: capturedImage)
+            try Control.addEvent(event: event, eventTime: eventTime, image: capturedImage, address: adresseResult)
         } catch let error {
             showError = true
             errorMessage = error.message
             return false
+        }
+        
+        do {
+            let imageUrl = try await fireStoreService.uploadImage(capturedImage!) // !!!capturedImage est controlé dans Control.addEvent(event: event, image: capturedImage)!!!
+            event.imageUrl = imageUrl
+        }
+        catch {
+            showError = true
+            errorMessage = "An error has occured"
+        }
+        
+        do {
+            let location = try await locationSearchService.getPlace(from: adresseResult!) // !!!adresseResult est controlé dans Control.addEvent(event: event, image: capturedImage)!!!
+            event.latitude = location.latitude
+            event.longitude = location.longitude
+        } catch {
+            showError = true
+            errorMessage = "Address not found"
+        }
+        
+        do {
+            event.dateEvent.addHours(hours: eventTime)
+            try await fireStoreService.addEvent(EventTransformer.transformToModel(event))
+        }
+        catch {
+            showError = true
+            errorMessage = "An error has occured"
         }
         return true
     }

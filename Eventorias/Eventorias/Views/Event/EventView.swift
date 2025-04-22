@@ -18,13 +18,23 @@ struct EventView: View {
             Color("BackgroundColor")
                 .ignoresSafeArea(.all)
             VStack (alignment: .leading) {
-                Image("event")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 358, height: 364)
-                    .background(Color("BackgroundColor"))
-                    .cornerRadius(12)
-                    .padding(.bottom,5)
+                
+                AsyncImage(url: viewModel.event.url ) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 358, height: 364)
+                        .background(Color("BackgroundColor"))
+                        .cornerRadius(12)
+                        .padding(.bottom,5)
+                    
+                } placeholder: {
+                    ProgressView()
+                        .frame(width: 358, height: 364)
+                        
+                }
+                
+              
                 HStack {
                     VStack(alignment: .leading) {
                         HStack {

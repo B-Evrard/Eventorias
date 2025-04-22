@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseStorage
 
 final class FBFireStore {
     
@@ -18,9 +19,9 @@ final class FBFireStore {
         let FBEvents = db.collection("Events")
         let query: Query
         switch sortBy {
-            case .date: query = FBEvents.order(by: "dateEvent", descending: true)
+        case .date: query = FBEvents.order(by: "dateEvent", descending: true)
             break
-            case .category: query = FBEvents.order(by: "title", descending: false)
+        case .category: query = FBEvents.order(by: "title", descending: false)
             break
         }
         
@@ -35,7 +36,7 @@ final class FBFireStore {
     
     
     func addEvent(_ event: Event) async throws {
-            try db.collection("Events").addDocument(from: event)
+        try db.collection("Events").addDocument(from: event)
     }
     
     func getSecret() async throws -> APIKeyStorage {
@@ -47,4 +48,37 @@ final class FBFireStore {
         }
         return apiKey
     }
+    
+    func uploadImage(_ image: UIImage) async throws -> String {
+        guard let imageData = image.jpegData(compressionQuality: 0.75) else {
+            throw ImageUploadError.imageConversionFailed
+        }
+        let fileName = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/event_images/\(fileName).jpeg")
+        
+        // Upload de l'image
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            ref.putData(imageData, metadata: nil) { _, error in
+                if let error = error {
+                    continuation.resume(throwing: ImageUploadError.uploadFailed(error))
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
+        
+        // Récupération de l'URL de téléchargement
+        return try await withCheckedThrowingContinuation { continuation in
+            ref.downloadURL { url, error in
+                if let error = error {
+                    continuation.resume(throwing: ImageUploadError.urlRetrievalFailed(error))
+                } else if let urlString = url?.absoluteString {
+                    continuation.resume(returning: urlString)
+                } else {
+                    continuation.resume(throwing: ImageUploadError.urlRetrievalFailed(nil))
+                }
+            }
+        }
+    }
+    
 }

@@ -28,8 +28,10 @@ struct AddEventView: View {
                 
                 Button(action: {
                     Task {
-                        await viewModel.validate()
-                        
+                        let isOk = await viewModel.validate()
+                        if isOk {
+                            dismiss()
+                        }
                     }
                 }) {
                     Text("Validate")
@@ -297,6 +299,7 @@ struct AddEventAdresseView: View {
                             .font(.caption)
                     }
                     .onTapGesture {
+                        viewModel.adresseResult = address
                         viewModel.event.address = "\(address.title), \(address.subtitle)"
                         viewModel.results.removeAll()
                         viewModel.isAdressSelected = true

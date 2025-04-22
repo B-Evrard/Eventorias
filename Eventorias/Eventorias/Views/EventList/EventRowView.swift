@@ -29,25 +29,19 @@ struct EventRowView: View {
                     .font(.callout)
             }
             Spacer()
-            Image("event")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 136, height: 80)
-                .background(Color("BackgroundColor"))
-                .cornerRadius(12)
-//            AsyncImage(url: event.url ) { image in
-//                image
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//                    .frame(width: 136, height: 80)
-//                    .background(Color("BackgroundColor"))
-//                    .cornerRadius(12)
-//                
-//            } placeholder: {
-//                ProgressView()
-//                    .frame(width: 136, height: 80)
-//                    
-//            }
+            AsyncImage(url: event.url ) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 136, height: 80)
+                    .background(Color("BackgroundColor"))
+                    .cornerRadius(12)
+                
+            } placeholder: {
+                ProgressView()
+                    .frame(width: 136, height: 80)
+                    
+            }
            
                 
         }

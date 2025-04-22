@@ -16,6 +16,8 @@ enum ControlError: Error {
     case nameEmpty(message: String = "Please enter your name.")
     case genericError(message: String = "An error has occurred.")
     case emptyField(message: String = "Please fill all fields.")
+    case errorDate(message: String = "Date invalid")
+
     
     var message: String {
         switch self {
@@ -26,7 +28,8 @@ enum ControlError: Error {
                 .nameEmpty(let message),
                 .passwordNotMatch(let message),
                 .invalidPassword(message: let message),
-                .emptyField(message: let message):
+                .emptyField(message: let message),
+                .errorDate(message: let message):
             return message
         
         }

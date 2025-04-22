@@ -66,6 +66,24 @@ extension Date {
         return formatter.string(from: self)
     }
     
+    func addHours(hours: String) {
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([.year, .month, .day], from: self)
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm"
+        if let time = timeFormatter.date(from: hours) {
+            let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
+            
+            // Fusionnez les deux
+            var mergedComponents = DateComponents()
+            mergedComponents.year = dateComponents.year
+            mergedComponents.month = dateComponents.month
+            mergedComponents.day = dateComponents.day
+            mergedComponents.hour = timeComponents.hour
+            mergedComponents.minute = timeComponents.minute
+        }
+    }
+        
 }
 
 
