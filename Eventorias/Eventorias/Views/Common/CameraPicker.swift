@@ -19,7 +19,7 @@ struct CameraPicker: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
-        picker.sourceType = .camera
+        picker.sourceType = .photoLibrary           //.camera (plante le simulateur)
         picker.delegate = context.coordinator
         return picker
     }
