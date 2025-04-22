@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Controls the input of the different views of the application
 public struct Control  {
@@ -35,7 +36,7 @@ public struct Control  {
         }
     }
     
-    static func addEvent(event: EventViewData) throws (ControlError) {
+    static func addEvent(event: EventViewData, image: UIImage?) throws (ControlError) {
         guard !event.title.isEmpty else {
             throw ControlError.emptyField(message: "Title is required")
         }
@@ -45,6 +46,18 @@ public struct Control  {
         }
         guard !event.description.isEmpty else {
             throw ControlError.emptyField(message: "Description is required")
+        }
+        
+        if (event.dateEvent < Date()) {
+            throw ControlError.emptyField(message: "Date must be future")
+        }
+        
+        if (event.address.isEmpty) {
+            throw ControlError.emptyField(message: "Address is required")
+        }
+        
+        if (image == nil) {
+            throw ControlError.emptyField(message: "Picture is required")
         }
     }
         
