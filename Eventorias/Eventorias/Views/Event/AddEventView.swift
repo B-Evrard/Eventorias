@@ -26,20 +26,30 @@ struct AddEventView: View {
                     AddEventPictureView(viewModel: viewModel)
                 }
                 
-                Button(action: viewModel.validate) {
+                Button(action: {
+                    Task {
+                        await viewModel.validate()
+                        
+                    }
+                }) {
                     Text("Validate")
                         .foregroundColor(.white)
                         .font(.callout)
-                        .bold(true)
+                        .bold()
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 15)
                         .background(Color("RedEventorias"))
                         .cornerRadius(4)
                 }
-                
-                
             }
             .padding(.horizontal)
+        }
+        .alert(isPresented: $viewModel.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(viewModel.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -103,7 +113,7 @@ struct AddEventDescriptionView: View {
                         Text(category.displayName)
                         if (viewModel.event.category == category) {
                             Image(systemName: "checkmark")
-                            .foregroundColor(Color("FontTextFieldGray"))
+                                .foregroundColor(Color("FontTextFieldGray"))
                         }
                     }
                 }
@@ -258,7 +268,7 @@ struct AddEventAdresseView: View {
                 .foregroundColor(Color("FontGray"))
             TextField(
                 "",
-                text: $viewModel.searchAddressText,
+                text: $viewModel.event.address,
                 prompt: Text("Enter full address")
                     .font(.callout)
                     .foregroundColor(Color("FontTextFieldGray"))
@@ -266,9 +276,9 @@ struct AddEventAdresseView: View {
             .font(.callout)
             .foregroundColor(Color("FontTextFieldGray"))
             
-            .onChange(of: viewModel.searchAddressText) {
+            .onChange(of: viewModel.event.address) {
                 if (!viewModel.isAdressSelected) {
-                    viewModel.searchAddress(viewModel.searchAddressText)
+                    viewModel.searchAddress(viewModel.event.address)
                 }
                 viewModel.isAdressSelected = false
             }
@@ -287,7 +297,7 @@ struct AddEventAdresseView: View {
                             .font(.caption)
                     }
                     .onTapGesture {
-                        viewModel.searchAddressText = "\(address.title), \(address.subtitle)"
+                        viewModel.event.address = "\(address.title), \(address.subtitle)"
                         viewModel.results.removeAll()
                         viewModel.isAdressSelected = true
                     }
