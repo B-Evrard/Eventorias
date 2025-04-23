@@ -10,34 +10,45 @@ import SwiftUI
 struct EventListView: View {
     @StateObject var viewModel = EventListViewModel()
     
+    @State private var selectedEvent: EventViewData?
+    @State private var isShowingDetail: Bool = false
+
+    
     var body: some View {
-        ZStack {
-            Color("BackgroundColor").ignoresSafeArea()
-            if viewModel.isLoading {
-                ProgressViewLoading()
-            } else {
-                if (!viewModel.isError) {
-                    VStack {
-                        EventListSearchView(viewModel: viewModel)
-                        EventListContentView(viewModel: viewModel)
-                        Spacer()
-                    }
-                    
-                    .padding(.horizontal)
-                    ButtonAddEvent(viewModel: viewModel)
-                        .zIndex(1)
+        NavigationStack {
+            ZStack {
+                Color("BackgroundColor").ignoresSafeArea()
+                if viewModel.isLoading {
+                    ProgressViewLoading()
                 } else {
-                    ErrorView {
-                        Task {
-                            await self.viewModel.reloadData()
+                    if (!viewModel.isError) {
+                        VStack {
+                            EventListSearchView(viewModel: viewModel)
+                            EventListContentView(viewModel: viewModel, selectedEvent: $selectedEvent, isShowingDetail: $isShowingDetail)
+                            Spacer()
+                        }
+                        
+                        .padding(.horizontal)
+                        ButtonAddEvent(viewModel: viewModel)
+                            .zIndex(1)
+                    } else {
+                        ErrorView {
+                            Task {
+                                await self.viewModel.reloadData()
+                            }
                         }
                     }
                 }
             }
-        }
-        .onAppear() {
-            Task {
-                await viewModel.reloadData()
+            .navigationDestination(isPresented: $isShowingDetail) {
+                if let event = selectedEvent {
+                    EventView(viewModel: EventViewModel(event: event))
+                }
+            }
+            .onAppear() {
+                Task {
+                    await viewModel.reloadData()
+                }
             }
         }
     }

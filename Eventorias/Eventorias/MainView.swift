@@ -16,7 +16,7 @@ struct MainView: View {
     var body: some View {
         ZStack {
             Color("BackgroundColor").ignoresSafeArea()
-            NavigationStack {
+            
                 TabView {
                     EventListView()
                         .tabItem {
@@ -31,7 +31,7 @@ struct MainView: View {
                                 .font(.caption)
                         }
                 }
-            }
+            
         }
     }
     

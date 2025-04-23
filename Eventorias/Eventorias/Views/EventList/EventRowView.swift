@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct EventRowView: View {
     @Binding var event: EventViewData
@@ -29,19 +30,34 @@ struct EventRowView: View {
                     .font(.callout)
             }
             Spacer()
-            AsyncImage(url: event.url ) { image in
-                image
+            
+            WebImage(url: URL(string: event.imageUrl )) { image in
+                    image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 136, height: 80)
                     .background(Color("BackgroundColor"))
                     .cornerRadius(12)
-                
-            } placeholder: {
-                ProgressView()
-                    .frame(width: 136, height: 80)
-                    
-            }
+               } placeholder: {
+                   ProgressView()
+                       .frame(width: 136, height: 80)
+               }
+               .indicator(.activity)
+            
+            
+//            AsyncImage(url: event.url ) { image in
+//                image
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fill)
+//                    .frame(width: 136, height: 80)
+//                    .background(Color("BackgroundColor"))
+//                    .cornerRadius(12)
+//                
+//            } placeholder: {
+//                ProgressView()
+//                    .frame(width: 136, height: 80)
+//                    
+//            }
            
                 
         }

@@ -9,8 +9,8 @@ import SwiftUI
 struct EventListContentView: View {
     
     @ObservedObject var viewModel: EventListViewModel
-    @State private var selectedEvent: EventViewData?
-    @State private var isShowingDetail: Bool = false
+    @Binding  var selectedEvent: EventViewData?
+    @Binding  var isShowingDetail: Bool
     
     var body: some View {
         ScrollView {
@@ -30,11 +30,7 @@ struct EventListContentView: View {
                 }
                 .listStyle(PlainListStyle())
                 .scrollContentBackground(.hidden)
-                .navigationDestination(isPresented: $isShowingDetail) {
-                    if let event = selectedEvent {
-                        EventView(viewModel: EventViewModel(event: event))
-                    }
-                }
+                
             }
             
         }

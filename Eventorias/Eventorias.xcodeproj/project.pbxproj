@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FE10C72B2DB76FFE006FB4F1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = FE10C72A2DB76FFE006FB4F1 /* FirebaseStorage */; };
+		FE159C332DB921130087B349 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = FE159C322DB921130087B349 /* SDWebImageSwiftUI */; };
 		FE42B2B82D94531D001542C0 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FE42B2B72D94531D001542C0 /* FirebaseCore */; };
 		FE42B2BA2D94535B001542C0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FE42B2B92D94535B001542C0 /* FirebaseAuth */; };
 		FE42B2BC2D94535B001542C0 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FE42B2BB2D94535B001542C0 /* FirebaseFirestore */; };
@@ -80,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE159C332DB921130087B349 /* SDWebImageSwiftUI in Frameworks */,
 				FE42B2B82D94531D001542C0 /* FirebaseCore in Frameworks */,
 				FE10C72B2DB76FFE006FB4F1 /* FirebaseStorage in Frameworks */,
 				FE42B2BA2D94535B001542C0 /* FirebaseAuth in Frameworks */,
@@ -156,6 +158,7 @@
 				FE42B2B92D94535B001542C0 /* FirebaseAuth */,
 				FE42B2BB2D94535B001542C0 /* FirebaseFirestore */,
 				FE10C72A2DB76FFE006FB4F1 /* FirebaseStorage */,
+				FE159C322DB921130087B349 /* SDWebImageSwiftUI */,
 			);
 			productName = Eventorias;
 			productReference = FE42B2852D944D60001542C0 /* Eventorias.app */;
@@ -215,7 +218,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1620;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					FE42B2842D944D60001542C0 = {
 						CreatedOnToolsVersion = 16.2;
@@ -241,6 +244,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FE42B2B62D94511D001542C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				FE159C312DB921130087B349 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FE42B2862D944D60001542C0 /* Products */;
@@ -351,6 +355,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = C3825553HQ;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -414,6 +419,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = C3825553HQ;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -444,7 +450,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Eventorias/Preview Content\"";
-				DEVELOPMENT_TEAM = C3825553HQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Eventorias/Info.plist;
@@ -477,7 +482,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Eventorias/Preview Content\"";
-				DEVELOPMENT_TEAM = C3825553HQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Eventorias/Info.plist;
@@ -507,7 +511,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C3825553HQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				MARKETING_VERSION = 1.0;
@@ -526,7 +529,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C3825553HQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				MARKETING_VERSION = 1.0;
@@ -544,7 +546,6 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C3825553HQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bruno.EventoriasUITests;
@@ -561,7 +562,6 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C3825553HQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bruno.EventoriasUITests;
@@ -615,6 +615,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		FE159C312DB921130087B349 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.3;
+			};
+		};
 		FE42B2B62D94511D001542C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -630,6 +638,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FE42B2B62D94511D001542C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		FE159C322DB921130087B349 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE159C312DB921130087B349 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
 		};
 		FE42B2B72D94531D001542C0 /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
