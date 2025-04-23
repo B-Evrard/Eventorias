@@ -30,10 +30,7 @@ struct ProgressViewLoading: View {
                 .accessibilityLabel("Loading")
                 .accessibilityIdentifier("progressViewChargement")
             Spacer()
-            
-            
         }
-        
     }
 }
 

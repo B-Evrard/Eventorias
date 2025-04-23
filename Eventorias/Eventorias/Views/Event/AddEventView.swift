@@ -17,34 +17,37 @@ struct AddEventView: View {
         ZStack {
             Color("BackgroundColor")
                 .ignoresSafeArea(.all)
-            
-            VStack {
-                ScrollView {
-                    AddEventDescriptionView(viewModel: viewModel)
-                    AddEventDateView(viewModel: viewModel)
-                    AddEventAdresseView(viewModel: viewModel)
-                    AddEventPictureView(viewModel: viewModel)
-                }
-                
-                Button(action: {
-                    Task {
-                        let isOk = await viewModel.validate()
-                        if isOk {
-                            dismiss()
-                        }
+                VStack {
+                    ScrollView {
+                        AddEventDescriptionView(viewModel: viewModel)
+                        AddEventDateView(viewModel: viewModel)
+                        AddEventAdresseView(viewModel: viewModel)
+                        AddEventPictureView(viewModel: viewModel)
                     }
-                }) {
-                    Text("Validate")
-                        .foregroundColor(.white)
-                        .font(.callout)
-                        .bold()
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 15)
-                        .background(Color("RedEventorias"))
-                        .cornerRadius(4)
+                    
+                    Button(action: {
+                        Task {
+                            let isOk = await viewModel.validate()
+                            if isOk {
+                                dismiss()
+                            }
+                        }
+                    }) {
+                        Text("Validate")
+                            .foregroundColor(.white)
+                            .font(.callout)
+                            .bold()
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 15)
+                            .background(Color("RedEventorias"))
+                            .cornerRadius(4)
+                    }
                 }
-            }
-            .padding(.horizontal)
+                .padding(.horizontal)
+                if viewModel.isValidating {
+                    ProgressViewLoading()
+                }
+            
         }
         .alert(isPresented: $viewModel.showError) {
             Alert(
@@ -99,6 +102,7 @@ struct AddEventDescriptionView: View {
         .padding()
         .background(Color("BackgroundGray"))
         .cornerRadius(4)
+        .accessibilityLabel("Event Title")
         
         
         // MARK: Zone Category

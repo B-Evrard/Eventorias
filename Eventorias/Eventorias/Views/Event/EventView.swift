@@ -30,6 +30,7 @@ struct EventView: View {
                     
                 } placeholder: {
                     ProgressView()
+                        .tint(.white)
                         .frame(width: 358, height: 364)
                         
                 }

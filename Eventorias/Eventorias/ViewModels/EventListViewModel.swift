@@ -33,11 +33,7 @@ final class EventListViewModel: ObservableObject {
         do {
             self.isError = false
             let events = try await fireStoreService.fetchEvents(sortBy: selectedSortOption)
-            #if DEBUG
-                //try? await Task.sleep(nanoseconds: 5_000_000_000)
-            #endif
             self.events = events.map { EventTransformer.transformToViewData($0) }
-            //self.isError = true
         } catch {
             self.isError = true
         }

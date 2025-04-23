@@ -28,13 +28,14 @@ final class AddEventViewModel: NSObject, ObservableObject {
     
     @Published var eventTime: String = "12:00"
     @Published var dateText: String = ""
-    //@Published var searchAddressText = ""
     @Published var isAdressSelected = false
     @Published var results: Array<AddressResult> = []
     @Published var adresseResult: AddressResult?
     @Published var capturedImage: UIImage?
     @Published var showError = false
     @Published var errorMessage: String = ""
+    
+    @Published var isValidating = false
     
     init(fireStoreService: FBFireStore = FBFireStore(), locationSearchService: LocationSearchService = LocationSearchService() ) {
         self.fireStoreService = fireStoreService
@@ -53,6 +54,10 @@ final class AddEventViewModel: NSObject, ObservableObject {
     }
     
     func validate() async -> Bool {
+        
+        await MainActor.run { self.isValidating = true }
+        defer { Task { @MainActor in self.isValidating = false } }
+        
         showError = false
         do {
             try Control.addEvent(event: event, eventTime: eventTime, image: capturedImage, address: adresseResult)
@@ -79,10 +84,13 @@ final class AddEventViewModel: NSObject, ObservableObject {
             showError = true
             errorMessage = "Address not found"
         }
-        
+        self.isValidating = true
         do {
-            event.dateEvent.addHours(hours: eventTime)
+            if let updatedDate = event.dateEvent.settingTime(hours: eventTime) {
+                event.dateEvent = updatedDate
+            }
             try await fireStoreService.addEvent(EventTransformer.transformToModel(event))
+            
         }
         catch {
             showError = true

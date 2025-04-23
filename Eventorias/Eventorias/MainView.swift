@@ -24,8 +24,7 @@ struct MainView: View {
                             Text("Events")
                                 .font(.caption)
                         }
-                    //UserView()
-                    Test()
+                    UserView()
                         .tabItem {
                             Image(systemName: "person")
                             Text("Profile")

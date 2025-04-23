@@ -19,9 +19,9 @@ final class FBFireStore {
         let FBEvents = db.collection("Events")
         let query: Query
         switch sortBy {
-        case .date: query = FBEvents.order(by: "dateEvent", descending: true)
+        case .date: query = FBEvents.order(by: "dateEvent", descending: false)
             break
-        case .category: query = FBEvents.order(by: "title", descending: false)
+        case .category: query = FBEvents.order(by: "category", descending: false)
             break
         }
         

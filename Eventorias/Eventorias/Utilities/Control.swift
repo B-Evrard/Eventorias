@@ -37,6 +37,7 @@ public struct Control  {
     }
     
     static func addEvent(event: EventViewData, eventTime: String, image: UIImage?, address: AddressResult?) throws (ControlError) {
+        
         guard !event.title.isEmpty else {
             throw ControlError.emptyField(message: "Title is required")
         }
@@ -54,12 +55,10 @@ public struct Control  {
         
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm"
-        //timeFormatter.locale = Locale(identifier: "fr_FR")
-        guard let time = timeFormatter.date(from: eventTime) else {
+        guard let _ = timeFormatter.date(from: eventTime) else {
             throw ControlError.errorDate(message: "Invalid hour")
         }
-       
-        
+
         if (event.address.isEmpty) {
             throw ControlError.emptyField(message: "Address is required")
         }

@@ -66,7 +66,7 @@ extension Date {
         return formatter.string(from: self)
     }
     
-    func addHours(hours: String) {
+    func settingTime(hours: String) -> Date? {
         let calendar = Calendar.current
         let dateComponents = calendar.dateComponents([.year, .month, .day], from: self)
         let timeFormatter = DateFormatter()
@@ -74,14 +74,16 @@ extension Date {
         if let time = timeFormatter.date(from: hours) {
             let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
             
-            // Fusionnez les deux
             var mergedComponents = DateComponents()
             mergedComponents.year = dateComponents.year
             mergedComponents.month = dateComponents.month
             mergedComponents.day = dateComponents.day
             mergedComponents.hour = timeComponents.hour
             mergedComponents.minute = timeComponents.minute
+            
+            return calendar.date(from: mergedComponents)
         }
+        return self as Date?
     }
         
 }
