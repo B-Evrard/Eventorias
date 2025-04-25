@@ -18,9 +18,8 @@ struct EventView: View {
             
             Color("BackgroundColor")
                 .ignoresSafeArea(.all)
-            VStack (alignment: .leading) {
-                
-                
+            VStack  {
+
                 WebImage(url: URL(string: viewModel.event.imageUrl )) { image in
                     image
                         .resizable()
@@ -64,12 +63,15 @@ struct EventView: View {
                         .padding(.horizontal)
                 }
                 .padding(.bottom,5)
+                
                 ScrollView {
                     Text(viewModel.event.description)
                         .font(.subheadline)
                         .foregroundStyle(.white)
                         .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.trailing, 4)
+                        
                 }
                 
                 HStack(spacing: 10) {
@@ -124,7 +126,7 @@ struct EventView: View {
 }
 
 #Preview {
-    let eventData = EventViewData(id: "1", title: "Art exhibition", dateEvent: Date(), description: "Join us for an exclusive Art Exhibition showcasing the works of the talented artist Emily Johnson. This exhibition will feature a captivating collection of her contemporary and classical pieces, offering a unique insight into her creative journey. Whether you're an art enthusiast or a casual visitor, you'll have the chance to explore a diverse range of artworks.", imageUrl: "", address: "123 Rue des Métiers 60880 Jaux, France", latitude:  49.404519000000001, longitude: 2.7849428999999999, category: .exhibition)
+    let eventData = EventViewData(id: "1", title: "Art exhibition", dateEvent: Date(), description: "Join us for an exclusive Art Exhibition showcasing the works of the talented artist Emily Johnson. This exhibition will feature a captivating collection of her contemporary and classical pieces, offering a unique insight into her creative journey. Whether you're an art enthusiast or a casual visitor, you'll have the chance to explore a diverse range of artworks.Join us for an exclusive Art Exhibition showcasing the works of the talented artist Emily Johnson. This exhibition will feature a captivating collection of her contemporary and classical pieces, offering a unique insight into her creative journey. Whether you're an art enthusiast or a casual visitor, you'll have the chance to explore a diverse range of artworks.Join us for an exclusive Art Exhibition showcasing the works of the talented artist Emily Johnson. This exhibition will feature a captivating collection of her contemporary and classical pieces, offering a unique insight into her creative journey. Whether you're an art enthusiast or a casual visitor, you'll have the chance to explore a diverse range of artworks.", imageUrl: "https://firebasestorage.googleapis.com:443/v0/b/eventorias-47db6.firebasestorage.app/o/event_images%2F4E7EED8C-F5E4-402E-9AC3-6B264C977BD1.jpeg?alt=media&token=f705586c-c28b-4abc-96a0-255bc9b50fd6", address: "123 Rue des Métiers 60880 Jaux, France", latitude:  49.404519000000001, longitude: 2.7849428999999999, category: .exhibition)
     EventView(viewModel: .init(event: eventData))
     
 }

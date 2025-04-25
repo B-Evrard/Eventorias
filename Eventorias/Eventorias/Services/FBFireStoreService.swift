@@ -29,13 +29,13 @@ final class FBFireStore {
         } else {
             switch sortBy {
             case .date: query = FBEvents
-                    .whereField("title", isGreaterThanOrEqualTo: filterBy)
-                    .whereField("title", isLessThanOrEqualTo: "\(filterBy)~")
+                    .whereField("titleSearch", isGreaterThanOrEqualTo: filterBy.removingAccentsUppercased)
+                    .whereField("titleSearch", isLessThanOrEqualTo: "\(filterBy.removingAccentsUppercased)~")
                     .order(by: "dateEvent", descending: false)
                 break
             case .category: query = FBEvents
-                    .whereField("title", isGreaterThanOrEqualTo: filterBy)
-                    .whereField("title", isLessThanOrEqualTo: "\(filterBy)Z")
+                    .whereField("titleSearch", isGreaterThanOrEqualTo: filterBy.removingAccentsUppercased)
+                    .whereField("titleSearch", isLessThanOrEqualTo: "\(filterBy.removingAccentsUppercased)Z")
                     .order(by: "category", descending: false)
                 
                 break
