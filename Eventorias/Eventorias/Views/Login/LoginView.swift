@@ -15,9 +15,6 @@ struct LoginView: View {
     @State private var showLogin = false
     @State private var isSignUp = false
     
-    @ScaledMetric private var envelopeWidth: CGFloat = 23
-    @ScaledMetric private var envelopeHeight: CGFloat = 18
-    
     var body: some View {
         ZStack {
             
@@ -33,6 +30,7 @@ struct LoginView: View {
                     )
                     .padding(.top, 180)
                     .padding(.bottom, 40)
+                    .accessibilityLabel("Eventorias logo")
                 
                 if (!showLogin) {
                     Button(action: {
@@ -42,20 +40,24 @@ struct LoginView: View {
                         HStack {
                             Image("Envelope")
                                 .resizable()
-                                .frame( width: envelopeWidth,
-                                        height: envelopeWidth)
+                                .frame( width: 23,
+                                        height: 18)
                                 .padding(.leading, 20)
+                                .accessibilityHidden(true)
                             Text("Sign in with email")
                                 .foregroundColor(.white)
                                 .font(.callout)
                                 .bold(true)
                                 .padding(.leading, 20)
+                                .accessibilityHidden(true)
                             Spacer()
                         }
                         .padding(.vertical, 15)
                         .background(Color("RedEventorias"))
                         .cornerRadius(4)
                     }
+                    .accessibilityLabel("Sign in with email")
+                    .accessibilityHint("Tap to sign in with email")
                 } else {
                     if(!isSignUp) {
                         SignInView(viewModel: viewModel, isLogged: $isLogged)
@@ -68,6 +70,8 @@ struct LoginView: View {
                         Text(isSignUp ? "Have an account? Sign in" : "Don't have an account? Sign up")
                             .font(.callout)
                             .foregroundColor(.blue)
+                            .accessibilityLabel(isSignUp ? "Have an account? Sign in" : "Don't have an account? Sign up")
+                            .accessibilityHint(isSignUp ? "Tap to sign in" : "Tap to sign up")
                     }
                     .padding(.vertical, 10)
                     

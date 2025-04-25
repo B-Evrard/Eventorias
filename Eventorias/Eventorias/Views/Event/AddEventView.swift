@@ -217,15 +217,19 @@ struct AddEventDateView: View {
                     .labelsHidden()
                     .padding()
                     
-                    Button("Done") {
+                    Button(action: {
                         showCalendarSheet = false
-                    }
-                    .padding()
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.accentColor)
-                    .cornerRadius(8)
-                    .padding(.horizontal)
+                        }
+                    ) {
+                        Text("Done")
+                            .foregroundColor(.white)
+                            .font(.callout)
+                            .bold()
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 15)
+                            .background(Color("RedEventorias"))
+                            .cornerRadius(4)
+                    }.padding(.horizontal)
                 }
                 .presentationDetents([.medium])
                 .background(Color("BackgroundColor"))
@@ -281,6 +285,7 @@ struct AddEventAdresseView: View {
             )
             .font(.callout)
             .foregroundColor(Color("FontTextFieldGray"))
+            .disableAutocorrection(true)
             
             .onChange(of: viewModel.event.address) {
                 if (!viewModel.isAdressSelected) {
@@ -288,10 +293,8 @@ struct AddEventAdresseView: View {
                 }
                 viewModel.isAdressSelected = false
             }
-            
-            
+
             // MARK: List Adresse
-            
             if !viewModel.results.isEmpty {
                 List(viewModel.results) { address in
                     VStack(alignment: .leading) {
@@ -378,7 +381,7 @@ struct AddEventPictureView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 200, height: 200)
+                    .frame(width: 150, height: 150)
                     .cornerRadius(20)
                 
             }

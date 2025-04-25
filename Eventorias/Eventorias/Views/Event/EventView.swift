@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import SDWebImageSwiftUI
 
 struct EventView: View {
     
@@ -19,7 +20,8 @@ struct EventView: View {
                 .ignoresSafeArea(.all)
             VStack (alignment: .leading) {
                 
-                AsyncImage(url: viewModel.event.url ) { image in
+                
+                WebImage(url: URL(string: viewModel.event.imageUrl )) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -27,15 +29,12 @@ struct EventView: View {
                         .background(Color("BackgroundColor"))
                         .cornerRadius(12)
                         .padding(.bottom,5)
-                    
                 } placeholder: {
                     ProgressView()
                         .tint(.white)
                         .frame(width: 358, height: 364)
-                        
                 }
                 
-              
                 HStack {
                     VStack(alignment: .leading) {
                         HStack {
@@ -77,16 +76,16 @@ struct EventView: View {
                     Text(viewModel.event.address)
                         .font(.callout)
                         .foregroundStyle(.white)
+                    Spacer()
                     
-                    AsyncImage(url: viewModel.mapURL() ) { image in
+                    WebImage(url: URL(string: viewModel.mapURL())) { image in
                         image
                             .resizable()
                             .scaledToFill()
                             .frame(width: 150, height: 72)
                             .cornerRadius(10)
                             .accessibilityLabel("Map event location")
-
-               
+                        
                     } placeholder: {
                         ProgressView()
                             .tint(.white)
@@ -94,11 +93,7 @@ struct EventView: View {
                             .frame(width: 150, height: 72)
                             .clipShape(Circle())
                     }
-                    //Spacer()
                 }
-                
-                
-                
             }
             .padding()
         }

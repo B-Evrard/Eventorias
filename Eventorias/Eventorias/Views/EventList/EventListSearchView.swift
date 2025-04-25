@@ -8,6 +8,7 @@
 import SwiftUI
 struct EventListSearchView: View {
     @ObservedObject var viewModel: EventListViewModel
+    @FocusState private var searchFieldIsFocused: Bool
     
     var body: some View {
         
@@ -21,6 +22,17 @@ struct EventListSearchView: View {
                 TextField("", text: $viewModel.search, prompt: Text("Search").foregroundColor(.white))
                     .foregroundColor(.white)
                     .font(.callout)
+                    .autocorrectionDisabled(true)
+                    .textFieldStyle(PlainTextFieldStyle())
+                    .onChange(of: viewModel.search) {
+                        Task {
+                            await viewModel.reloadData()
+                        }
+                    }
+                    .focused($searchFieldIsFocused)
+                    .onAppear {
+                        searchFieldIsFocused = true
+                    }
                     .accessibilityLabel("Search events")
                     .accessibilityHint("Enter text to filter events")
             }

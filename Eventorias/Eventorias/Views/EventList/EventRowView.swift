@@ -35,14 +35,14 @@ struct EventRowView: View {
                     image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 136, height: 80)
                     .background(Color("BackgroundColor"))
                     .cornerRadius(12)
                } placeholder: {
-                   ProgressView()
-                       .frame(width: 136, height: 80)
+                  // Rectangle().foregroundColor(.gray)
                }
-               .indicator(.activity)
+               .indicator(.activity) // Activity Indicator
+               .transition(.fade(duration: 0.5))
+               .frame(width: 136, height: 80)
             
             
 //            AsyncImage(url: event.url ) { image in

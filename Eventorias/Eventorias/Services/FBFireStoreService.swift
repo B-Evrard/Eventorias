@@ -13,16 +13,34 @@ final class FBFireStore {
     
     let db = Firestore.firestore()
     
-    func fetchEvents(sortBy: SortOption) async throws -> [Event] {
+    func fetchEvents(sortBy: SortOption, filterBy: String = "") async throws -> [Event] {
         var events: [Event] = []
         
         let FBEvents = db.collection("Events")
+        
         let query: Query
-        switch sortBy {
-        case .date: query = FBEvents.order(by: "dateEvent", descending: false)
-            break
-        case .category: query = FBEvents.order(by: "category", descending: false)
-            break
+        if filterBy.isEmpty {
+            switch sortBy {
+            case .date: query = FBEvents.order(by: "dateEvent", descending: false)
+                break
+            case .category: query = FBEvents.order(by: "category", descending: false)
+                break
+            }
+        } else {
+            switch sortBy {
+            case .date: query = FBEvents
+                    .whereField("title", isGreaterThanOrEqualTo: filterBy)
+                    .whereField("title", isLessThanOrEqualTo: "\(filterBy)~")
+                    .order(by: "dateEvent", descending: false)
+                break
+            case .category: query = FBEvents
+                    .whereField("title", isGreaterThanOrEqualTo: filterBy)
+                    .whereField("title", isLessThanOrEqualTo: "\(filterBy)Z")
+                    .order(by: "category", descending: false)
+                
+                break
+            }
+            
         }
         
         let snapshot = try await query.getDocuments()

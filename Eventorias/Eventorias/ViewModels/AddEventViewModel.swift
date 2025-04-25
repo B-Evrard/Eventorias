@@ -89,7 +89,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
             if let updatedDate = event.dateEvent.settingTime(hours: eventTime) {
                 event.dateEvent = updatedDate
             }
-            try await fireStoreService.addEvent(EventTransformer.transformToModel(event))
+            try await fireStoreService.addEvent(EventTransformer. transformToModel(event))
             
         }
         catch {

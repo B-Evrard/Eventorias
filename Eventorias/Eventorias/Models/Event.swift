@@ -16,6 +16,7 @@ struct Event: Codable {
     let imageURL: String
     let addressEvent: AddressEvent
     let category: String
+    let titleSearch: String
 }
 
 

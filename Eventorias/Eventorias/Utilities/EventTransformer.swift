@@ -30,7 +30,8 @@ struct EventTransformer {
             description: eventViewData.description,
             imageURL: eventViewData.imageUrl,
             addressEvent: AddressEvent(address: eventViewData.address, latitude: eventViewData.latitude, longitude: eventViewData.longitude),
-            category: eventViewData.category.rawValue
+            category: eventViewData.category.rawValue,
+            titleSearch: eventViewData.title.removingAccentsUppercased
         )
             
     }

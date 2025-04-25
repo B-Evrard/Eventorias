@@ -32,7 +32,7 @@ final class EventListViewModel: ObservableObject {
     func fetchEvents() async  {
         do {
             self.isError = false
-            let events = try await fireStoreService.fetchEvents(sortBy: selectedSortOption)
+            let events = try await fireStoreService.fetchEvents(sortBy: selectedSortOption, filterBy: search)
             self.events = events.map { EventTransformer.transformToViewData($0) }
         } catch {
             self.isError = true
