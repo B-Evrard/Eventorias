@@ -10,7 +10,6 @@ import SwiftUI
 struct SignInView: View {
     
     @ObservedObject var viewModel: LoginViewModel
-    @Binding var isLogged: Bool
     
     var body: some View {
         VStack {
@@ -27,7 +26,7 @@ struct SignInView: View {
             
             Button(action: {
                 Task {
-                    isLogged = await viewModel.login()
+                    _ = await viewModel.login()
                     return
                 }
             }
@@ -52,5 +51,5 @@ struct SignInView: View {
 
 #Preview {
     let viewModel = LoginViewModel()
-    SignInView(viewModel: viewModel, isLogged: .constant(false))
+    SignInView(viewModel: viewModel)
 }

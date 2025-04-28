@@ -9,9 +9,13 @@ import SwiftUI
 
 struct MainView: View {
     
-    init() {
+    @ObservedObject var userManager: UserManager
+    
+    init(userManager: UserManager) {
+        self.userManager = userManager
         configureNavigationBar()
     }
+    
     
     var body: some View {
         ZStack {
@@ -24,7 +28,7 @@ struct MainView: View {
                             Text("Events")
                                 .font(.caption)
                         }
-                    UserView()
+                    UserView(viewModel: UserViewModel(userManager: userManager))
                         .tabItem {
                             Image(systemName: "person")
                             Text("Profile")
@@ -53,5 +57,5 @@ struct MainView: View {
     }
 }
 #Preview {
-    MainView()
+    MainView(userManager: UserManager())
 }

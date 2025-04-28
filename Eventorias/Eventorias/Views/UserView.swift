@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct UserView: View {
-    @State private var toggle: Bool = false
+    
+    @ObservedObject var viewModel: UserViewModel
+    //@State private var toggle: Bool = false
     
     var body: some View {
         ZStack {
@@ -20,19 +23,38 @@ struct UserView: View {
                         .font(.title3)
                         .bold()
                     Spacer()
-                    Image("profil")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 48, height: 48)
-                        .clipShape(Circle())
-                        .padding(.horizontal)
+                    if let urlString = viewModel.user.imageURL {
+                        WebImage(url: URL(string: urlString)) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 48, height: 48)
+                                .clipShape(Circle())
+                                .padding(.horizontal)
+                        } placeholder: {
+                            // Rectangle().foregroundColor(.gray)
+                        }
+                        .indicator(.activity) // Activity Indicator
+                        .transition(.fade(duration: 0.5))
+                        .frame(width: 136, height: 80)
+                    } else {
+                        Image(systemName: "person.crop.circle.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .foregroundColor(.white)
+                            .frame(width: 48, height: 48)
+                            .clipShape(Circle())
+                            .padding(.horizontal)
+                    }
+                    
+                    
                 }
                 
                 VStack(alignment: .leading) {
                     Text("Name")
                         .font(.caption)
                         .foregroundColor(Color("FontGray"))
-                    Text("Bruno Evrard")
+                    Text(viewModel.user.name)
                         .foregroundColor(Color("FontTextFieldGray"))
                         .font(.callout)
                 }
@@ -48,7 +70,7 @@ struct UserView: View {
                     Text("E-mail")
                         .font(.caption)
                         .foregroundColor(Color("FontGray"))
-                    Text("be&be.fr")
+                    Text(viewModel.user.email)
                         .foregroundColor(Color("FontTextFieldGray"))
                         .font(.callout)
                 }
@@ -62,16 +84,16 @@ struct UserView: View {
                 
                 HStack {
                     HStack {
-                        ZStack(alignment: toggle ? .trailing : .leading) {
+                        ZStack(alignment: viewModel.user.notificationsEnabled ? .trailing : .leading) {
                             Capsule()
-                                .fill(toggle ? Color.red : Color.gray)
+                                .fill(viewModel.user.notificationsEnabled ? Color.red : Color.gray)
                                 .frame(width: 50, height: 28)
                             Circle()
                                 .fill(Color.white)
                                 .frame(width: 24, height: 24)
                                 .padding(2)
                         }
-                        .onTapGesture { toggle.toggle() }
+                        .onTapGesture { viewModel.user.notificationsEnabled.toggle()}
                         
                     }
                     
@@ -95,5 +117,5 @@ struct UserView: View {
 }
 
 #Preview {
-    UserView()
+    //UserView()
 }

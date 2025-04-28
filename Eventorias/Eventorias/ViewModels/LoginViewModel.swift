@@ -20,10 +20,19 @@ final class LoginViewModel: ObservableObject {
     
     private let authService: FBAuthService
     private let fireStoreService: FBFireStore
+    @Published private var userManager: UserManager
     
-    init(authService: FBAuthService = FBAuthService(), fireStoreService: FBFireStore = FBFireStore()) {
+    
+    init(authService: FBAuthService = FBAuthService(), fireStoreService: FBFireStore = FBFireStore(), userManager: UserManager = UserManager()) {
         self.authService = authService
         self.fireStoreService = fireStoreService
+        self.userManager = userManager
+    }
+    
+    init(userManager: UserManager = UserManager()) {
+        self.authService = FBAuthService()
+        self.fireStoreService = FBFireStore()
+        self.userManager = userManager
     }
     
     func login() async -> Bool {
@@ -47,7 +56,7 @@ final class LoginViewModel: ObservableObject {
                 message = "An error has occurred"
                 return false
             }
-            UserSession.shared.user = eventoriasUser
+            userManager.currentUser = eventoriasUser
             try await APIKeyService.shared.apiKeyStorage = fireStoreService.getSecret()
         } catch let error as ControlError {
             message = error.message
@@ -59,6 +68,7 @@ final class LoginViewModel: ObservableObject {
             message = "An error has occurred"
             return false
         }
+        userManager.isLogged = true;
         return true
     }
     
@@ -69,7 +79,7 @@ final class LoginViewModel: ObservableObject {
             try Control.signUp(email: email, password: password, confirmedPassword: confirmedPassword, name: name)
             let user = try await authService.signUp(email: email, password: password, name: name)
             try await fireStoreService.addUser(user)
-            UserSession.shared.user = user
+            userManager.currentUser = user
             try await APIKeyService.shared.apiKeyStorage =  fireStoreService.getSecret()
         } catch let error as ControlError{
             message = error.message
@@ -87,6 +97,7 @@ final class LoginViewModel: ObservableObject {
             message = "An error has occurred"
             return false
         }
+        userManager.isLogged = true;
         return true
        
     }

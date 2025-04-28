@@ -9,8 +9,6 @@ import SwiftUI
 
 struct SignUpView: View {
     @ObservedObject var viewModel: LoginViewModel
-    @Binding var isLogged: Bool
-    
     @State private var showInfo = false
     var body: some View {
         
@@ -57,7 +55,7 @@ struct SignUpView: View {
             
             Button(action: {
                 Task {
-                    isLogged = await viewModel.signUp()
+                    _ = await viewModel.signUp()
                     return
                 }
             }) {
@@ -80,5 +78,5 @@ struct SignUpView: View {
 
 #Preview {
     let viewModel = LoginViewModel()
-    SignUpView(viewModel: viewModel, isLogged: .constant(false))
+    SignUpView(viewModel: viewModel)
 }

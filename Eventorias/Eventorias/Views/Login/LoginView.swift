@@ -9,8 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @StateObject var viewModel = LoginViewModel()
-    @Binding var isLogged: Bool
+    @ObservedObject var viewModel: LoginViewModel
     
     @State private var showLogin = false
     @State private var isSignUp = false
@@ -60,9 +59,9 @@ struct LoginView: View {
                     .accessibilityHint("Tap to sign in with email")
                 } else {
                     if(!isSignUp) {
-                        SignInView(viewModel: viewModel, isLogged: $isLogged)
+                        SignInView(viewModel: viewModel)
                     } else {
-                        SignUpView(viewModel: viewModel, isLogged: $isLogged)
+                        SignUpView(viewModel: viewModel)
                     }
                     Button(action: {
                         isSignUp.toggle()
@@ -90,7 +89,6 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel(), isLogged: .constant(false))
-    
-    
+    let userManager = UserManager()
+    LoginView(viewModel: LoginViewModel(userManager: userManager))
 }

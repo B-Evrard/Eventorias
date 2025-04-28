@@ -10,21 +10,19 @@ import SwiftUI
 @main
 struct EventoriasApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
-    @State var isLogged: Bool = false
-    private var user: EventoriasUser?
+    @StateObject private var userManager = UserManager()
     
     var body: some Scene {
         WindowGroup {
             Group {
-                if isLogged {
-                    MainView()
+                if userManager.isLogged {
+                    MainView(userManager: userManager)
                 } else {
-                    LoginView(isLogged: $isLogged)
+                    LoginView(viewModel: LoginViewModel(userManager: userManager))
                         .transition(.move(edge: .top))
                 }
             }
-            .animation(.easeInOut(duration: 0.5),value: isLogged)
+            .animation(.easeInOut(duration: 0.5),value: userManager.isLogged)
         }
     }
 }
