@@ -13,6 +13,8 @@ final class FBFireStore {
     
     let db = Firestore.firestore()
     
+    
+    // MARK: Event
     func fetchEvents(sortBy: SortOption, filterBy: String = "") async throws -> [Event] {
         var events: [Event] = []
         
@@ -57,6 +59,22 @@ final class FBFireStore {
         try db.collection("Events").addDocument(from: event)
     }
     
+    // MARK: User
+    func addUser(_ user: EventoriasUser) async throws {
+        try db.collection("Users").addDocument(from: user)
+    }
+    
+    func getUser(id: String) async throws -> EventoriasUser?{
+        var user: EventoriasUser?
+        let FBUsers = db.collection("Users")
+        let snapshot = try await FBUsers.whereField("id", isEqualTo: id).getDocuments()
+        if (!snapshot.isEmpty) {
+            user = try snapshot.documents[0].data(as : EventoriasUser.self)
+        }
+        return user
+    }
+    
+    // MARK: secret
     func getSecret() async throws -> APIKeyStorage {
         var apiKey = APIKeyStorage(googleMapApi: "")
         let snapshot = try await db.collection("secret").getDocuments()
@@ -66,6 +84,8 @@ final class FBFireStore {
         }
         return apiKey
     }
+    
+    // MARK: Storage image
     
     func uploadImage(_ image: UIImage) async throws -> String {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else {

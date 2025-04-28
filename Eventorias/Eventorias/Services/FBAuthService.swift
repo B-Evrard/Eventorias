@@ -12,11 +12,22 @@ public class FBAuthService {
     
     private let auth = Auth.auth()
     
-    func signIn(email: String, password: String) async throws {
-        let result = try await auth.signIn(withEmail: email, password: password)
+    func signIn(email: String, password: String) async throws -> User? {
+        try await auth.signIn(withEmail: email, password: password)
+        return Auth.auth().currentUser
+        
     }
     
-    func signUp(email: String, password: String, name: String) async throws  {
-        let result = try await auth.createUser(withEmail: email, password: password)
+    func signUp(email: String, password: String, name: String) async throws  -> EventoriasUser {
+        try await auth.createUser(withEmail: email, password: password)
+        let userInfo = Auth.auth().currentUser
+        let user = EventoriasUser(
+            id: userInfo?.uid ?? "",
+            name: name,
+            email: email,
+            imageURL: "",
+            notificationsEnabled: false
+        )
+        return user
     }
 }

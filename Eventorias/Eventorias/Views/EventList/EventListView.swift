@@ -18,9 +18,9 @@ struct EventListView: View {
         NavigationStack {
             ZStack {
                 Color("BackgroundColor").ignoresSafeArea()
-                if viewModel.isLoading {
-                    ProgressViewLoading()
-                } else {
+//                if viewModel.isLoading {
+//                    ProgressViewLoading()
+//                } else {
                     if (!viewModel.isError) {
                         VStack {
                             EventListSearchView(viewModel: viewModel)
@@ -38,7 +38,7 @@ struct EventListView: View {
                             }
                         }
                     }
-                }
+                //}
             }
             .navigationDestination(isPresented: $isShowingDetail) {
                 if let event = selectedEvent {

@@ -17,7 +17,6 @@ final class LoginViewModel: ObservableObject {
     @Published var name  = ""
     
     @Published var message: String = ""
-    @Published var messagePassword: Bool = false
     
     private let authService: FBAuthService
     private let fireStoreService: FBFireStore
@@ -38,48 +37,43 @@ final class LoginViewModel: ObservableObject {
         self.message = ""
         do {
             try Control.login(email: email, password: password)
-        } catch let error {
+            let user = try await authService.signIn(email: email, password: password)
+            guard let user = user else {
+                message = "An error has occurred"
+                return false
+            }
+            let eventoriasUser = try await fireStoreService.getUser(id: user.uid)
+            guard let eventoriasUser = eventoriasUser else {
+                message = "An error has occurred"
+                return false
+            }
+            UserSession.shared.user = eventoriasUser
+            try await APIKeyService.shared.apiKeyStorage = fireStoreService.getSecret()
+        } catch let error as ControlError {
             message = error.message
             return false
-        }
-        
-        do {
-            try await authService.signIn(email: email, password: password)
-        } catch {
+        } catch  _ as NSError {
             message = "Login failed"
             return false
-        }
-        
-        do {
-            try await APIKeyService.shared.apiKeyStorage = fireStoreService.getSecret()
-            return true
         } catch {
-            self.message = "An error has occured"
+            message = "An error has occurred"
             return false
         }
-        
+        return true
     }
     
     
     func signUp() async -> Bool {
         self.message = ""
-        self.messagePassword = false
         do {
             try Control.signUp(email: email, password: password, confirmedPassword: confirmedPassword, name: name)
-        } catch let error {
+            let user = try await authService.signUp(email: email, password: password, name: name)
+            try await fireStoreService.addUser(user)
+            UserSession.shared.user = user
+            try await APIKeyService.shared.apiKeyStorage =  fireStoreService.getSecret()
+        } catch let error as ControlError{
             message = error.message
-            switch error {
-            case .invalidPassword:
-                self.messagePassword = true
-            default:
-                self.messagePassword = false
-            }
             return false
-        }
-        
-        do {
-            try await authService.signUp(email: email, password: password, name: name)
-            
         } catch let error as NSError {
             switch error.code {
             case AuthErrorCode.emailAlreadyInUse.rawValue:
@@ -89,17 +83,16 @@ final class LoginViewModel: ObservableObject {
                 self.message = error.localizedDescription
                 return false
             }
-        }
-        
-        do {
-            try await APIKeyService.shared.apiKeyStorage =  fireStoreService.getSecret()
-            return true
         } catch {
-            self.message = "An error has occured"
+            message = "An error has occurred"
             return false
         }
+        return true
+       
     }
     
-    
+    private func fetchAPIKey() async throws {
+            try await APIKeyService.shared.apiKeyStorage = fireStoreService.getSecret()
+        }
     
 }

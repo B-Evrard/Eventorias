@@ -12,6 +12,7 @@ struct EventoriasApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @State var isLogged: Bool = false
+    private var user: EventoriasUser?
     
     var body: some Scene {
         WindowGroup {
