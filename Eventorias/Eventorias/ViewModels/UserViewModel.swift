@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 @MainActor
 final class UserViewModel: ObservableObject {
@@ -13,6 +14,7 @@ final class UserViewModel: ObservableObject {
     @Published private var userManager: UserManager
     @Published var user = EventoriasUserViewData(id: "", name: "", email: "", imageURL: "", notificationsEnabled: false)
     @Published var errorLoadingUser = false
+    @Published var capturedImage: UIImage?
     
     init(userManager: UserManager) {
         self.userManager = userManager

@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct ErrorView: View {
+    
+    let tryAgainVisible: Bool
     let onTryAgain: () -> Void
+    
     var body: some View {
         VStack {
             Image(systemName: "exclamationmark")
@@ -34,7 +37,8 @@ struct ErrorView: View {
                 .font(.callout)
                 .foregroundColor(.white)
             
-            Button(action: onTryAgain) {
+            if (tryAgainVisible) {
+                Button(action: onTryAgain) {
                 Text("Try Again")
                     .foregroundColor(.white)
                     .font(.callout)
@@ -43,6 +47,7 @@ struct ErrorView: View {
                     .padding(.vertical, 15)
                     .background(Color("RedEventorias"))
                     .cornerRadius(4)
+                }
             }
         }
         
@@ -50,5 +55,5 @@ struct ErrorView: View {
 }
 
 #Preview {
-    ErrorView(onTryAgain: {})
+    ErrorView(tryAgainVisible: true, onTryAgain: {})
 }

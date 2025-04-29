@@ -12,32 +12,34 @@ struct EventListView: View {
     
     @State private var selectedEvent: EventViewData?
     @State private var isShowingDetail: Bool = false
-
+    
     
     var body: some View {
         NavigationStack {
             ZStack {
                 Color("BackgroundColor").ignoresSafeArea()
-//                if viewModel.isLoading {
-//                    ProgressViewLoading()
-//                } else {
-                    if (!viewModel.isError) {
-                        VStack {
-                            EventListSearchView(viewModel: viewModel)
-                            EventListContentView(viewModel: viewModel, selectedEvent: $selectedEvent, isShowingDetail: $isShowingDetail)
-                            Spacer()
-                        }
-                        
-                        .padding(.horizontal)
-                        ButtonAddEvent(viewModel: viewModel)
-                            .zIndex(1)
-                    } else {
-                        ErrorView {
-                            Task {
-                                await self.viewModel.reloadData()
-                            }
+                //                if viewModel.isLoading {
+                //                    ProgressViewLoading()
+                //                } else {
+                if (!viewModel.isError) {
+                    VStack {
+                        EventListSearchView(viewModel: viewModel)
+                        EventListContentView(viewModel: viewModel, selectedEvent: $selectedEvent, isShowingDetail: $isShowingDetail)
+                        Spacer()
+                    }
+                    
+                    .padding(.horizontal)
+                    ButtonAddEvent(viewModel: viewModel)
+                        .zIndex(1)
+                } else {
+                    ErrorView(tryAgainVisible: true, onTryAgain:
+                                {
+                        Task {
+                            await self.viewModel.reloadData()
                         }
                     }
+                    )
+                }
                 //}
             }
             .navigationDestination(isPresented: $isShowingDetail) {
