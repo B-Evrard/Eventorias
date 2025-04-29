@@ -11,14 +11,42 @@ import UIKit
 @MainActor
 final class UserViewModel: ObservableObject {
     
+    private let fireStoreService: FBFireStore
+    
     @Published private var userManager: UserManager
-    @Published var user = EventoriasUserViewData(id: "", name: "", email: "", imageURL: "", notificationsEnabled: false)
+    @Published var user = EventoriasUserViewData(id: "",idAuth: "", name: "", email: "", imageURL: "", notificationsEnabled: false)
     @Published var errorLoadingUser = false
     @Published var capturedImage: UIImage?
     
-    init(userManager: UserManager) {
+    init(userManager: UserManager, fireStoreService: FBFireStore = FBFireStore()) {
         self.userManager = userManager
+        self.fireStoreService = fireStoreService
         loadUser()
+    }
+    
+    func validate() async -> Bool {
+        
+        if let capturedImage = capturedImage {
+            do {
+                let imageUrl = try await fireStoreService.uploadImage(capturedImage, type: .user)
+                user.imageURL = imageUrl
+            }
+            catch {
+                //showError = true
+                //errorMessage = "An error has occured"
+            }
+        }
+        
+        //self.isValidating = true
+        do {
+            try await fireStoreService.updateUser(EventoriasUserTransformer.transformToModel(user))
+            
+        }
+        catch {
+            //showError = true
+            //errorMessage = "An error has occured"
+        }
+        return true
     }
     
     private func loadUser() {

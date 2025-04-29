@@ -64,10 +64,17 @@ final class FBFireStore {
         try db.collection("Users").addDocument(from: user)
     }
     
-    func getUser(id: String) async throws -> EventoriasUser?{
+    func updateUser(_ user: EventoriasUser) async throws {
+        guard let id = user.id else {
+            fatalError("User must have an id to be updated.")
+        }
+        try db.collection("Users").document(id).setData(from: user)
+    }
+    
+    func getUser(idAuth: String) async throws -> EventoriasUser?{
         var user: EventoriasUser?
         let FBUsers = db.collection("Users")
-        let snapshot = try await FBUsers.whereField("id", isEqualTo: id).getDocuments()
+        let snapshot = try await FBUsers.whereField("idAuth", isEqualTo: idAuth).getDocuments()
         if (!snapshot.isEmpty) {
             user = try snapshot.documents[0].data(as : EventoriasUser.self)
         }
@@ -87,12 +94,12 @@ final class FBFireStore {
     
     // MARK: Storage image
     
-    func uploadImage(_ image: UIImage) async throws -> String {
+    func uploadImage(_ image: UIImage, type: PictureType) async throws -> String {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else {
             throw ImageUploadError.imageConversionFailed
         }
         let fileName = UUID().uuidString
-        let ref = Storage.storage().reference(withPath: "/event_images/\(fileName).jpeg")
+        let ref = Storage.storage().reference(withPath: "/\(type.folderName)/\(fileName).jpeg")
         
         // Upload de l'image
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in

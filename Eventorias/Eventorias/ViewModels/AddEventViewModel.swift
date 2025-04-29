@@ -68,7 +68,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
         }
         
         do {
-            let imageUrl = try await fireStoreService.uploadImage(capturedImage!) // !!!capturedImage est controlé dans Control.addEvent(event: event, image: capturedImage)!!!
+            let imageUrl = try await fireStoreService.uploadImage(capturedImage!, type: .event) // !!!capturedImage est controlé dans Control.addEvent(event: event, image: capturedImage)!!!
             event.imageUrl = imageUrl
         }
         catch {

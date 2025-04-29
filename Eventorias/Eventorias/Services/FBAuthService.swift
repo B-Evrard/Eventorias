@@ -22,7 +22,8 @@ public class FBAuthService {
         try await auth.createUser(withEmail: email, password: password)
         let userInfo = Auth.auth().currentUser
         let user = EventoriasUser(
-            id: userInfo?.uid ?? "",
+            id: "",
+            idAuth: userInfo?.uid ?? "",
             name: name,
             email: email,
             imageURL: "",

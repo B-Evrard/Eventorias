@@ -34,58 +34,60 @@ struct UserView: View {
                             .bold()
                         Spacer()
                         VStack {
-                            if let capturedImage = viewModel.capturedImage {
-                                Image(uiImage: capturedImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 48, height: 48)
-                                    .clipShape(Circle())
-                                    .padding(.horizontal)
-                            } else if let urlString = viewModel.user.imageURL {
-                                WebImage(url: URL(string: urlString)) { image in
-                                    image
+                            Group {
+                                if let capturedImage = viewModel.capturedImage {
+                                    Image(uiImage: capturedImage)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: 48, height: 48)
                                         .clipShape(Circle())
-                                        .padding(.horizontal)
-                                } placeholder: {
+                                    
+                                } else if let urlString = viewModel.user.imageURL {
+                                    WebImage(url: URL(string: urlString)) { image in
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 48, height: 48)
+                                            .clipShape(Circle())
+                                        
+                                    } placeholder: {
+                                        Image(systemName: "person.crop.circle.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .foregroundColor(.white)
+                                            .frame(width: 48, height: 48)
+                                            .clipShape(Circle())
+                                        
+                                    }
+                                    .indicator(.activity)
+                                    .transition(.fade(duration: 0.5))
+                                    
+                                } else {
                                     Image(systemName: "person.crop.circle.fill")
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .foregroundColor(.white)
                                         .frame(width: 48, height: 48)
                                         .clipShape(Circle())
-                                        .padding(.horizontal)
+                                    
                                 }
-                                .indicator(.activity)
-                                .transition(.fade(duration: 0.5))
-                                .frame(width: 136, height: 80)
-                            } else {
-                                Image(systemName: "person.crop.circle.fill")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .foregroundColor(.white)
-                                    .frame(width: 48, height: 48)
-                                    .clipShape(Circle())
-                                    .padding(.horizontal)
                             }
                         }
                         .onTapGesture {
                             showActionSheet = true
                         }
-                        .confirmationDialog("Modifier la photo", isPresented: $showActionSheet, titleVisibility: .visible) {
-                            Button("Prendre une photo") {
+                        .confirmationDialog("Edit picture", isPresented: $showActionSheet, titleVisibility: .visible) {
+                            Button("Take a photo") {
                                 showCamera = true
                                 
                             }
-                            Button("Choisir dans Photos") {
-                               showPhotoPicker = true
+                            Button("Choose from Photos") {
+                                showPhotoPicker = true
                             }
-                            Button("Annuler", role: .cancel) {}
+                            Button("Cancel", role: .cancel) {}
                         }
                         .sheet(isPresented: $showCamera ) {
-                                CameraPicker(image: $viewModel.capturedImage)
+                            CameraPicker(image: $viewModel.capturedImage)
                         }
                         .photosPicker(isPresented: $showPhotoPicker, selection: $selectedPhoto, matching: .images)
                         .onChange(of: selectedPhoto) {
@@ -96,7 +98,11 @@ struct UserView: View {
                                 }
                             }
                         }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Profile picture")
+                        .accessibilityHint(Text("Tap to change profile picture"))
                     }
+                    
                     
                     VStack(alignment: .leading) {
                         Text("Name")
@@ -111,24 +117,26 @@ struct UserView: View {
                     .background(Color("BackgroundGray"))
                     .cornerRadius(4)
                     .padding(.vertical,10)
-                    //.accessibilityLabel("Event Title")
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Name : \(viewModel.user.name)")
                     
                     
                     VStack(alignment: .leading) {
                         Text("E-mail")
                             .font(.caption)
                             .foregroundColor(Color("FontGray"))
+                            //.accessibilityHidden(true)
                         Text(viewModel.user.email)
                             .foregroundColor(Color("FontTextFieldGray"))
                             .font(.callout)
+                            //.accessibilityHidden(true)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                     .background(Color("BackgroundGray"))
                     .cornerRadius(4)
-                    //.accessibilityLabel("Event Title")
-                    
-                    
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Email : \(viewModel.user.email)")
                     
                     HStack {
                         HStack {
@@ -151,11 +159,14 @@ struct UserView: View {
                             .lineSpacing(6)
                             .multilineTextAlignment(.leading)
                             .foregroundColor(.white)
-                            .accessibilityHidden(true)
+                            
                         
                         Spacer()
                     }
                     .padding(.vertical)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(viewModel.user.notificationsEnabled ?" Notifications are currently enabled" : "Notifications are currently disabled")
+                    .accessibilityHint(Text("Tap to change"))
                     Spacer()
                     
                 }
@@ -164,10 +175,18 @@ struct UserView: View {
             }
             
         }
+        .onDisappear() {
+            Task {
+                await viewModel.validate()
+            }
+            
+        }
     }
 }
 
 #Preview {
-    //let user =  EventoriasUser(id: "1", name: "Test User", email: "test@example.com", imageURL: "", notificationsEnabled: false)
-    //UserView(viewModel: UserViewModel(userManager: UserManager().currentUser = user ))
+    let user = EventoriasUser(id: "1", idAuth: "", name: "Test User", email: "test@example.com", imageURL: "", notificationsEnabled: false)
+    let userManager = UserManager()
+    userManager.currentUser = user
+    return UserView(viewModel: UserViewModel(userManager: userManager))
 }

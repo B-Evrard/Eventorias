@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct EventoriasUser: Codable {
-    let id: String
+    @DocumentID var id: String?
+    let idAuth: String
     let name: String
     let email: String
     let imageURL: String?

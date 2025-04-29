@@ -20,18 +20,26 @@ final class LoginViewModel: ObservableObject {
     
     private let authService: FBAuthService
     private let fireStoreService: FBFireStore
-    @Published private var userManager: UserManager
+    private var userManager: UserManager
     
     
-    init(authService: FBAuthService = FBAuthService(), fireStoreService: FBFireStore = FBFireStore(), userManager: UserManager = UserManager()) {
+//    init(authService: FBAuthService = FBAuthService(), fireStoreService: FBFireStore = FBFireStore(), userManager: UserManager = UserManager()) {
+//        self.authService = authService
+//        self.fireStoreService = fireStoreService
+//        self.userManager = userManager
+//    }
+//    
+//    init(userManager: UserManager = UserManager()) {
+//        self.authService = FBAuthService()
+//        self.fireStoreService = FBFireStore()
+//        self.userManager = userManager
+//    }
+    
+    init(authService: FBAuthService = FBAuthService(),
+         fireStoreService: FBFireStore = FBFireStore(),
+         userManager: UserManager = UserManager()) {
         self.authService = authService
         self.fireStoreService = fireStoreService
-        self.userManager = userManager
-    }
-    
-    init(userManager: UserManager = UserManager()) {
-        self.authService = FBAuthService()
-        self.fireStoreService = FBFireStore()
         self.userManager = userManager
     }
     
@@ -51,7 +59,7 @@ final class LoginViewModel: ObservableObject {
                 message = "An error has occurred"
                 return false
             }
-            let eventoriasUser = try await fireStoreService.getUser(id: user.uid)
+            let eventoriasUser = try await fireStoreService.getUser(idAuth: user.uid)
             guard let eventoriasUser = eventoriasUser else {
                 message = "An error has occurred"
                 return false

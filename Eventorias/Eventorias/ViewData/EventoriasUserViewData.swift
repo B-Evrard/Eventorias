@@ -10,9 +10,10 @@ import Foundation
 struct EventoriasUserViewData: Hashable, Decodable {
     
     let id: String
+    let idAuth: String
     let name: String
     let email: String
-    let imageURL: String?
+    var imageURL: String?
     var notificationsEnabled: Bool
     
 }
