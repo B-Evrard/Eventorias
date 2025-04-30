@@ -13,7 +13,7 @@ struct MainView: View {
     
     init(userManager: UserManager) {
         self.userManager = userManager
-        configureNavigationBar()
+        configureTabBar()
     }
     
     
@@ -22,24 +22,28 @@ struct MainView: View {
             Color("BackgroundColor").ignoresSafeArea()
             
                 TabView {
-                    EventListView()
+                    EventListView(viewModel: EventListViewModel(userManager: userManager))
                         .tabItem {
                             Image(systemName: "calendar")
                             Text("Events")
                                 .font(.caption)
                         }
+                        
                     UserView(viewModel: UserViewModel(userManager: userManager))
                         .tabItem {
                             Image(systemName: "person")
                             Text("Profile")
                                 .font(.caption)
                         }
+                        
                 }
+                .accessibilityLabel("Main Navigation Tab Bar")
+                .accessibilityElement(children: .contain)
             
         }
     }
     
-    private func configureNavigationBar() {
+    private func configureTabBar() {
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
         tabBarAppearance.backgroundColor = UIColor(named: "BackgroundColor")

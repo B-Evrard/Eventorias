@@ -11,7 +11,8 @@ import PhotosUI
 struct AddEventView: View {
     
     @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel = AddEventViewModel()
+    
+    @ObservedObject var viewModel: AddEventViewModel
     
     var body: some View {
         ZStack {
@@ -389,5 +390,5 @@ struct AddEventPictureView: View {
     }
 }
 #Preview {
-    AddEventView()
+    //AddEventView()
 }

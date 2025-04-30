@@ -69,11 +69,6 @@
 			path = EventoriasTests;
 			sourceTree = "<group>";
 		};
-		FE42B2A22D944D61001542C0 /* EventoriasUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EventoriasUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +113,6 @@
 			children = (
 				FE42B2872D944D60001542C0 /* Eventorias */,
 				FE42B2982D944D61001542C0 /* EventoriasTests */,
-				FE42B2A22D944D61001542C0 /* EventoriasUITests */,
 				FE10C7292DB76FFE006FB4F1 /* Frameworks */,
 				FE42B2862D944D60001542C0 /* Products */,
 			);
@@ -199,9 +193,6 @@
 			);
 			dependencies = (
 				FE42B2A12D944D61001542C0 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				FE42B2A22D944D61001542C0 /* EventoriasUITests */,
 			);
 			name = EventoriasUITests;
 			packageProductDependencies = (

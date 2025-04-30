@@ -10,12 +10,12 @@ import SwiftUI
 struct ProgressViewLoading: View {
     @State private var isVisible = false
     var body: some View {
-        ZStack {
-            
-            Color("BackgroundColor")
-                .ignoresSafeArea(.all)
-            
-            Spacer()
+//        ZStack {
+//            
+//            Color("BackgroundColor")
+//                .ignoresSafeArea(.all)
+//            
+//            Spacer()
             ProgressView("Loading ....")
                 .tint(.white)
                 .foregroundColor(.white)
@@ -29,8 +29,8 @@ struct ProgressViewLoading: View {
                 }
                 .accessibilityLabel("Loading")
                 .accessibilityIdentifier("progressViewChargement")
-            Spacer()
-        }
+//            Spacer()
+//        }
     }
 }
 

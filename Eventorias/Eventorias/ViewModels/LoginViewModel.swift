@@ -11,8 +11,8 @@ import FirebaseAuth
 @MainActor
 final class LoginViewModel: ObservableObject {
     
-    @Published var email: String = ""
-    @Published var password: String = ""
+    @Published var email: String = "A"
+    @Published var password: String = "B"
     @Published var confirmedPassword  = ""
     @Published var name  = ""
     
@@ -21,20 +21,7 @@ final class LoginViewModel: ObservableObject {
     private let authService: FBAuthService
     private let fireStoreService: FBFireStore
     private var userManager: UserManager
-    
-    
-//    init(authService: FBAuthService = FBAuthService(), fireStoreService: FBFireStore = FBFireStore(), userManager: UserManager = UserManager()) {
-//        self.authService = authService
-//        self.fireStoreService = fireStoreService
-//        self.userManager = userManager
-//    }
-//    
-//    init(userManager: UserManager = UserManager()) {
-//        self.authService = FBAuthService()
-//        self.fireStoreService = FBFireStore()
-//        self.userManager = userManager
-//    }
-    
+
     init(authService: FBAuthService = FBAuthService(),
          fireStoreService: FBFireStore = FBFireStore(),
          userManager: UserManager = UserManager()) {
@@ -45,10 +32,10 @@ final class LoginViewModel: ObservableObject {
     
     func login() async -> Bool {
 #if DEBUG
-        if password.isEmpty {
+        //if password.isEmpty {
             password = "Bruno220865&"
             email = "be@be.fr"
-        }
+        //}
 #endif
         
         self.message = ""

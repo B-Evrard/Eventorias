@@ -11,6 +11,7 @@ import SwiftUI
 
 struct EventViewData: Hashable, Decodable {
     var id: String
+    var idUser: String
     var title: String
     var dateEvent: Date
     var description: String
@@ -19,6 +20,7 @@ struct EventViewData: Hashable, Decodable {
     var latitude: Double
     var longitude: Double
     var category: EventCategory
+    var urlPictureUser: String
     
     var dateFormatter: String {
         return dateEvent.formattedDate

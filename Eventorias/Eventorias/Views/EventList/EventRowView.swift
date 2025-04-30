@@ -13,12 +13,23 @@ struct EventRowView: View {
     
     var body: some View {
         HStack {
-            Image("profil")
+            WebImage(url: URL(string: event.urlPictureUser )) { image in
+                image
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 40, height: 40)
                 .clipShape(Circle())
                 .padding(.horizontal)
+            } placeholder: {
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .foregroundColor(.white)
+                    .clipShape(Circle())
+            }
+            .indicator(.activity) 
+            .transition(.fade(duration: 0.5))
+            .frame(width: 40, height: 40)
+            .padding(.horizontal,10)
             
             VStack (alignment: .leading)  {
                 Text(event.title)
@@ -54,6 +65,6 @@ struct EventRowView: View {
 }
 
 #Preview {
-    let eventData = EventViewData(id: "1", title: "Art exhibition Art exhibition Art exhibition", dateEvent: Date(), description: "xxxxxx yy zzzzzzz", imageUrl: "", address: "123 Rue des Métiers 60880 Jaux, France", latitude:  49.404519000000001, longitude: 2.7849428999999999, category: .exhibition)
+    let eventData = EventViewData(id: "1", idUser: "", title: "Art exhibition Art exhibition Art exhibition", dateEvent: Date(), description: "xxxxxx yy zzzzzzz", imageUrl: "", address: "123 Rue des Métiers 60880 Jaux, France", latitude:  49.404519000000001, longitude: 2.7849428999999999, category: .exhibition, urlPictureUser: "")
     EventRowView(event: .constant(eventData))
 }

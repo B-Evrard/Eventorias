@@ -81,6 +81,13 @@ final class FBFireStore {
         return user
     }
     
+    func getUser(id: String) async throws -> EventoriasUser?{
+        var user: EventoriasUser?
+        let FBUser = db.collection("Users").document(id)
+        user = try await FBUser.getDocument(as : EventoriasUser.self)
+        return user
+    }
+    
     // MARK: secret
     func getSecret() async throws -> APIKeyStorage {
         var apiKey = APIKeyStorage(googleMapApi: "")

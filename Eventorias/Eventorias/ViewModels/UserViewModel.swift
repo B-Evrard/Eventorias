@@ -13,7 +13,7 @@ final class UserViewModel: ObservableObject {
     
     private let fireStoreService: FBFireStore
     
-    @Published private var userManager: UserManager
+    @Published var userManager: UserManager
     @Published var user = EventoriasUserViewData(id: "",idAuth: "", name: "", email: "", imageURL: "", notificationsEnabled: false)
     @Published var errorLoadingUser = false
     @Published var capturedImage: UIImage?

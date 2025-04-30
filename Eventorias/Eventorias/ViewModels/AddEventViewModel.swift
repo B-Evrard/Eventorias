@@ -13,9 +13,11 @@ final class AddEventViewModel: NSObject, ObservableObject {
     
     private let fireStoreService: FBFireStore
     private let locationSearchService: LocationSearchService
+    @Published var userManager: UserManager
     
     @Published var event = EventViewData(
         id: "",
+        idUser: "",
         title: "",
         dateEvent: Date(),
         description: "",
@@ -23,7 +25,9 @@ final class AddEventViewModel: NSObject, ObservableObject {
         address: "",
         latitude: 0,
         longitude: 0,
-        category: .unknown
+        category: .unknown,
+        urlPictureUser: ""
+        
     )
     
     @Published var eventTime: String = "12:00"
@@ -37,7 +41,8 @@ final class AddEventViewModel: NSObject, ObservableObject {
     
     @Published var isValidating = false
     
-    init(fireStoreService: FBFireStore = FBFireStore(), locationSearchService: LocationSearchService = LocationSearchService() ) {
+    init(userManager: UserManager, fireStoreService: FBFireStore = FBFireStore(), locationSearchService: LocationSearchService = LocationSearchService() ) {
+        self.userManager = userManager
         self.fireStoreService = fireStoreService
         self.locationSearchService = locationSearchService
     }
@@ -89,6 +94,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
             if let updatedDate = event.dateEvent.settingTime(hours: eventTime) {
                 event.dateEvent = updatedDate
             }
+            event.idUser = userManager.currentUser?.id ?? ""
             try await fireStoreService.addEvent(EventTransformer.transformToModel(event))
             
         }

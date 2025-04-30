@@ -11,6 +11,7 @@ import Foundation
 final class EventListViewModel: ObservableObject {
         
     private let fireStoreService: FBFireStore
+    @Published var userManager: UserManager
     
     @Published var search: String = ""
     @Published var events: [EventViewData] = []
@@ -19,7 +20,8 @@ final class EventListViewModel: ObservableObject {
     @Published var isLoading = false
     
     
-    init(fireStoreService: FBFireStore = FBFireStore()) {
+    init(userManager: UserManager, fireStoreService: FBFireStore = FBFireStore()) {
+        self.userManager = userManager
         self.fireStoreService = fireStoreService
     }
     
@@ -33,7 +35,18 @@ final class EventListViewModel: ObservableObject {
         do {
             self.isError = false
             let events = try await fireStoreService.fetchEvents(sortBy: selectedSortOption, filterBy: search)
-            self.events = events.map { EventTransformer.transformToViewData($0) }
+            var viewDataList: [EventViewData] = []
+            for event in events {
+                var viewData = EventTransformer.transformToViewData(event)
+                do {
+                    let user = try await fireStoreService.getUser(id: viewData.idUser)
+                    viewData.urlPictureUser = user?.imageURL ?? ""
+                } catch {
+                    viewData.urlPictureUser = ""
+                }
+                viewDataList.append(viewData)
+            }
+            self.events = viewDataList
         } catch {
             self.isError = true
         }

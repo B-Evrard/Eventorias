@@ -11,6 +11,7 @@ struct EventTransformer {
     static func transformToViewData(_ event: Event) -> EventViewData {
         return EventViewData(
             id: event.id ?? "",
+            idUser: event.idUser,
             title: event.title,
             dateEvent: event.dateEvent,
             description: event.description,
@@ -18,13 +19,15 @@ struct EventTransformer {
             address: event.addressEvent.address,
             latitude: event.addressEvent.latitude,
             longitude: event.addressEvent.longitude,
-            category: EventCategory.from(event.category)
+            category: EventCategory.from(event.category),
+            urlPictureUser: ""
         )
     }
     
     static func transformToModel(_ eventViewData: EventViewData) -> Event {
         return Event(
             id: eventViewData.id,
+            idUser: eventViewData.idUser,
             title: eventViewData.title,
             dateEvent: eventViewData.dateEvent,
             description: eventViewData.description,

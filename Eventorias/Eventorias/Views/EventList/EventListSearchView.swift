@@ -68,8 +68,8 @@ struct EventListSearchView: View {
                     Text("Sorting")
                         .foregroundColor(.white)
                         .font(.callout)
-                        .accessibilityLabel("Sort")
-                        .accessibilityHint("Enter text to filter events")
+                        .accessibilityLabel("Sort by date or category")
+                        .accessibilityHint("double tap to change sorting")
                 }
                 .padding(8)
                 .padding(.horizontal, 10)
@@ -77,7 +77,5 @@ struct EventListSearchView: View {
                 .cornerRadius(20)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            
-       
     }
 }

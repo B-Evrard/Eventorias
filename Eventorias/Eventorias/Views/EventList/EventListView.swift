@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct EventListView: View {
-    @StateObject var viewModel = EventListViewModel()
+    
+    @ObservedObject var viewModel: EventListViewModel
     
     @State private var selectedEvent: EventViewData?
     @State private var isShowingDetail: Bool = false
@@ -18,9 +19,9 @@ struct EventListView: View {
         NavigationStack {
             ZStack {
                 Color("BackgroundColor").ignoresSafeArea()
-                //                if viewModel.isLoading {
-                //                    ProgressViewLoading()
-                //                } else {
+                                if viewModel.isLoading {
+                                    ProgressViewLoading()
+                                } else {
                 if (!viewModel.isError) {
                     VStack {
                         EventListSearchView(viewModel: viewModel)
@@ -40,7 +41,7 @@ struct EventListView: View {
                     }
                     )
                 }
-                //}
+                }
             }
             .navigationDestination(isPresented: $isShowingDetail) {
                 if let event = selectedEvent {
@@ -57,7 +58,7 @@ struct EventListView: View {
 }
 
 #Preview {
-    EventListView(viewModel: EventListViewModel())
+    //EventListView(viewModel: EventListViewModel())
 }
 
 
@@ -70,9 +71,7 @@ struct ButtonAddEvent: View {
             Spacer()
             HStack {
                 Spacer()
-                NavigationLink(destination: AddEventView()) {
-                    
-                    
+                NavigationLink(destination: AddEventView(viewModel: AddEventViewModel(userManager: viewModel.userManager))) {
                     Image(systemName: "plus")
                         .foregroundColor(.white)
                         .frame(width: 56, height: 56)
