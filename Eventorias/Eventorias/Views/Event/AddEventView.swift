@@ -19,11 +19,11 @@ struct AddEventView: View {
             Color("BackgroundColor")
                 .ignoresSafeArea(.all)
                 VStack {
-                    if viewModel.isValidating {
-                        Spacer()
-                        ProgressViewLoading()
-                        Spacer()
-                    } else {
+//                    if viewModel.isValidating {
+//                        Spacer()
+//                        ProgressViewLoading()
+//                        Spacer()
+//                    } else {
                         ScrollView {
                             AddEventDescriptionView(viewModel: viewModel)
                             AddEventDateView(viewModel: viewModel)
@@ -48,10 +48,16 @@ struct AddEventView: View {
                                 .background(Color("RedEventorias"))
                                 .cornerRadius(4)
                         }
-                    }
+                    //}
                 }
                 .padding(.horizontal)
+                .disabled(viewModel.isValidating)
                 
+            if viewModel.isValidating {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                ProgressViewLoading()
+            }
             
         }
         .alert(isPresented: $viewModel.showError) {

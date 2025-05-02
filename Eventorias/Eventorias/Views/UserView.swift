@@ -11,7 +11,7 @@ import _PhotosUI_SwiftUI
 
 struct UserView: View {
     
-    @ObservedObject var viewModel: UserViewModel
+    @StateObject var viewModel: UserViewModel
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var showPhotoPicker: Bool = false
     @State private var showCamera: Bool = false

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EventListView: View {
     
-    @ObservedObject var viewModel: EventListViewModel
+    @StateObject var viewModel = EventListViewModel()
     
     @State private var selectedEvent: EventViewData?
     @State private var isShowingDetail: Bool = false
@@ -64,7 +64,8 @@ struct EventListView: View {
 
 
 struct ButtonAddEvent: View {
-    @ObservedObject var viewModel: EventListViewModel
+    @EnvironmentObject var userManager: UserManager
+    @StateObject var viewModel: EventListViewModel
     @State private var isAddEvent: Bool = false
     
     var body: some View {
@@ -72,7 +73,7 @@ struct ButtonAddEvent: View {
             Spacer()
             HStack {
                 Spacer()
-                NavigationLink(destination: AddEventView(viewModel: AddEventViewModel(userManager: viewModel.userManager))) {
+                NavigationLink(destination: AddEventView(viewModel: AddEventViewModel(userManager: userManager))) {
                     Image(systemName: "plus")
                         .foregroundColor(.white)
                         .frame(width: 56, height: 56)

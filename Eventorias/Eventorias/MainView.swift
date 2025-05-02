@@ -9,10 +9,9 @@ import SwiftUI
 
 struct MainView: View {
     
-    @ObservedObject var userManager: UserManager
+    @EnvironmentObject var userManager: UserManager
     
-    init(userManager: UserManager) {
-        self.userManager = userManager
+    init() {
         configureTabBar()
     }
     
@@ -22,7 +21,7 @@ struct MainView: View {
             Color("BackgroundColor").ignoresSafeArea()
             
                 TabView {
-                    EventListView(viewModel: EventListViewModel(userManager: userManager))
+                    EventListView()
                         .tabItem {
                             Image(systemName: "calendar")
                             Text("Events")
@@ -61,5 +60,5 @@ struct MainView: View {
     }
 }
 #Preview {
-    MainView(userManager: UserManager())
+    MainView()
 }

@@ -6,23 +6,33 @@
 //
 
 import Foundation
+import Combine
 
 @MainActor
 final class EventListViewModel: ObservableObject {
         
     private let fireStoreService: FBFireStore
-    @Published var userManager: UserManager
-    
+     
     @Published var search: String = ""
     @Published var events: [EventViewData] = []
     @Published var selectedSortOption: SortOption = .date
     @Published var isError: Bool = false
     @Published var isLoading = false
     
+    private var cancellables = Set<AnyCancellable>()
     
-    init(userManager: UserManager, fireStoreService: FBFireStore = FBFireStore()) {
-        self.userManager = userManager
+    
+    init(fireStoreService: FBFireStore = FBFireStore()) {
         self.fireStoreService = fireStoreService
+        $search
+            .debounce(for: .seconds(0.8), scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] searchText in
+                Task {
+                    await self?.reloadData()
+                }
+            }
+            .store(in: &cancellables)
     }
     
     func reloadData() async {

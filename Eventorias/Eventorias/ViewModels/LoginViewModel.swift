@@ -32,10 +32,10 @@ final class LoginViewModel: ObservableObject {
     
     func login() async -> Bool {
 #if DEBUG
-        //if password.isEmpty {
+        if password.isEmpty {
             password = "Bruno220865&"
             email = "be@be.fr"
-        //}
+        }
 #endif
         
         self.message = ""
@@ -72,8 +72,9 @@ final class LoginViewModel: ObservableObject {
         self.message = ""
         do {
             try Control.signUp(email: email, password: password, confirmedPassword: confirmedPassword, name: name)
-            let user = try await authService.signUp(email: email, password: password, name: name)
-            try await fireStoreService.addUser(user)
+            var user = try await authService.signUp(email: email, password: password, name: name)
+            let id = try await fireStoreService.addUser(user)
+            user.id = id
             userManager.currentUser = user
             try await APIKeyService.shared.apiKeyStorage =  fireStoreService.getSecret()
         } catch let error as ControlError{

@@ -16,13 +16,14 @@ struct EventoriasApp: App {
         WindowGroup {
             Group {
                 if userManager.isLogged {
-                    MainView(userManager: userManager)
+                    MainView()
                 } else {
                     LoginView(viewModel: LoginViewModel(userManager: userManager))
                         .transition(.move(edge: .top))
                 }
             }
             .animation(.easeInOut(duration: 0.5),value: userManager.isLogged)
+            .environmentObject(userManager)
         }
     }
 }

@@ -60,8 +60,9 @@ final class FBFireStore {
     }
     
     // MARK: User
-    func addUser(_ user: EventoriasUser) async throws {
-        try db.collection("Users").addDocument(from: user)
+    func addUser(_ user: EventoriasUser) async throws -> String {
+        let ref = try db.collection("Users").addDocument(from: user)
+        return ref.documentID
     }
     
     func updateUser(_ user: EventoriasUser) async throws {

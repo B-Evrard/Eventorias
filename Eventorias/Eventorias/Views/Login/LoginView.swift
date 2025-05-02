@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @StateObject var viewModel: LoginViewModel
+    @StateObject var viewModel:LoginViewModel
     
     @State private var showLogin = false
     @State private var isSignUp = false
@@ -82,7 +82,6 @@ struct LoginView: View {
                     .font(.callout)
             }
             .padding(.horizontal,80.0)
-            
             .padding(.vertical, 20)
         }
     }

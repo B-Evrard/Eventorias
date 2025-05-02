@@ -61,6 +61,8 @@ final class AddEventViewModel: NSObject, ObservableObject {
     func validate() async -> Bool {
         
         showError = false
+        await MainActor.run { self.isValidating = true }
+        defer { Task { @MainActor in self.isValidating = false } }
         do {
             try Control.addEvent(event: event, eventTime: eventTime, image: capturedImage, address: adresseResult)
         } catch let error {
@@ -93,8 +95,6 @@ final class AddEventViewModel: NSObject, ObservableObject {
             }
             event.idUser = userManager.currentUser?.id ?? ""
             self.isValidating = true
-           // await MainActor.run { self.isValidating = true }
-           // defer { Task { @MainActor in self.isValidating = false } }
             try await fireStoreService.addEvent(EventTransformer.transformToModel(event))
             
         }

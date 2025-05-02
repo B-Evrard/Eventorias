@@ -7,13 +7,15 @@
 
 import Foundation
 import UIKit
+import SwiftUICore
 
 @MainActor
 final class UserViewModel: ObservableObject {
     
+    private let userManager: UserManager
+    
     private let fireStoreService: FBFireStore
     
-    @Published var userManager: UserManager
     @Published var user = EventoriasUserViewData(id: "",idAuth: "", name: "", email: "", imageURL: "", notificationsEnabled: false)
     @Published var errorLoadingUser = false
     @Published var capturedImage: UIImage?
