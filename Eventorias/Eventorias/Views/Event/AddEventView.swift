@@ -19,35 +19,39 @@ struct AddEventView: View {
             Color("BackgroundColor")
                 .ignoresSafeArea(.all)
                 VStack {
-                    ScrollView {
-                        AddEventDescriptionView(viewModel: viewModel)
-                        AddEventDateView(viewModel: viewModel)
-                        AddEventAdresseView(viewModel: viewModel)
-                        AddEventPictureView(viewModel: viewModel)
-                    }
-                    
-                    Button(action: {
-                        Task {
-                            let isOk = await viewModel.validate()
-                            if isOk {
-                                dismiss()
-                            }
+                    if viewModel.isValidating {
+                        Spacer()
+                        ProgressViewLoading()
+                        Spacer()
+                    } else {
+                        ScrollView {
+                            AddEventDescriptionView(viewModel: viewModel)
+                            AddEventDateView(viewModel: viewModel)
+                            AddEventAdresseView(viewModel: viewModel)
+                            AddEventPictureView(viewModel: viewModel)
                         }
-                    }) {
-                        Text("Validate")
-                            .foregroundColor(.white)
-                            .font(.callout)
-                            .bold()
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 15)
-                            .background(Color("RedEventorias"))
-                            .cornerRadius(4)
+                        
+                        Button(action: {
+                            Task {
+                                let isOk = await viewModel.validate()
+                                if isOk {
+                                    dismiss()
+                                }
+                            }
+                        }) {
+                            Text("Validate")
+                                .foregroundColor(.white)
+                                .font(.callout)
+                                .bold()
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 15)
+                                .background(Color("RedEventorias"))
+                                .cornerRadius(4)
+                        }
                     }
                 }
                 .padding(.horizontal)
-                if viewModel.isValidating {
-                    ProgressViewLoading()
-                }
+                
             
         }
         .alert(isPresented: $viewModel.showError) {

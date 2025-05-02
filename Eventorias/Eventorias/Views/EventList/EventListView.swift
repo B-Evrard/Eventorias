@@ -19,29 +19,30 @@ struct EventListView: View {
         NavigationStack {
             ZStack {
                 Color("BackgroundColor").ignoresSafeArea()
-                                if viewModel.isLoading {
-                                    ProgressViewLoading()
-                                } else {
-                if (!viewModel.isError) {
-                    VStack {
-                        EventListSearchView(viewModel: viewModel)
-                        EventListContentView(viewModel: viewModel, selectedEvent: $selectedEvent, isShowingDetail: $isShowingDetail)
+                VStack {
+                    EventListSearchView(viewModel: viewModel)
+                    if viewModel.isLoading {
                         Spacer()
-                    }
-                    
-                    .padding(.horizontal)
-                    ButtonAddEvent(viewModel: viewModel)
-                        .zIndex(1)
-                } else {
-                    ErrorView(tryAgainVisible: true, onTryAgain:
-                                {
-                        Task {
-                            await self.viewModel.reloadData()
+                        ProgressViewLoading()
+                        Spacer()
+                    } else {
+                        if (!viewModel.isError) {
+                            EventListContentView(viewModel: viewModel, selectedEvent: $selectedEvent, isShowingDetail: $isShowingDetail)
+                            Spacer()
+                        } else {
+                            ErrorView(tryAgainVisible: true, onTryAgain:
+                                        {
+                                Task {
+                                    await self.viewModel.reloadData()
+                                }
+                            }
+                            )
                         }
                     }
-                    )
                 }
-                }
+                .padding(.horizontal)
+                ButtonAddEvent(viewModel: viewModel)
+                    .zIndex(1)
             }
             .navigationDestination(isPresented: $isShowingDetail) {
                 if let event = selectedEvent {
