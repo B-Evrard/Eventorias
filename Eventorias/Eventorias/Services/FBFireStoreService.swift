@@ -101,7 +101,6 @@ final class FBFireStore {
     }
     
     // MARK: Storage image
-    
     func uploadImage(_ image: UIImage, type: PictureType) async throws -> String {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else {
             throw ImageUploadError.imageConversionFailed

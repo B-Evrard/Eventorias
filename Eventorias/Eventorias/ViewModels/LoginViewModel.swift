@@ -72,10 +72,18 @@ final class LoginViewModel: ObservableObject {
         self.message = ""
         do {
             try Control.signUp(email: email, password: password, confirmedPassword: confirmedPassword, name: name)
-            var user = try await authService.signUp(email: email, password: password, name: name)
-            let id = try await fireStoreService.addUser(user)
-            user.id = id
-            userManager.currentUser = user
+            let user = try await authService.signUp(email: email, password: password )
+            var eventoriasUser = EventoriasUser(
+                id: "",
+                idAuth: user?.uid ?? "",
+                name: name,
+                email: email,
+                imageURL: "",
+                notificationsEnabled: false
+            )
+            let id = try await fireStoreService.addUser(eventoriasUser)
+            eventoriasUser.id = id
+            userManager.currentUser = eventoriasUser
             try await APIKeyService.shared.apiKeyStorage =  fireStoreService.getSecret()
         } catch let error as ControlError{
             message = error.message
