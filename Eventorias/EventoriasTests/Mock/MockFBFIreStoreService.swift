@@ -11,6 +11,9 @@ import UIKit
 
 class MockFBFIreStoreService: FBFireStoreProtocol {
     
+    var usersValid = MockUsers.mockUsers
+    var shouldSucceed: Bool = true
+    
     func fetchEvents(sortBy: Eventorias.SortOption, filterBy: String) async throws -> [Eventorias.Event] {
         return MockEventGenerator.generateEvents()
     }
@@ -20,7 +23,13 @@ class MockFBFIreStoreService: FBFireStoreProtocol {
     }
     
     func addUser(_ user: Eventorias.EventoriasUser) async throws -> String {
-        return "123"
+        
+        let id = UUID().uuidString
+        var newUser = user
+        newUser.id = id
+        usersValid.append(newUser)
+        return id
+ 
     }
     
     func updateUser(_ user: Eventorias.EventoriasUser) async throws {
@@ -28,15 +37,21 @@ class MockFBFIreStoreService: FBFireStoreProtocol {
     }
     
     func getUserByIdAuth(idAuth: String) async throws -> Eventorias.EventoriasUser? {
-        if let foundUser = MockUsers.mockUsers.first(where: { $0.idAuth == idAuth }) {
-            return foundUser
-        } else {
-            throw NSError(domain: "MockFBFIreStoreService", code: 1, userInfo: nil) as Error
+        if shouldSucceed {
+            if let foundUser = usersValid.first(where: { $0.idAuth == idAuth }) {
+                return foundUser
+            } else {
+                return nil
+            }
         }
+        else {
+            return nil
+        }
+        
     }
     
     func getUserById(id: String) async throws -> Eventorias.EventoriasUser? {
-        if let foundUser = MockUsers.mockUsers.first(where: { $0.id == id }) {
+        if let foundUser = usersValid.first(where: { $0.id == id }) {
             return foundUser
         } else {
             throw NSError(domain: "MockFBFIreStoreService", code: 1, userInfo: nil) as Error

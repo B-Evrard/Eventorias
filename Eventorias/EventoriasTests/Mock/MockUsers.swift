@@ -9,6 +9,15 @@ import Foundation
 @testable import Eventorias
 
 final class MockUsers {
+    static let mockUserError = EventoriasUser(
+        id: "user_1",
+        idAuth: "xxxx",
+        name: "Alice Johnson",
+        email: "alice.johnson@example.com",
+        imageURL: "https://eventorias.com/img/user1.jpg",
+        notificationsEnabled: true
+    )
+    
     static let mockUsers: [EventoriasUser] = [
         EventoriasUser(
             id: "user_1",

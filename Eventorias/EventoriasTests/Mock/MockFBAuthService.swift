@@ -8,6 +8,7 @@
 import Foundation
 
 @testable import Eventorias
+import FirebaseAuth
 
 class MockFBAuthService: FBAuthProtocol {
     
@@ -16,26 +17,29 @@ class MockFBAuthService: FBAuthProtocol {
     var usersValid = MockUsers.mockUsers
     
     func signIn(withEmail email: String, password: String) async throws -> String? {
-        if let user = usersValid.first(where: { $0.email == email }) {
-            return user.id
+        if shouldSucceed {
+            if let user = usersValid.first(where: { $0.email == email }) {
+                return user.id
+            }
+            else {
+                throw AuthErrorCode.invalidCredential
+            }
         }
-        else {
-            throw NSError(domain: "MockFBAuthService", code: 1, userInfo: nil) as Error
+        else
+        {
+            return nil
         }
+        
     }
     
     func signUp(withEmail email: String, password: String) async throws -> String? {
-        try await handleMockRequest()
-    }
-    
-    private func handleMockRequest() async throws -> String? {
-        
-        if shouldSucceed {
-            return mockUserUID
+        if usersValid.first(where: { $0.email == email }) != nil {
+            throw AuthErrorCode.emailAlreadyInUse
         }
         else {
-            throw NSError(domain: "MockFBAuthService", code: 1, userInfo: nil) as Error
+            return mockUserUID
         }
-        
     }
+    
+    
 }

@@ -18,6 +18,8 @@ final class AppMessages {
     static let errorDate = "Date invalid"
     static let loginFailed = "Login failed."
     
+    static let emailAlreadyExists = "Email already in use"
+    
     static let loginSuccess = "Connexion réussie."
     static let signupSuccess = "Inscription réussie."
     static let signupFailed = "Échec de l'inscription. Vérifiez vos informations."

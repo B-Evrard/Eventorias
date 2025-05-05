@@ -56,9 +56,20 @@ final class LoginViewModel: ObservableObject {
         } catch let error as ControlError {
             message = error.message
             return false
-        } catch  _ as NSError {
-            message = AppMessages.loginFailed
-            return false
+        } catch  let error as NSError {
+            if let errorCode = AuthErrorCode(rawValue: error.code) {
+                switch errorCode {
+                case .invalidCredential, .wrongPassword:
+                    message = AppMessages.loginFailed
+                default:
+                    message = AppMessages.genericError
+                }
+                return false
+            } else {
+                message = AppMessages.genericError
+                return false
+            }
+           
         } catch {
             message = AppMessages.genericError
             return false
@@ -95,23 +106,18 @@ final class LoginViewModel: ObservableObject {
         } catch let error as NSError {
             switch error.code {
             case AuthErrorCode.emailAlreadyInUse.rawValue:
-                self.message = "Email already in use"
+                self.message = AppMessages.emailAlreadyExists
                 return false
             default:
-                self.message = error.localizedDescription
+                self.message = AppMessages.genericError
                 return false
             }
         } catch {
-            message = "An error has occurred"
+            message = AppMessages.genericError
             return false
         }
         userManager.isLogged = true;
         return true
        
     }
-    
-    private func fetchAPIKey() async throws {
-            try await APIKeyService.shared.apiKeyStorage = fireStoreService.getSecret()
-        }
-    
 }
