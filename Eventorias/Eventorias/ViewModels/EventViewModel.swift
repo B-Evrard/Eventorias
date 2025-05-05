@@ -10,10 +10,10 @@ import Foundation
 @MainActor
 final class EventViewModel: ObservableObject {
     
-    private let fireStoreService: FBFireStore
+    private let fireStoreService: FBFireStoreService
     @Published var event: EventViewData
     
-    init(event: EventViewData, fireStoreService: FBFireStore = FBFireStore()) {
+    init(event: EventViewData, fireStoreService: FBFireStoreService = FBFireStoreService()) {
         self.event = event
         self.fireStoreService = fireStoreService
     }

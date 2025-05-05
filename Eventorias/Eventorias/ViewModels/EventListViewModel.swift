@@ -11,7 +11,7 @@ import Combine
 @MainActor
 final class EventListViewModel: ObservableObject {
         
-    private let fireStoreService: FBFireStore
+    private let fireStoreService: FBFireStoreService
      
     @Published var search: String = ""
     @Published var events: [EventViewData] = []
@@ -22,7 +22,7 @@ final class EventListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     
-    init(fireStoreService: FBFireStore = FBFireStore()) {
+    init(fireStoreService: FBFireStoreService = FBFireStoreService()) {
         self.fireStoreService = fireStoreService
         $search
             .debounce(for: .seconds(0.8), scheduler: DispatchQueue.main)
@@ -49,7 +49,7 @@ final class EventListViewModel: ObservableObject {
             for event in events {
                 var viewData = EventTransformer.transformToViewData(event)
                 do {
-                    let user = try await fireStoreService.getUser(id: viewData.idUser)
+                    let user = try await fireStoreService.getUserById(id: viewData.idUser)
                     viewData.urlPictureUser = user?.imageURL ?? ""
                 } catch {
                     viewData.urlPictureUser = ""

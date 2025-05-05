@@ -18,12 +18,12 @@ final class LoginViewModel: ObservableObject {
     
     @Published var message: String = ""
     
-    private let authService: FBAuthServiceProtocol
-    private let fireStoreService: FBFireStore
+    private let authService: FBAuthProtocol
+    private let fireStoreService: FBFireStoreProtocol
     private var userManager: UserManager
 
-    init(authService: FBAuthServiceProtocol = FBAuthService(),
-         fireStoreService: FBFireStore = FBFireStore(),
+    init(authService: FBAuthProtocol = FBAuthService(),
+         fireStoreService: FBFireStoreProtocol = FBFireStoreService(),
          userManager: UserManager = UserManager()) {
         self.authService = authService
         self.fireStoreService = fireStoreService
@@ -46,7 +46,7 @@ final class LoginViewModel: ObservableObject {
                 message = AppMessages.genericError
                 return false
             }
-            let eventoriasUser = try await fireStoreService.getUser(idAuth: id)
+            let eventoriasUser = try await fireStoreService.getUserByIdAuth(idAuth: id)
             guard let eventoriasUser = eventoriasUser else {
                 message = AppMessages.genericError
                 return false

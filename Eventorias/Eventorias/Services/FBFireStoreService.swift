@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseStorage
 
-final class FBFireStore {
+final class FBFireStoreService: FBFireStoreProtocol {
     
     let db = Firestore.firestore()
     
@@ -72,7 +72,7 @@ final class FBFireStore {
         try db.collection("Users").document(id).setData(from: user)
     }
     
-    func getUser(idAuth: String) async throws -> EventoriasUser?{
+    func getUserByIdAuth(idAuth: String) async throws -> EventoriasUser?{
         var user: EventoriasUser?
         let FBUsers = db.collection("Users")
         let snapshot = try await FBUsers.whereField("idAuth", isEqualTo: idAuth).getDocuments()
@@ -82,7 +82,7 @@ final class FBFireStore {
         return user
     }
     
-    func getUser(id: String) async throws -> EventoriasUser?{
+    func getUserById(id: String) async throws -> EventoriasUser?{
         var user: EventoriasUser?
         let FBUser = db.collection("Users").document(id)
         user = try await FBUser.getDocument(as : EventoriasUser.self)

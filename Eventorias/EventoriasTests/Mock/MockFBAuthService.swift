@@ -9,13 +9,19 @@ import Foundation
 
 @testable import Eventorias
 
-class MockFBAuthService: FBAuthServiceProtocol {
+class MockFBAuthService: FBAuthProtocol {
     
     var shouldSucceed: Bool = true
     var mockUserUID: String? = "mock_uid_123"
+    var usersValid = MockUsers.mockUsers
     
     func signIn(withEmail email: String, password: String) async throws -> String? {
-        try await handleMockRequest()
+        if let user = usersValid.first(where: { $0.email == email }) {
+            return user.id
+        }
+        else {
+            throw NSError(domain: "MockFBAuthService", code: 1, userInfo: nil) as Error
+        }
     }
     
     func signUp(withEmail email: String, password: String) async throws -> String? {

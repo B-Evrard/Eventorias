@@ -8,7 +8,7 @@
 
 import FirebaseAuth
 
-protocol FBAuthServiceProtocol {
+protocol FBAuthProtocol {
     
     func signIn(withEmail email: String, password: String) async throws -> String?
     func signUp(withEmail email: String, password: String) async throws -> String?

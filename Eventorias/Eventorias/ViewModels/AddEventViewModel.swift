@@ -11,7 +11,7 @@ import MapKit
 @MainActor
 final class AddEventViewModel: NSObject, ObservableObject {
     
-    private let fireStoreService: FBFireStore
+    private let fireStoreService: FBFireStoreService
     private let locationSearchService: LocationSearchService
     @Published var userManager: UserManager
     
@@ -41,7 +41,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
     
     @Published var isValidating = false
     
-    init(userManager: UserManager, fireStoreService: FBFireStore = FBFireStore(), locationSearchService: LocationSearchService = LocationSearchService() ) {
+    init(userManager: UserManager, fireStoreService: FBFireStoreService = FBFireStoreService(), locationSearchService: LocationSearchService = LocationSearchService() ) {
         self.userManager = userManager
         self.fireStoreService = fireStoreService
         self.locationSearchService = locationSearchService
