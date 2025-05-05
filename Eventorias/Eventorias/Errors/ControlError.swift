@@ -8,17 +8,16 @@
 import Foundation
 
 enum ControlError: Error {
-    case mailEmpty(message: String = "Please enter an email address.")
-    case invalidFormatMail(message: String = "Please enter a valid email address.")
-    case passwordEmpty(message: String = "Please enter your password.")
-    case passwordNotMatch(message: String = "Passwords do not match.")
-    case invalidPassword(message: String = "Password invalid.")
-    case nameEmpty(message: String = "Please enter your name.")
-    case genericError(message: String = "An error has occurred.")
-    case emptyField(message: String = "Please fill all fields.")
-    case errorDate(message: String = "Date invalid")
+    case mailEmpty(message: String = AppMessages.emailEmpty)
+    case invalidFormatMail(message: String = AppMessages.invalidFormatMail)
+    case passwordEmpty(message: String = AppMessages.passwordEmpty)
+    case passwordNotMatch(message: String = AppMessages.passwordNotMatch)
+    case invalidPassword(message: String = AppMessages.invalidPassword)
+    case nameEmpty(message: String = AppMessages.nameEmpty)
+    case genericError(message: String = AppMessages.genericError)
+    case emptyField(message: String = AppMessages.emptyField)
+    case errorDate(message: String = AppMessages.errorDate)
 
-    
     var message: String {
         switch self {
         case .mailEmpty(let message),

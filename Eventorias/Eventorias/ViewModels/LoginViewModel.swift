@@ -18,11 +18,11 @@ final class LoginViewModel: ObservableObject {
     
     @Published var message: String = ""
     
-    private let authService: FBAuthService
+    private let authService: FBAuthServiceProtocol
     private let fireStoreService: FBFireStore
     private var userManager: UserManager
 
-    init(authService: FBAuthService = FBAuthService(),
+    init(authService: FBAuthServiceProtocol = FBAuthService(),
          fireStoreService: FBFireStore = FBFireStore(),
          userManager: UserManager = UserManager()) {
         self.authService = authService
@@ -32,23 +32,23 @@ final class LoginViewModel: ObservableObject {
     
     func login() async -> Bool {
 #if DEBUG
-        if password.isEmpty {
-            password = "Bruno220865&"
-            email = "be@be.fr"
-        }
+//        if password.isEmpty {
+//            password = "Bruno220865&"
+//            email = "be@be.fr"
+//        }
 #endif
         
         self.message = ""
         do {
             try Control.login(email: email, password: password)
-            let user = try await authService.signIn(email: email, password: password)
-            guard let user = user else {
-                message = "An error has occurred"
+            let id = try await authService.signIn(withEmail: email, password: password)
+            guard let id = id else {
+                message = AppMessages.genericError
                 return false
             }
-            let eventoriasUser = try await fireStoreService.getUser(idAuth: user.uid)
+            let eventoriasUser = try await fireStoreService.getUser(idAuth: id)
             guard let eventoriasUser = eventoriasUser else {
-                message = "An error has occurred"
+                message = AppMessages.genericError
                 return false
             }
             userManager.currentUser = eventoriasUser
@@ -57,10 +57,10 @@ final class LoginViewModel: ObservableObject {
             message = error.message
             return false
         } catch  _ as NSError {
-            message = "Login failed"
+            message = AppMessages.loginFailed
             return false
         } catch {
-            message = "An error has occurred"
+            message = AppMessages.genericError
             return false
         }
         userManager.isLogged = true;
@@ -72,17 +72,21 @@ final class LoginViewModel: ObservableObject {
         self.message = ""
         do {
             try Control.signUp(email: email, password: password, confirmedPassword: confirmedPassword, name: name)
-            let user = try await authService.signUp(email: email, password: password )
+            let id = try await authService.signUp(withEmail: email, password: password )
+            guard let id = id else {
+                message = "An error has occurred"
+                return false
+            }
             var eventoriasUser = EventoriasUser(
                 id: "",
-                idAuth: user?.uid ?? "",
+                idAuth: id,
                 name: name,
                 email: email,
                 imageURL: "",
                 notificationsEnabled: false
             )
-            let id = try await fireStoreService.addUser(eventoriasUser)
-            eventoriasUser.id = id
+            let idEventoriasUser = try await fireStoreService.addUser(eventoriasUser)
+            eventoriasUser.id = idEventoriasUser
             userManager.currentUser = eventoriasUser
             try await APIKeyService.shared.apiKeyStorage =  fireStoreService.getSecret()
         } catch let error as ControlError{

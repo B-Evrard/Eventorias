@@ -8,20 +8,21 @@
 import Foundation
 import FirebaseAuth
 
-public class FBAuthService {
+public class FBAuthService: FBAuthServiceProtocol {
     
-    private let auth: AuthProtocol
-    init(auth: AuthProtocol = Auth.auth()) {
-            self.auth = auth
-        }
+    private let auth: Auth
+    
+    init(auth: Auth = Auth.auth()) {
+        self.auth = auth
+    }
 
-    func signIn(email: String, password: String) async throws -> User? {
-            _ = try await auth.signIn(withEmail: email, password: password)
-            return auth.currentUser
-        }
+    func signIn(withEmail email: String, password: String) async throws -> String? {
+        _ = try await Auth.auth().signIn(withEmail: email, password: password)
+        return auth.currentUser?.uid
+    }
     
-    func signUp(email: String, password: String) async throws  -> User?  {
-        _ = try await auth.createUser(withEmail: email, password: password)
-        return auth.currentUser
+    func signUp(withEmail email: String, password: String) async throws  -> String?  {
+        _ = try await Auth.auth().createUser(withEmail: email, password: password)
+        return auth.currentUser?.uid
     }
 }
