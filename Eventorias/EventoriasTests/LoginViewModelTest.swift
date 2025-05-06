@@ -168,9 +168,6 @@ final class LoginViewModelTest: XCTestCase {
         isLogged = await viewModel.signUp()
         XCTAssertFalse(isLogged)
         XCTAssertEqual(viewModel.message, AppMessages.emailAlreadyExists)
-        
-        
-        
     }
     
     @MainActor

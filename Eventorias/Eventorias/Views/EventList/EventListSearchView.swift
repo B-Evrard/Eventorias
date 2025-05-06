@@ -24,11 +24,6 @@ struct EventListSearchView: View {
                     .font(.callout)
                     .autocorrectionDisabled(true)
                     .textFieldStyle(PlainTextFieldStyle())
-//                    .onChange(of: viewModel.search) {
-//                        Task {
-//                            await viewModel.reloadData()
-//                        }
-//                    }
                     .focused($searchFieldIsFocused)
                     .onAppear {
                         searchFieldIsFocused = true

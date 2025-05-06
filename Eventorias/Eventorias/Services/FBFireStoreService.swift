@@ -26,6 +26,7 @@ final class FBFireStoreService: FBFireStoreProtocol {
             case .date: query = FBEvents.order(by: "dateEvent", descending: false)
                 break
             case .category: query = FBEvents.order(by: "category", descending: false)
+                    .order(by: "dateEvent", descending: false)
                 break
             }
         } else {
@@ -39,6 +40,7 @@ final class FBFireStoreService: FBFireStoreProtocol {
                     .whereField("titleSearch", isGreaterThanOrEqualTo: filterBy.removingAccentsUppercased)
                     .whereField("titleSearch", isLessThanOrEqualTo: "\(filterBy.removingAccentsUppercased)Z")
                     .order(by: "category", descending: false)
+                    .order(by: "dateEvent", descending: false)
                 
                 break
             }

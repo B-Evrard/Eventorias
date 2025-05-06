@@ -15,7 +15,26 @@ class MockFBFIreStoreService: FBFireStoreProtocol {
     var shouldSucceed: Bool = true
     
     func fetchEvents(sortBy: Eventorias.SortOption, filterBy: String) async throws -> [Eventorias.Event] {
-        return MockEventGenerator.generateEvents()
+        let events = MockEventGenerator.generateEvents()
+        var filteredEvents = filterBy.isEmpty ? events : events.filter { $0.titleSearch?.hasPrefix(filterBy.uppercased()) == true }
+        
+        switch sortBy {
+            case .date:
+            filteredEvents.sort { $0.dateEvent < $1.dateEvent }
+            break
+        case .category:
+            filteredEvents.sort {
+                if $0.category.lowercased() == $1.category.lowercased() {
+                    return $0.dateEvent < $1.dateEvent
+                } else {
+                    return $0.category < $1.category
+                }
+            }
+            break
+        @unknown default:
+            break
+        }
+        return filteredEvents
     }
     
     func addEvent(_ event: Eventorias.Event) async throws {

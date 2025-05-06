@@ -11,7 +11,7 @@ import Combine
 @MainActor
 final class EventListViewModel: ObservableObject {
         
-    private let fireStoreService: FBFireStoreService
+    private let fireStoreService: FBFireStoreProtocol
      
     @Published var search: String = ""
     @Published var events: [EventViewData] = []
@@ -19,18 +19,25 @@ final class EventListViewModel: ObservableObject {
     @Published var isError: Bool = false
     @Published var isLoading = false
     
+    private var isInitialLoad = true
     private var cancellables = Set<AnyCancellable>()
     
     
-    init(fireStoreService: FBFireStoreService = FBFireStoreService()) {
+    init(fireStoreService: FBFireStoreProtocol = FBFireStoreService()) {
         self.fireStoreService = fireStoreService
         $search
+            .dropFirst()
             .debounce(for: .seconds(0.8), scheduler: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] searchText in
-                Task {
-                    await self?.reloadData()
-                }
+                guard let self = self else { return }
+                    if self.isInitialLoad {
+                        self.isInitialLoad = false
+                        return
+                    }
+                    Task {
+                        await self.reloadData()
+                    }
             }
             .store(in: &cancellables)
     }

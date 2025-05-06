@@ -30,6 +30,7 @@ struct EventListView: View {
                             EventListContentView(viewModel: viewModel, selectedEvent: $selectedEvent, isShowingDetail: $isShowingDetail)
                             Spacer()
                         } else {
+                            Spacer()
                             ErrorView(tryAgainVisible: true, onTryAgain:
                                         {
                                 Task {
@@ -37,6 +38,7 @@ struct EventListView: View {
                                 }
                             }
                             )
+                            Spacer()
                         }
                     }
                 }

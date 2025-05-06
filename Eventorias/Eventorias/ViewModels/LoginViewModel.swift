@@ -59,7 +59,7 @@ final class LoginViewModel: ObservableObject {
         } catch  let error as NSError {
             if let errorCode = AuthErrorCode(rawValue: error.code) {
                 switch errorCode {
-                case .invalidCredential, .wrongPassword:
+                case .invalidCredential, .wrongPassword, .userNotFound:
                     message = AppMessages.loginFailed
                 default:
                     message = AppMessages.genericError

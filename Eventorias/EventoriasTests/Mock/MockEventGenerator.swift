@@ -88,7 +88,7 @@ class MockEventGenerator {
                 title: "World Cultures Festival",
                 description: "Celebration of global traditions",
                 category: "Cultural Festival",
-                date: formatter.date(from: "01072025:1430") ?? Date(),
+                date: formatter.date(from: "01072025:1200") ?? Date(),
                 address: ("Place des Terreaux, Lyon", 45.7679, 4.8343)
             ),
             createEvent(
