@@ -19,14 +19,13 @@ final class EventListViewModel: ObservableObject {
     @Published var isError: Bool = false
     @Published var isLoading = false
     
-    private var isInitialLoad = true
+    var isInitialLoad = true
     private var cancellables = Set<AnyCancellable>()
     
     
     init(fireStoreService: FBFireStoreProtocol = FBFireStoreService()) {
         self.fireStoreService = fireStoreService
         $search
-            .dropFirst()
             .debounce(for: .seconds(0.8), scheduler: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] searchText in

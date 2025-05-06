@@ -42,7 +42,7 @@ extension Date {
         }
         return self as Date?
     }
-        
+    
 }
 
 // MARK: String Extension
@@ -52,4 +52,10 @@ extension String {
         CFStringTransform(mutableString, nil, kCFStringTransformStripCombiningMarks, false)
         return (mutableString as String).uppercased()
     }
+    
+    
+    static func googleStaticMapURL(latitude: Double, longitude: Double, apiKey: String, size: String = "149x72", zoom: Int = 12) -> String {
+        return "https://maps.googleapis.com/maps/api/staticmap?center=\(latitude),\(longitude)&markers=color:red%7Csize:tiny%7C\(latitude),\(longitude)&zoom=\(zoom)&size=\(size)&maptype=roadmap&key=\(apiKey)"
+    }
+    
 }

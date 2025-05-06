@@ -62,18 +62,21 @@ class MockFBFIreStoreService: FBFireStoreProtocol {
             } else {
                 return nil
             }
-        }
-        else {
+        } else {
             return nil
         }
         
     }
     
     func getUserById(id: String) async throws -> Eventorias.EventoriasUser? {
-        if let foundUser = usersValid.first(where: { $0.id == id }) {
-            return foundUser
+        if shouldSucceed {
+            if let foundUser = usersValid.first(where: { $0.id == id }) {
+                return foundUser
+            } else {
+                throw NSError(domain: "MockFBFIreStoreService", code: 1, userInfo: nil) as Error
+            }
         } else {
-            throw NSError(domain: "MockFBFIreStoreService", code: 1, userInfo: nil) as Error
+            return nil
         }
     }
     

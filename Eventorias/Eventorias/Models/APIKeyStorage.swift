@@ -10,5 +10,5 @@ import FirebaseFirestore
 
 struct APIKeyStorage: Codable {
     @DocumentID var id: String?
-    let googleMapApi: String
+    var googleMapApi: String
 }

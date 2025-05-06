@@ -48,7 +48,7 @@ class MockEventGenerator {
             ),
             createEvent(
                 index: 3,
-                user: users[0],
+                user: "user_4",
                 title: "La Traviata",
                 description: "Classic opera performance by Paris Opera",
                 category: "Opera",
