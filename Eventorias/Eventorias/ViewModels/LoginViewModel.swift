@@ -70,10 +70,10 @@ final class LoginViewModel: ObservableObject {
                 return false
             }
            
-        } catch {
-            message = AppMessages.genericError
-            return false
-        }
+        } //catch {
+//            message = AppMessages.genericError
+//            return false
+//        }
         userManager.isLogged = true;
         return true
     }
@@ -85,7 +85,7 @@ final class LoginViewModel: ObservableObject {
             try Control.signUp(email: email, password: password, confirmedPassword: confirmedPassword, name: name)
             let id = try await authService.signUp(withEmail: email, password: password )
             guard let id = id else {
-                message = "An error has occurred"
+                message = AppMessages.genericError
                 return false
             }
             var eventoriasUser = EventoriasUser(

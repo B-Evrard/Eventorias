@@ -55,13 +55,13 @@ final class LoginViewModelTest: XCTestCase {
             userManager: UserManager()
         )
         
-        if let mockUser = MockUsers.mockUsers.first {
-            viewModel.email = mockUser.email
-            viewModel.password = "password"
-            let isLogged = await viewModel.login()
-            XCTAssertFalse(isLogged)
-            XCTAssertEqual(viewModel.message, AppMessages.genericError)
-        }
+        let mockUser = MockUsers.mockUser
+        viewModel.email = mockUser.email
+        viewModel.password = "password"
+        let isLogged = await viewModel.login()
+        XCTAssertFalse(isLogged)
+        XCTAssertEqual(viewModel.message, AppMessages.genericError)
+        
     }
     
     @MainActor
@@ -76,13 +76,13 @@ final class LoginViewModelTest: XCTestCase {
             userManager: UserManager()
         )
         
-        if let mockUser = MockUsers.mockUsers.first {
-            viewModel.email = mockUser.email
-            viewModel.password = "password"
-            let isLogged = await viewModel.login()
-            XCTAssertFalse(isLogged)
-            XCTAssertEqual(viewModel.message, AppMessages.genericError)
-        }
+        let mockUser = MockUsers.mockUser
+        viewModel.email = mockUser.email
+        viewModel.password = "password"
+        let isLogged = await viewModel.login()
+        XCTAssertFalse(isLogged)
+        XCTAssertEqual(viewModel.message, AppMessages.genericError)
+        
         
     }
     
@@ -95,20 +95,20 @@ final class LoginViewModelTest: XCTestCase {
             fireStoreService: MockFBFIreStoreService(),
             userManager: userManager
         )
-
-        if let mockUser = MockUsers.mockUsers.first {
-            viewModel.email = mockUser.email
-            viewModel.password = "password"
-            let isLogged = await viewModel.login()
-            XCTAssertTrue(isLogged)
-            
-            XCTAssertTrue(userManager.isLogged)
-            XCTAssertEqual(userManager.currentUser?.id, mockUser.id)
-            XCTAssertEqual(userManager.currentUser?.email, mockUser.email)
-            XCTAssertEqual(userManager.currentUser?.name, mockUser.name)
-            XCTAssertEqual(userManager.currentUser?.imageURL, mockUser.imageURL)
-            XCTAssertEqual(userManager.currentUser?.notificationsEnabled, mockUser.notificationsEnabled)
-        }
+        
+        let mockUser = MockUsers.mockUser
+        viewModel.email = mockUser.email
+        viewModel.password = "password"
+        let isLogged = await viewModel.login()
+        XCTAssertTrue(isLogged)
+        
+        XCTAssertTrue(userManager.isLogged)
+        XCTAssertEqual(userManager.currentUser?.id, mockUser.id)
+        XCTAssertEqual(userManager.currentUser?.email, mockUser.email)
+        XCTAssertEqual(userManager.currentUser?.name, mockUser.name)
+        XCTAssertEqual(userManager.currentUser?.imageURL, mockUser.imageURL)
+        XCTAssertEqual(userManager.currentUser?.notificationsEnabled, mockUser.notificationsEnabled)
+        
     }
     
     @MainActor
@@ -159,17 +159,40 @@ final class LoginViewModelTest: XCTestCase {
         XCTAssertFalse(isLogged)
         XCTAssertEqual(viewModel.message, AppMessages.nameEmpty)
         
-        if let mockUser = MockUsers.mockUsers.first {
-            viewModel.email = mockUser.email
-            viewModel.password = "Bruno220865&"
-            viewModel.confirmedPassword = "Bruno220865&"
-            viewModel.name = mockUser.name
-            
-            isLogged = await viewModel.signUp()
-            XCTAssertFalse(isLogged)
-            XCTAssertEqual(viewModel.message, AppMessages.emailAlreadyExists)
-            
-        }
+        let mockUser = MockUsers.mockUser
+        viewModel.email = mockUser.email
+        viewModel.password = "Bruno220865&"
+        viewModel.confirmedPassword = "Bruno220865&"
+        viewModel.name = mockUser.name
+        
+        isLogged = await viewModel.signUp()
+        XCTAssertFalse(isLogged)
+        XCTAssertEqual(viewModel.message, AppMessages.emailAlreadyExists)
+        
+        
+        
+    }
+    
+    @MainActor
+    func testSignUpAuthServiceFail() async {
+        
+        let authServiceMock = MockFBAuthService()
+        authServiceMock.shouldSucceed = false
+        
+        let viewModel = LoginViewModel(
+            authService: authServiceMock,
+            fireStoreService: MockFBFIreStoreService(),
+            userManager: UserManager()
+        )
+        
+        viewModel.email = "be@be.fr"
+        viewModel.password = "Bruno220865&"
+        viewModel.confirmedPassword = "Bruno220865&"
+        viewModel.name = "Bruno"
+        
+        let isLogged = await viewModel.signUp()
+        XCTAssertFalse(isLogged)
+        XCTAssertEqual(viewModel.message, AppMessages.genericError)
         
     }
     

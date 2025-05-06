@@ -33,11 +33,15 @@ class MockFBAuthService: FBAuthProtocol {
     }
     
     func signUp(withEmail email: String, password: String) async throws -> String? {
-        if usersValid.first(where: { $0.email == email }) != nil {
-            throw AuthErrorCode.emailAlreadyInUse
-        }
-        else {
-            return mockUserUID
+        if shouldSucceed {
+            if usersValid.first(where: { $0.email == email }) != nil {
+                throw AuthErrorCode.emailAlreadyInUse
+            }
+            else {
+                return mockUserUID
+            }
+        } else {
+            return nil
         }
     }
     
