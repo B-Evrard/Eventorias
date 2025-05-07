@@ -15,13 +15,20 @@ final class AppMessages {
     static let invalidPassword = "Password invalid."
     static let nameEmpty = "Please enter your name."
     static let emptyField = "Please fill all fields."
-    static let errorDate = "Date invalid"
+    static let dateError = "Date invalid"
     static let loginFailed = "Login failed."
+    
+    static let titleEmpty = "Title is required"
+    static let categoryEmpty = "Category is required"
+    static let descriptionEmpty = "Description is required"
+    static let dateNotInFuture = "Date must be future"
+    static let hourError = "Invalid hour"
+    static let adressEmpty =  "Address is required"
+    static let pictureEmpty =  "Picture is required"
+    
+    static let adressNotFound = "Address not found"
     
     static let emailAlreadyExists = "Email already in use"
     
-    static let loginSuccess = "Connexion réussie."
-    static let signupSuccess = "Inscription réussie."
-    static let signupFailed = "Échec de l'inscription. Vérifiez vos informations."
-    // Ajoutez ici tous les autres messages de l’application
+    
 }

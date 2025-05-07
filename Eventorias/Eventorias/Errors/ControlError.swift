@@ -16,7 +16,7 @@ enum ControlError: Error {
     case nameEmpty(message: String = AppMessages.nameEmpty)
     case genericError(message: String = AppMessages.genericError)
     case emptyField(message: String = AppMessages.emptyField)
-    case errorDate(message: String = AppMessages.errorDate)
+    case errorDate(message: String = AppMessages.dateError)
 
     var message: String {
         switch self {

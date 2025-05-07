@@ -39,36 +39,36 @@ public struct Control  {
     static func addEvent(event: EventViewData, eventTime: String, image: UIImage?, address: AddressResult?) throws (ControlError) {
         
         guard !event.title.isEmpty else {
-            throw ControlError.emptyField(message: "Title is required")
+            throw ControlError.emptyField(message: AppMessages.titleEmpty)
         }
         
         if (event.category == .unknown) {
-            throw ControlError.emptyField(message: "Category is required")
+            throw ControlError.emptyField(message: AppMessages.categoryEmpty)
         }
         guard !event.description.isEmpty else {
-            throw ControlError.emptyField(message: "Description is required")
+            throw ControlError.emptyField(message: AppMessages.descriptionEmpty)
         }
         
         if (event.dateEvent < Date()) {
-            throw ControlError.errorDate(message: "Date must be future")
+            throw ControlError.errorDate(message: AppMessages.dateNotInFuture)
         }
         
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm"
         guard let _ = timeFormatter.date(from: eventTime) else {
-            throw ControlError.errorDate(message: "Invalid hour")
+            throw ControlError.errorDate(message: AppMessages.hourError)
         }
 
         if (event.address.isEmpty) {
-            throw ControlError.emptyField(message: "Address is required")
+            throw ControlError.emptyField(message: AppMessages.adressEmpty)
         }
         
         if (address == nil) {
-            throw ControlError.emptyField(message: "Adress is required")
+            throw ControlError.emptyField(message: AppMessages.adressEmpty)
         }
         
         if (image == nil) {
-            throw ControlError.emptyField(message: "Picture is required")
+            throw ControlError.emptyField(message: AppMessages.pictureEmpty)
         }
     }
         

@@ -77,7 +77,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
         }
         catch {
             showError = true
-            errorMessage = "An error has occured"
+            errorMessage = AppMessages.genericError
         }
         
         do {
@@ -86,7 +86,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
             event.longitude = location.longitude
         } catch {
             showError = true
-            errorMessage = "Address not found"
+            errorMessage = AppMessages.adressNotFound
         }
         self.isValidating = true
         do {
@@ -100,7 +100,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
         }
         catch {
             showError = true
-            errorMessage = "An error has occured"
+            errorMessage = AppMessages.genericError
             self.isValidating = false
         }
         self.isValidating = false
