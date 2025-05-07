@@ -7,28 +7,9 @@
 
 import Foundation
 import MapKit
-import Combine
 
-class LocationSearchService: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
-    
-    @Published var searchQuery = ""
-    var completer: MKLocalSearchCompleter
-    
-    @Published var completions: [MKLocalSearchCompletion] = []
-    var cancellable: AnyCancellable?
-    
-    override init() {
-        completer = MKLocalSearchCompleter()
-        super.init()
-        cancellable = $searchQuery.assign(to: \.queryFragment, on: self.completer)
-        completer.delegate = self
-    }
-    
-    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        self.completions = completer.results
-    }
-    
-    
+class LocationSearchService: LocationSearchProtocol {
+
     func getPlace(from address: AddressResult) async throws -> CLLocationCoordinate2D {
         let request = MKLocalSearch.Request()
         let title = address.title
@@ -49,4 +30,4 @@ class LocationSearchService: NSObject, ObservableObject, MKLocalSearchCompleterD
     
 }
 
-//extension MKLocalSearchCompletion: Identifiable {}
+

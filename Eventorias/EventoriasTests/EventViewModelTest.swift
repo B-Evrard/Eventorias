@@ -11,9 +11,6 @@ import XCTest
 final class EventViewModelTest: XCTestCase {
 
     func testEventViewModel() {
-        
-        
-        
         let events = MockEventGenerator.generateEvents()
         if let event = events.first {
             let eventViewData = EventTransformer.transformToViewData(event)
