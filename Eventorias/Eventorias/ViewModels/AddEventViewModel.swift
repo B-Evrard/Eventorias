@@ -13,6 +13,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
     
     private let fireStoreService: FBFireStoreProtocol
     private let locationSearchService: LocationSearchProtocol
+    private let localSearchCompleter: MKLocalSearchCompleter
     @Published var userManager: UserManager
     
     @Published var event = EventViewData(
@@ -41,18 +42,20 @@ final class AddEventViewModel: NSObject, ObservableObject {
     
     @Published var isValidating = false
     
-    init(userManager: UserManager, fireStoreService: FBFireStoreProtocol = FBFireStoreService(), locationSearchService: LocationSearchProtocol = LocationSearchService() ) {
+    init(
+        userManager: UserManager,
+        fireStoreService: FBFireStoreProtocol = FBFireStoreService(),
+        locationSearchService: LocationSearchProtocol = LocationSearchService(),
+        localSearchCompleter: MKLocalSearchCompleter = MKLocalSearchCompleter()
+    ) {
         self.userManager = userManager
         self.fireStoreService = fireStoreService
         self.locationSearchService = locationSearchService
+        self.localSearchCompleter = localSearchCompleter
+        super.init()
+        self.localSearchCompleter.delegate = self
     }
-    
-    private lazy var localSearchCompleter: MKLocalSearchCompleter = {
-        let completer = MKLocalSearchCompleter()
-        completer.delegate = self
-        return completer
-    }()
-    
+
     func searchAddress(_ searchableText: String) {
         guard searchableText.isEmpty == false else { return }
         localSearchCompleter.queryFragment = searchableText
@@ -78,6 +81,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
         catch {
             showError = true
             errorMessage = AppMessages.genericError
+            return false
         }
         
         do {
@@ -87,6 +91,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
         } catch {
             showError = true
             errorMessage = AppMessages.adressNotFound
+            return false
         }
         self.isValidating = true
         do {
@@ -96,12 +101,12 @@ final class AddEventViewModel: NSObject, ObservableObject {
             event.idUser = userManager.currentUser?.id ?? ""
             self.isValidating = true
             try await fireStoreService.addEvent(EventTransformer.transformToModel(event))
-            
         }
         catch {
             showError = true
             errorMessage = AppMessages.genericError
             self.isValidating = false
+            return false
         }
         self.isValidating = false
         return true

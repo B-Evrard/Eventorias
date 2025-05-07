@@ -13,9 +13,10 @@ class MockFBFIreStoreService: FBFireStoreProtocol {
     
     var usersValid = MockUsers.mockUsers
     var shouldSucceed: Bool = true
+    var events = MockEventGenerator.generateEvents()
     
     func fetchEvents(sortBy: Eventorias.SortOption, filterBy: String) async throws -> [Eventorias.Event] {
-        let events = MockEventGenerator.generateEvents()
+        
         var filteredEvents = filterBy.isEmpty ? events : events.filter { $0.titleSearch?.hasPrefix(filterBy.uppercased()) == true }
         
         switch sortBy {
@@ -38,7 +39,14 @@ class MockFBFIreStoreService: FBFireStoreProtocol {
     }
     
     func addEvent(_ event: Eventorias.Event) async throws {
-        
+        if shouldSucceed {
+            let id = UUID().uuidString
+            var newEvent = event
+            newEvent.id = id
+            events.append(newEvent)
+        } else {
+            throw NSError(domain: "MockFBFIreStoreService", code: 1, userInfo: nil) as Error
+        }
     }
     
     func addUser(_ user: Eventorias.EventoriasUser) async throws -> String {
