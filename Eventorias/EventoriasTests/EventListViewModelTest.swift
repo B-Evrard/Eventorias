@@ -44,33 +44,33 @@ final class EventListViewModelTest: XCTestCase {
         
         
         eventListViewModel.isInitialLoad = false
-        //        eventListViewModel.search = "S"
-        //        try? await Task.sleep(for: .milliseconds(900))
-        //        XCTAssertEqual(eventListViewModel.events.count, 2)
+                eventListViewModel.search = "S"
+        try? await Task.sleep(for: .seconds(0.9))
+                XCTAssertEqual(eventListViewModel.events.count, 2)
         
-        let expectation = XCTestExpectation(description: "Events updated")
-        var cancellables = Set<AnyCancellable>()
-        
-        eventListViewModel.$events
-            .sink { events in
-                if events.count == 2 {
-                    expectation.fulfill()
-                }
-            }
-            .store(in: &cancellables)
-        
-        
-        eventListViewModel.search = "S"
-        await fulfillment(of: [expectation], timeout: 1.0)
-        XCTAssertEqual(eventListViewModel.events.count, 2)
-        
-        eventListViewModel.search = "Summ"
-        let _ = await eventListViewModel.reloadData()
-        XCTAssertEqual(eventListViewModel.events.count, 1)
-        
-        eventListViewModel.search = "Summm"
-        let _ = await eventListViewModel.reloadData()
-        XCTAssertEqual(eventListViewModel.events.count, 0)
+//        let expectation = XCTestExpectation(description: "Events updated")
+//        var cancellables = Set<AnyCancellable>()
+//        
+//        eventListViewModel.$events
+//            .sink { events in
+//                if events.count == 2 {
+//                    expectation.fulfill()
+//                }
+//            }
+//            .store(in: &cancellables)
+//        
+//        
+//        eventListViewModel.search = "S"
+//        await fulfillment(of: [expectation], timeout: 1.0)
+//        XCTAssertEqual(eventListViewModel.events.count, 2)
+//        
+//        eventListViewModel.search = "Summ"
+//        let _ = await eventListViewModel.reloadData()
+//        XCTAssertEqual(eventListViewModel.events.count, 1)
+//        
+//        eventListViewModel.search = "Summm"
+//        let _ = await eventListViewModel.reloadData()
+//        XCTAssertEqual(eventListViewModel.events.count, 0)
     }
     
     

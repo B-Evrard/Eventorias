@@ -33,7 +33,7 @@ final class LoginViewModel: ObservableObject {
     func login() async -> Bool {
 #if DEBUG
 //        if password.isEmpty {
-//            password = "v"
+//            password = "Bruno220865&"
 //            email = "be@be.fr"
 //        }
 #endif
