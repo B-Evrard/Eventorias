@@ -18,12 +18,12 @@ final class LoginViewModel: ObservableObject {
     
     @Published var message: String = ""
     
-    private let authService: FBAuthProtocol
-    private let fireStoreService: FBFireStoreProtocol
+    private let authService: AuthProviding
+    private let fireStoreService: DataStore
     private var userManager: UserManager
 
-    init(authService: FBAuthProtocol = FBAuthService(),
-         fireStoreService: FBFireStoreProtocol = FBFireStoreService(),
+    init(authService: AuthProviding = FBAuthService(),
+         fireStoreService: DataStore = FBFireStoreService(),
          userManager: UserManager = UserManager()) {
         self.authService = authService
         self.fireStoreService = fireStoreService

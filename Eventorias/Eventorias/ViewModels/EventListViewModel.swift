@@ -11,7 +11,7 @@ import Combine
 @MainActor
 final class EventListViewModel: ObservableObject {
         
-    private let fireStoreService: FBFireStoreProtocol
+    private let fireStoreService: DataStore
      
     @Published var search: String = ""
     @Published var events: [EventViewData] = []
@@ -23,7 +23,7 @@ final class EventListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     
-    init(fireStoreService: FBFireStoreProtocol = FBFireStoreService()) {
+    init(fireStoreService: DataStore = FBFireStoreService()) {
         self.fireStoreService = fireStoreService
         $search
             .debounce(for: .seconds(0.8), scheduler: DispatchQueue.main)

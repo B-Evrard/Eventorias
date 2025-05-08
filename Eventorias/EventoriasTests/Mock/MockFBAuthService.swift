@@ -10,7 +10,7 @@ import Foundation
 @testable import Eventorias
 import FirebaseAuth
 
-class MockFBAuthService: FBAuthProtocol {
+class MockFBAuthService: AuthProviding {
     
     var shouldSucceed: Bool = true
     var mockUserUID: String? = "mock_uid_123"

@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-public class FBAuthService: FBAuthProtocol {
+public class FBAuthService: AuthProviding {
     
     private let auth: Auth
     

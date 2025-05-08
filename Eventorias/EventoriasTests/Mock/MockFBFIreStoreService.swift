@@ -9,7 +9,7 @@ import Foundation
 @testable import Eventorias
 import UIKit
 
-class MockFBFIreStoreService: FBFireStoreProtocol {
+class MockFBFIreStoreService: DataStore {
     
     var usersValid = MockUsers.mockUsers
     var shouldSucceed: Bool = true

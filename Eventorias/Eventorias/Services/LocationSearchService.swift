@@ -8,7 +8,7 @@
 import Foundation
 import MapKit
 
-class LocationSearchService: LocationSearchProtocol {
+class LocationSearchService: PlaceResolving {
 
     func getPlace(from address: AddressResult) async throws -> CLLocationCoordinate2D {
         let request = MKLocalSearch.Request()

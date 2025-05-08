@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseStorage
 
-final class FBFireStoreService: FBFireStoreProtocol {
+final class FBFireStoreService: DataStore {
     
     let db = Firestore.firestore()
     

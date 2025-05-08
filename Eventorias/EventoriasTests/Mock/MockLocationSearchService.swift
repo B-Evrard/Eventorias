@@ -9,7 +9,7 @@ import Foundation
 import MapKit
 @testable import Eventorias
 
-class MockLocationSearchService: LocationSearchProtocol {
+class MockLocationSearchService: PlaceResolving {
     
     func getPlace(from address: Eventorias.AddressResult) async throws -> CLLocationCoordinate2D {
         let location = CLLocationCoordinate2D(latitude: 48.8606, longitude: 2.3376)
