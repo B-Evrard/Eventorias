@@ -18,41 +18,36 @@ struct AddEventView: View {
         ZStack {
             Color("BackgroundColor")
                 .ignoresSafeArea(.all)
-                VStack {
-//                    if viewModel.isValidating {
-//                        Spacer()
-//                        ProgressViewLoading()
-//                        Spacer()
-//                    } else {
-                        ScrollView {
-                            AddEventDescriptionView(viewModel: viewModel)
-                            AddEventDateView(viewModel: viewModel)
-                            AddEventAdresseView(viewModel: viewModel)
-                            AddEventPictureView(viewModel: viewModel)
-                        }
-                        
-                        Button(action: {
-                            Task {
-                                let isOk = await viewModel.validate()
-                                if isOk {
-                                    dismiss()
-                                }
-                            }
-                        }) {
-                            Text("Validate")
-                                .foregroundColor(.white)
-                                .font(.callout)
-                                .bold()
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 15)
-                                .background(Color("RedEventorias"))
-                                .cornerRadius(4)
-                        }
-                    //}
+            VStack {
+                ScrollView {
+                    AddEventDescriptionView(viewModel: viewModel)
+                    AddEventDateView(viewModel: viewModel)
+                    AddEventAdresseView(viewModel: viewModel)
+                    AddEventPictureView(viewModel: viewModel)
                 }
-                .padding(.horizontal)
-                .disabled(viewModel.isValidating)
                 
+                Button(action: {
+                    Task {
+                        let isOk = await viewModel.validate()
+                        if isOk {
+                            dismiss()
+                        }
+                    }
+                }) {
+                    Text("Validate")
+                        .foregroundColor(.white)
+                        .font(.callout)
+                        .bold()
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 15)
+                        .background(Color("RedEventorias"))
+                        .cornerRadius(4)
+                }
+                
+            }
+            .padding(.horizontal)
+            .disabled(viewModel.isValidating)
+            
             if viewModel.isValidating {
                 Color.black.opacity(0.3)
                     .ignoresSafeArea()
@@ -230,7 +225,7 @@ struct AddEventDateView: View {
                     
                     Button(action: {
                         showCalendarSheet = false
-                        }
+                    }
                     ) {
                         Text("Done")
                             .foregroundColor(.white)
@@ -304,7 +299,7 @@ struct AddEventAdresseView: View {
                 }
                 viewModel.isAdressSelected = false
             }
-
+            
             // MARK: List Adresse
             if !viewModel.results.isEmpty {
                 List(viewModel.results) { address in

@@ -33,11 +33,11 @@ struct ErrorView: View {
             Text("An error has occured,")
                 .font(.callout)
                 .foregroundColor(.white)
-            Text("please try again later")
-                .font(.callout)
-                .foregroundColor(.white)
-            
             if (tryAgainVisible) {
+                Text("please try again later")
+                    .font(.callout)
+                    .foregroundColor(.white)
+            
                 Button(action: onTryAgain) {
                 Text("Try Again")
                     .foregroundColor(.white)

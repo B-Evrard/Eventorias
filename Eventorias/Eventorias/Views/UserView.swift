@@ -130,11 +130,11 @@ struct UserView: View {
                         Text("E-mail")
                             .font(.caption)
                             .foregroundColor(Color("FontGray"))
-                            //.accessibilityHidden(true)
+                            
                         Text(viewModel.user.email)
                             .foregroundColor(Color("FontTextFieldGray"))
                             .font(.callout)
-                            //.accessibilityHidden(true)
+                            
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
@@ -154,7 +154,9 @@ struct UserView: View {
                                     .frame(width: 24, height: 24)
                                     .padding(2)
                             }
-                            .onTapGesture { viewModel.user.notificationsEnabled.toggle()}
+                            .onTapGesture {
+                                viewModel.user.notificationsEnabled.toggle()
+                            }
                             
                         }
                         
@@ -174,13 +176,24 @@ struct UserView: View {
                     .accessibilityHint(Text("Tap to change"))
                     Spacer()
                     
+                    if (!viewModel.errorMessage.isEmpty) {
+                        Text(viewModel.errorMessage)
+                            .foregroundColor(Color("FontTextFieldGray"))
+                            .font(.callout)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color("RedEventorias"))
+                            )
+                    }
                 }
                 .padding(.horizontal)
-                
+                .onAppear() {
+                    viewModel.errorMessage = ""
+                }
             }
-            
         }
-        
     }
 }
 
