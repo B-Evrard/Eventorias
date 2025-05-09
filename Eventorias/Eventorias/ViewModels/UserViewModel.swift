@@ -26,7 +26,7 @@ final class UserViewModel: ObservableObject {
         loadUser()
     }
     
-    func validate() async -> Bool {
+    func updatePicture() async -> Bool {
         
         if let capturedImage = capturedImage {
             do {
@@ -39,6 +39,11 @@ final class UserViewModel: ObservableObject {
             }
         }
         
+        await Validate()
+        return true
+    }
+    
+    private func Validate() async {
         //self.isValidating = true
         do {
             try await fireStoreService.updateUser(EventoriasUserTransformer.transformToModel(user))
@@ -48,9 +53,7 @@ final class UserViewModel: ObservableObject {
             //showError = true
             //errorMessage = "An error has occured"
         }
-        return true
     }
-    
     private func loadUser() {
         guard let currentUser = userManager.currentUser else {
             self.errorLoadingUser = true

@@ -98,6 +98,11 @@ struct UserView: View {
                                 }
                             }
                         }
+                        .onChange(of: viewModel.capturedImage) {
+                            Task {
+                                await viewModel.updatePicture()
+                            }
+                        }
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel("Profile picture")
                         .accessibilityHint(Text("Tap to change profile picture"))
@@ -175,12 +180,7 @@ struct UserView: View {
             }
             
         }
-        .onDisappear() {
-            Task {
-                await viewModel.validate()
-            }
-            
-        }
+        
     }
 }
 
