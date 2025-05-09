@@ -44,33 +44,19 @@ final class EventListViewModelTest: XCTestCase {
         
         
         eventListViewModel.isInitialLoad = false
-                eventListViewModel.search = "S"
+        eventListViewModel.search = "S"
         try? await Task.sleep(for: .seconds(0.9))
-                XCTAssertEqual(eventListViewModel.events.count, 2)
+        XCTAssertEqual(eventListViewModel.events.count, 2)
         
-//        let expectation = XCTestExpectation(description: "Events updated")
-//        var cancellables = Set<AnyCancellable>()
-//        
-//        eventListViewModel.$events
-//            .sink { events in
-//                if events.count == 2 {
-//                    expectation.fulfill()
-//                }
-//            }
-//            .store(in: &cancellables)
-//        
-//        
-//        eventListViewModel.search = "S"
-//        await fulfillment(of: [expectation], timeout: 1.0)
-//        XCTAssertEqual(eventListViewModel.events.count, 2)
-//        
-//        eventListViewModel.search = "Summ"
-//        let _ = await eventListViewModel.reloadData()
-//        XCTAssertEqual(eventListViewModel.events.count, 1)
-//        
-//        eventListViewModel.search = "Summm"
-//        let _ = await eventListViewModel.reloadData()
-//        XCTAssertEqual(eventListViewModel.events.count, 0)
+        eventListViewModel.isInitialLoad = false
+        eventListViewModel.search = "Sum"
+        try? await Task.sleep(for: .seconds(0.9))
+        XCTAssertEqual(eventListViewModel.events.count, 1)
+        
+        eventListViewModel.isInitialLoad = false
+        eventListViewModel.search = "Summm"
+        try? await Task.sleep(for: .seconds(0.9))
+        XCTAssertEqual(eventListViewModel.events.count, 0)
     }
     
     

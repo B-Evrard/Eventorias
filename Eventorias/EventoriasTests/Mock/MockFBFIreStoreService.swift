@@ -61,6 +61,11 @@ class MockFBFIreStoreService: DataStore {
     
     func updateUser(_ user: Eventorias.EventoriasUser) async throws {
         
+        if let index = usersValid.firstIndex(where: { $0.id == user.id }) {
+            usersValid[index] = user
+        }
+        
+        
     }
     
     func getUserByIdAuth(idAuth: String) async throws -> Eventorias.EventoriasUser? {

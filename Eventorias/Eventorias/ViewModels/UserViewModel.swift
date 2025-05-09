@@ -14,7 +14,7 @@ import Combine
 final class UserViewModel: ObservableObject {
     
     private let userManager: UserManager
-    private let fireStoreService: FBFireStoreService
+    private let fireStoreService: DataStore
     private var cancellables = Set<AnyCancellable>()
     
     @Published var user = EventoriasUserViewData(id: "",idAuth: "", name: "", email: "", imageURL: "", notificationsEnabled: false)
@@ -23,7 +23,7 @@ final class UserViewModel: ObservableObject {
     @Published var errorMessage = ""
     
     
-    init(userManager: UserManager, fireStoreService: FBFireStoreService = FBFireStoreService()) {
+    init(userManager: UserManager, fireStoreService: DataStore = FBFireStoreService()) {
         self.userManager = userManager
         self.fireStoreService = fireStoreService
         loadUser()
@@ -74,7 +74,6 @@ final class UserViewModel: ObservableObject {
             self.errorLoadingUser = true
             return
         }
-        self.errorLoadingUser = true
         self.user = EventoriasUserTransformer.transformToViewData(currentUser)
     }
     

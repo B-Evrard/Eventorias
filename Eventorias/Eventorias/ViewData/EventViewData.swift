@@ -23,7 +23,7 @@ struct EventViewData: Hashable, Decodable {
     var urlPictureUser: String
     
     var dateFormatter: String {
-        return dateEvent.formattedDate
+        return dateEvent.formattedString(withFormat: "MMMM d, yyyy")
     }
     
     var timeFormatter: String {

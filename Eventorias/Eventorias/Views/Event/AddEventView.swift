@@ -55,7 +55,7 @@ struct AddEventView: View {
             }
             
         }
-        .alert(isPresented: $viewModel.showError) {
+        .alert(isPresented: $viewModel.isError) {
             Alert(
                 title: Text("Error"),
                 message: Text(viewModel.errorMessage),
@@ -205,12 +205,12 @@ struct AddEventDateView: View {
             .cornerRadius(4)
             
             .onChange(of: viewModel.dateText) { oldValue, newValue in
-                if let newDate = mmddyyyyFormatter.date(from: newValue) {
+                if let newDate = newValue.parsedDate() {
                     viewModel.event.dateEvent = newDate
                 }
             }
-            .onChange(of: viewModel.event.dateEvent) { olsValue, newValue in
-                viewModel.dateText = mmddyyyyFormatter.string(from: newValue)
+            .onChange(of: viewModel.event.dateEvent) { oldValue, newValue in
+                viewModel.dateText = newValue.formattedString()
             }
             .sheet(isPresented: $showCalendarSheet) {
                 VStack(spacing: 16) {
@@ -263,12 +263,6 @@ struct AddEventDateView: View {
         
     }
     
-    var mmddyyyyFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter
-    }
 }
 
 struct AddEventAdresseView: View {

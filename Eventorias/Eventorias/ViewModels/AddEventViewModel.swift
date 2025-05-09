@@ -37,7 +37,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
     @Published var results: Array<AddressResult> = []
     @Published var adresseResult: AddressResult?
     @Published var capturedImage: UIImage?
-    @Published var showError = false
+    @Published var isError = false
     @Published var errorMessage: String = ""
     
     @Published var isValidating = false
@@ -63,34 +63,36 @@ final class AddEventViewModel: NSObject, ObservableObject {
     
     func validate() async -> Bool {
         
-        showError = false
+        isError = false
         await MainActor.run { self.isValidating = true }
         defer { Task { @MainActor in self.isValidating = false } }
         do {
             try Control.addEvent(event: event, eventTime: eventTime, image: capturedImage, address: adresseResult)
         } catch let error {
-            showError = true
-            errorMessage = error.message
+            showError(message: error.message)
+            return false
+        }
+        guard let capturedImage = capturedImage else {
+            showError(message: AppMessages.genericError)
+            return false
+        }
+        guard let adresseResult = adresseResult else {
+            showError(message: AppMessages.genericError)
             return false
         }
         
         do {
-            let imageUrl = try await fireStoreService.uploadImage(capturedImage!, type: .event) // !!!capturedImage est controlé dans Control.addEvent(event: event, image: capturedImage)!!!
+            let imageUrl = try await fireStoreService.uploadImage(capturedImage, type: .event)
             event.imageUrl = imageUrl
-        }
-        catch {
-            showError = true
-            errorMessage = AppMessages.genericError
-            return false
-        }
-        
-        do {
-            let location = try await locationSearchService.getPlace(from: adresseResult!) // !!!adresseResult est controlé dans Control.addEvent(event: event, image: capturedImage)!!!
+            
+            let location = try await locationSearchService.getPlace(from: adresseResult)
             event.latitude = location.latitude
             event.longitude = location.longitude
+        } catch let error as GeocodingError {
+            showError(message: AppMessages.adressNotFound)
+            return false
         } catch {
-            showError = true
-            errorMessage = AppMessages.adressNotFound
+            showError(message: AppMessages.genericError)
             return false
         }
         self.isValidating = true
@@ -103,13 +105,17 @@ final class AddEventViewModel: NSObject, ObservableObject {
             try await fireStoreService.addEvent(EventTransformer.transformToModel(event))
         }
         catch {
-            showError = true
-            errorMessage = AppMessages.genericError
+            showError(message: AppMessages.genericError)
             self.isValidating = false
             return false
         }
         self.isValidating = false
         return true
+    }
+    
+   private func showError(message: String) {
+        isError = true
+        errorMessage = message
     }
     
 }
