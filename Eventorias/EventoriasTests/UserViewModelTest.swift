@@ -42,6 +42,31 @@ final class UserViewModelTest: XCTestCase {
     }
     
     @MainActor
+    func testUpdatePictureFail() async {
+        
+        let userManager = UserManager()
+        let fireStoreService = MockFBFIreStoreService()
+        fireStoreService.shouldSucceed = false
+        let loginViewModel = LoginViewModel(
+            authService: MockFBAuthService(),
+            fireStoreService: fireStoreService,
+            userManager: userManager
+        )
+        
+        let mockUser = MockUsers.mockUser
+        loginViewModel.email = mockUser.email
+        loginViewModel.password = "password"
+        _ = await loginViewModel.login()
+        
+        let viewModel = UserViewModel(userManager: userManager, fireStoreService: fireStoreService)
+        viewModel.capturedImage = UIImage(resource: .event)
+        let isUpdate = await viewModel.updatePicture()
+        XCTAssertFalse(isUpdate)
+        XCTAssertEqual(viewModel.errorMessage, AppMessages.genericError)
+        
+     }
+    
+    @MainActor
     func testUpdatePictureOK() async {
         
         let userManager = UserManager()
@@ -86,6 +111,30 @@ final class UserViewModelTest: XCTestCase {
         _ = await loginViewModel.login()
         XCTAssertEqual(userManager.currentUser?.notificationsEnabled, isNotif)
      }
+    
+    @MainActor
+    func testUpdateNotificationToggleFail() async {
+        
+        let userManager = UserManager()
+        let fireStoreService = MockFBFIreStoreService()
+        fireStoreService.shouldSucceed = false
+        let loginViewModel = LoginViewModel(
+            authService: MockFBAuthService(),
+            fireStoreService: fireStoreService,
+            userManager: userManager
+        )
+        
+        let mockUser = MockUsers.mockUser
+        loginViewModel.email = mockUser.email
+        loginViewModel.password = "password"
+        _ = await loginViewModel.login()
+        
+        let viewModel = UserViewModel(userManager: userManager, fireStoreService: fireStoreService)
+        viewModel.user.notificationsEnabled.toggle()
+        try? await Task.sleep(for: .seconds(2.1))
+        
+        XCTAssertEqual(viewModel.errorMessage, AppMessages.genericError)
+    }
     
 
 }

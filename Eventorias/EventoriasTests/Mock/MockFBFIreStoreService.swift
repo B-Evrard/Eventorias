@@ -60,9 +60,12 @@ class MockFBFIreStoreService: DataStore {
     }
     
     func updateUser(_ user: Eventorias.EventoriasUser) async throws {
-        
-        if let index = usersValid.firstIndex(where: { $0.id == user.id }) {
-            usersValid[index] = user
+        if shouldSucceed {
+            if let index = usersValid.firstIndex(where: { $0.id == user.id }) {
+                usersValid[index] = user
+            }
+        } else {
+            throw NSError(domain: "MockFBFIreStoreService", code: 1, userInfo: nil) as Error
         }
         
         
@@ -98,7 +101,13 @@ class MockFBFIreStoreService: DataStore {
     }
     
     func uploadImage(_ image: UIImage, type: Eventorias.PictureType) async throws -> String {
-        return "https://eventorias.com/img/event/mock.jpg"
+        if shouldSucceed {
+            return "https://eventorias.com/img/event/mock.jpg"
+        } else {
+            throw NSError(domain: "MockFBFIreStoreService", code: 1, userInfo: nil) as Error
+        }
+        
+        
     }
     
     

@@ -61,12 +61,13 @@ final class UserViewModel: ObservableObject {
         errorMessage = ""
         do {
             try await fireStoreService.updateUser(EventoriasUserTransformer.transformToModel(user))
+            return true
         }
         catch {
             errorMessage = AppMessages.genericError
             return false
         }
-        return true
+       
     }
     
     private func loadUser() {
