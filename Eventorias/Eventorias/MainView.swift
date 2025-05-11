@@ -34,6 +34,13 @@ struct MainView: View {
                             Text("Profile")
                                 .font(.caption)
                         }
+                    
+                    CameraFeedView()
+                        .tabItem {
+                            Image(systemName: "person")
+                            Text("Camera")
+                                .font(.caption)
+                        }
                         
                 }
                 .accessibilityLabel("Main Navigation Tab Bar")
