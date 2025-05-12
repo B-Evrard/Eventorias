@@ -14,6 +14,9 @@ struct CameraFeedView: View {
     @StateObject var cameraService = CameraService()
     @State private var capturedImage: UIImage?
     
+    @State private var didValidate = false
+    var onDismiss: (UIImage?) -> Void
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -32,25 +35,30 @@ struct CameraFeedView: View {
                         .clipped()
                         .ignoresSafeArea()
                 } else {
-                    Color.white.ignoresSafeArea()
+                    Color.black.ignoresSafeArea()
                 }
                 
                 
-                // Bouton flash en haut à droite
+              
                 VStack {
                     HStack {
-                        Button(action: {
-                            cameraService.toggleFlashMode()
-                        }) {
-                            Image(systemName: iconName(for: cameraService.flashMode))
-                                .font(.title)
-                                .foregroundColor(color(for: cameraService.flashMode))
-                                .padding()
-                                .background(Circle().fill(Color.black.opacity(0.7)))
+                        HStack {
+                            Button(action: {
+                                cameraService.toggleFlashMode()
+                            }) {
+                                Image(systemName: iconName(for: cameraService.flashMode))
+                                    .font(.title)
+                                    .foregroundColor(color(for: cameraService.flashMode))
+                                    .padding()
+                            }
                         }
-                        .padding(.top, 20)
-                        .padding(.trailing, 20)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(16)
+                        .shadow(radius: 4)
+                        .padding(.top, 10)
+                        .padding(.trailing, 10)
                     }
+                    
                     Spacer()
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
@@ -60,7 +68,12 @@ struct CameraFeedView: View {
                     Spacer()
                     HStack {
                         Button(action: {
-                            dismiss()
+                            if capturedImage != nil {
+                                capturedImage = nil
+                            } else {
+                                dismiss()
+                            }
+                            
                         }) {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.system(size: 62))
@@ -86,18 +99,43 @@ struct CameraFeedView: View {
                             }
                         }
                         Spacer()
-                        Button {
-                            // Action pour switcher la caméra
-                        } label: {
-                            Image(systemName: "arrow.triangle.2.circlepath")
-                                .font(.system(size: 36, weight: .bold))
-                                .foregroundColor(.black)
+                        if capturedImage != nil {
+                            Button(action: {
+                                didValidate = true
+                                onDismiss(capturedImage)
+                                dismiss()
+                            }) {
+                                Image(systemName: "checkmark.circle")
+                                    .font(.system(size: 62))
+                                    .foregroundColor(.black)
+                                    .shadow(radius: 4)
+                                    .padding()
+                            }
+                        } else {
+                            Button {
+                                cameraService.switchCamera()
+                            } label: {
+                                Image(systemName: "arrow.triangle.2.circlepath")
+                                    .font(.system(size: 36, weight: .bold))
+                                    .foregroundColor(.black)
+                            }
                         }
+                        
                         Spacer()
                     }
-                    .padding(.bottom, 30)
+                    .background(.ultraThinMaterial)
+                                            .cornerRadius(16)
+                                            .shadow(radius: 4)
+                                            .padding(.horizontal, 10)
+                                            .padding(.bottom, 10)
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
+            }
+            .onDisappear {
+                cameraService.stopSession()
+                if !didValidate {
+                    onDismiss(nil)
+                }
             }
         }
     }
@@ -123,5 +161,7 @@ struct CameraFeedView: View {
 
 
 #Preview {
-    CameraFeedView()
+    CameraFeedView { image in
+
+    }
 }

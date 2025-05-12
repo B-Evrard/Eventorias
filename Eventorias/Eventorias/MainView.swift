@@ -20,31 +20,26 @@ struct MainView: View {
         ZStack {
             Color("BackgroundColor").ignoresSafeArea()
             
-                TabView {
-                    EventListView()
-                        .tabItem {
-                            Image(systemName: "calendar")
-                            Text("Events")
-                                .font(.caption)
-                        }
-                        
-                    UserView(viewModel: UserViewModel(userManager: userManager))
-                        .tabItem {
-                            Image(systemName: "person")
-                            Text("Profile")
-                                .font(.caption)
-                        }
-                    
-                    CameraFeedView()
-                        .tabItem {
-                            Image(systemName: "person")
-                            Text("Camera")
-                                .font(.caption)
-                        }
-                        
-                }
-                .accessibilityLabel("Main Navigation Tab Bar")
-                .accessibilityElement(children: .contain)
+            TabView {
+                EventListView()
+                    .tabItem {
+                        Image(systemName: "calendar")
+                        Text("Events")
+                            .font(.caption)
+                    }
+                
+                UserView(viewModel: UserViewModel(userManager: userManager))
+                    .tabItem {
+                        Image(systemName: "person")
+                        Text("Profile")
+                            .font(.caption)
+                    }
+                
+                
+                
+            }
+            .accessibilityLabel("Main Navigation Tab Bar")
+            .accessibilityElement(children: .contain)
             
         }
     }

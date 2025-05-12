@@ -8,8 +8,7 @@
 import SwiftUI
 struct EventListSearchView: View {
     @ObservedObject var viewModel: EventListViewModel
-    @FocusState private var searchFieldIsFocused: Bool
-    
+   
     var body: some View {
         
             HStack {
@@ -24,10 +23,6 @@ struct EventListSearchView: View {
                     .font(.callout)
                     .autocorrectionDisabled(true)
                     .textFieldStyle(PlainTextFieldStyle())
-                    .focused($searchFieldIsFocused)
-                    .onAppear {
-                        searchFieldIsFocused = true
-                    }
                     .accessibilityLabel("Search events")
                     .accessibilityHint("Enter text to filter events")
             }

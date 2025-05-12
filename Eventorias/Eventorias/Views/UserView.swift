@@ -87,7 +87,11 @@ struct UserView: View {
                             Button("Cancel", role: .cancel) {}
                         }
                         .sheet(isPresented: $showCamera ) {
-                            CameraPicker(image: $viewModel.capturedImage)
+                            CameraFeedView { image in
+                                if let image = image {
+                                    viewModel.capturedImage = image
+                                }
+                            }
                         }
                         .photosPicker(isPresented: $showPhotoPicker, selection: $selectedPhoto, matching: .images)
                         .onChange(of: selectedPhoto) {
