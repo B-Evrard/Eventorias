@@ -88,7 +88,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
             let location = try await locationSearchService.getPlace(from: adresseResult)
             event.latitude = location.latitude
             event.longitude = location.longitude
-        } catch let error as GeocodingError {
+        } catch _ as GeocodingError {
             showError(message: AppMessages.adressNotFound)
             return false
         } catch {

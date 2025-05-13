@@ -356,7 +356,11 @@ struct AddEventPictureView: View {
                     }
                 }
                 .sheet(isPresented: $showCamera) {
-                    CameraPicker(image: $viewModel.capturedImage)
+                    CameraFeedView { image in
+                        if let image = image {
+                            viewModel.capturedImage = image
+                        }
+                    }
                 }
                 
                 PhotosPicker(selection: $selectedPhoto, matching: .images) {

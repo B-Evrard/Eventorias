@@ -31,13 +31,6 @@ final class LoginViewModel: ObservableObject {
     }
     
     func login() async -> Bool {
-#if DEBUG
-//        if password.isEmpty {
-//            password = "Bruno220865&"
-//            email = "be@be.fr"
-//        }
-#endif
-        
         self.message = ""
         do {
             try Control.login(email: email, password: password)
@@ -70,10 +63,7 @@ final class LoginViewModel: ObservableObject {
                 return false
             }
            
-        } //catch {
-//            message = AppMessages.genericError
-//            return false
-//        }
+        } 
         userManager.isLogged = true;
         return true
     }

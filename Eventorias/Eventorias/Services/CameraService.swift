@@ -23,6 +23,7 @@ class CameraService: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleB
     @Published var capturedImage: UIImage?
     @Published var flashMode: AVCaptureDevice.FlashMode = .off
     @Published var currentCameraPosition: AVCaptureDevice.Position = .back
+    @Published var isActive: Bool = false
     
     override init() {
         super.init()
@@ -39,7 +40,7 @@ class CameraService: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleB
     }
     
     private func addCameraInput(position: AVCaptureDevice.Position) {
-        // Retirer les entrées existantes
+        
         captureSession.inputs.forEach { captureSession.removeInput($0) }
         
         let deviceTypes: [AVCaptureDevice.DeviceType] = [.builtInWideAngleCamera]
@@ -160,6 +161,7 @@ extension CameraService {
                 ciImage = ciImage.transformed(by: CGAffineTransform(scaleX: -1, y: 1))
             }
             if let cgImage = self.getCGImage(ciImage) {
+                self.isActive = true
                 self.cameraFrame = cgImage
             }
         }
