@@ -73,7 +73,6 @@ struct LoginView: View {
                             .accessibilityHint(isSignUp ? "Tap to sign in" : "Tap to sign up")
                     }
                     .padding(.vertical, 10)
-                    
                 }
                 Spacer()
                 

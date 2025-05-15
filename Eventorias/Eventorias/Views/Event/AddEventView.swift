@@ -147,9 +147,7 @@ struct AddEventDescriptionView: View {
         .background(Color("BackgroundGray"))
         .cornerRadius(4)
         .preferredColorScheme(.dark)
-        
-        
-        
+
         // MARK: Zone Description
         VStack(alignment: .leading, spacing: 8) {
             Text("Description")

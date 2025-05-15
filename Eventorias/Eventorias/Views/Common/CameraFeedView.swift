@@ -143,7 +143,6 @@ struct CameraFeedView: View {
         }
     }
     
-    // Utilitaires pour l'icône du flash
     func iconName(for mode: AVCaptureDevice.FlashMode) -> String {
         switch mode {
         case .off: return "bolt.slash.fill"

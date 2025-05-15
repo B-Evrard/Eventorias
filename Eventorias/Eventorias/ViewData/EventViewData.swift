@@ -44,49 +44,6 @@ struct EventViewData: Hashable, Decodable {
     
 }
 
-enum EventCategory: String, CaseIterable, Identifiable , Decodable{
-    case exhibition
-    case theater
-    case concert
-    case opera
-    case dance
-    case lecture
-    case bookSigning
-    case culturalFestival
-    case musicFestival
-    case conference
-    case foodTruckEvent
-    case localMarket
-    case unknown
-
-    var id: String { self.rawValue }
-
-    var displayName: String {
-        switch self {
-        case .exhibition: return "Exhibition"
-        case .theater: return "Theater"
-        case .concert: return "Concert"
-        case .opera: return "Opera"
-        case .dance: return "Dance"
-        case .lecture: return "Lecture"
-        case .bookSigning: return "Book Signing"
-        case .culturalFestival: return "Cultural Festival"
-        case .musicFestival: return "Music Festival"
-        case .conference: return "Conference"
-        case .foodTruckEvent: return "Food Truck Event"
-        case .localMarket: return "Local Market"
-        case .unknown: return "Unknown"
-        }
-        
-        
-    }
-}
-
-extension EventCategory {
-    static func from(_ rawValue: String) -> Self {
-        Self(rawValue: rawValue) ?? .unknown
-    }
-}
 struct AddressResult: Identifiable {
     let id = UUID()
     let title: String

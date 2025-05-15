@@ -15,10 +15,10 @@ struct EventRowView: View {
         HStack {
             WebImage(url: URL(string: event.urlPictureUser )) { image in
                 image
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .clipShape(Circle())
-                .padding(.horizontal)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .clipShape(Circle())
+                    .padding(.horizontal)
             } placeholder: {
                 Image(systemName: "person.crop.circle.fill")
                     .resizable()
@@ -26,7 +26,7 @@ struct EventRowView: View {
                     .foregroundColor(.white)
                     .clipShape(Circle())
             }
-            .indicator(.activity) 
+            .indicator(.activity)
             .transition(.fade(duration: 0.5))
             .frame(width: 40, height: 40)
             .padding(.horizontal,10)
@@ -45,22 +45,27 @@ struct EventRowView: View {
             }
             Spacer()
             
+            
             WebImage(url: URL(string: event.imageUrl )) { image in
-                    image
+                image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .background(Color("BackgroundColor"))
                     .cornerRadius(12)
-               } placeholder: {
-                  // Rectangle().foregroundColor(.gray)
-               }
-               .indicator(.activity) // Activity Indicator
-               .transition(.fade(duration: 0.5))
-               .frame(width: 136, height: 80)
+            } placeholder: {
+                Image(systemName: "photo.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 136, height: 80)
+                    .cornerRadius(12)
+            }
+            .indicator(.activity)
+            .transition(.fade(duration: 0.5))
+            .frame(width: 136, height: 80)
         }
         .background(Color("BackgroundGray"))
         .cornerRadius(12)
         .accessibilityHidden(true)
+        
     }
 }
 

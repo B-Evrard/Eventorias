@@ -67,8 +67,6 @@ struct EventView: View {
                             .tint(.white)
                             .frame(width: 60, height: 60)
                     }
-                    
-                   
                 }
                 .padding(.bottom,5)
                 
