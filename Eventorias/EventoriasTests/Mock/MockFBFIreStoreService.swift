@@ -106,9 +106,17 @@ class MockFBFIreStoreService: DataStore {
         } else {
             throw NSError(domain: "MockFBFIreStoreService", code: 1, userInfo: nil) as Error
         }
-        
-        
     }
     
+    func deleteImage(url: String) async throws {
+        if shouldSucceed {
+            guard let _ = URL(string: url) else {
+                throw StorageError.invalidURL
+            }
+        } else {
+            throw NSError(domain: "MockFBFIreStoreService", code: 1, userInfo: nil) as Error
+        }
+        
+    }
     
 }

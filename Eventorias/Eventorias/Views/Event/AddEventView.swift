@@ -12,7 +12,7 @@ struct AddEventView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @ObservedObject var viewModel: AddEventViewModel
+    @StateObject var viewModel: AddEventViewModel
     
     var body: some View {
         ZStack {

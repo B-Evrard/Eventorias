@@ -13,7 +13,6 @@ final class FBFireStoreService: DataStore {
     
     let db = Firestore.firestore()
     
-    
     // MARK: Event
     func fetchEvents(sortBy: SortOption, filterBy: String = "") async throws -> [Event] {
         var events: [Event] = []
@@ -105,7 +104,7 @@ final class FBFireStoreService: DataStore {
     // MARK: Storage image
     func uploadImage(_ image: UIImage, type: PictureType) async throws -> String {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else {
-            throw ImageUploadError.imageConversionFailed
+            throw StorageError.imageConversionFailed
         }
         let fileName = UUID().uuidString
         let ref = Storage.storage().reference(withPath: "/\(type.folderName)/\(fileName).jpeg")
@@ -114,7 +113,7 @@ final class FBFireStoreService: DataStore {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             ref.putData(imageData, metadata: nil) { _, error in
                 if let error = error {
-                    continuation.resume(throwing: ImageUploadError.uploadFailed(error))
+                    continuation.resume(throwing: StorageError.uploadFailed(error))
                 } else {
                     continuation.resume()
                 }
@@ -125,11 +124,28 @@ final class FBFireStoreService: DataStore {
         return try await withCheckedThrowingContinuation { continuation in
             ref.downloadURL { url, error in
                 if let error = error {
-                    continuation.resume(throwing: ImageUploadError.urlRetrievalFailed(error))
+                    continuation.resume(throwing: StorageError.urlRetrievalFailed(error))
                 } else if let urlString = url?.absoluteString {
                     continuation.resume(returning: urlString)
                 } else {
-                    continuation.resume(throwing: ImageUploadError.urlRetrievalFailed(nil))
+                    continuation.resume(throwing: StorageError.urlRetrievalFailed(nil))
+                }
+            }
+        }
+    }
+    
+    func deleteImage(url: String) async throws {
+        guard let _ = URL(string: url) else {
+            throw StorageError.invalidURL
+        }
+        let ref = Storage.storage().reference(forURL: url)
+        
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            ref.delete { error in
+                if let error = error {
+                    continuation.resume(throwing: StorageError.deleteFailed(error))
+                } else {
+                    continuation.resume(returning: ())
                 }
             }
         }

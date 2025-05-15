@@ -24,4 +24,5 @@ protocol DataStore {
     
     // MARK: Storage
     func uploadImage(_ image: UIImage, type: PictureType) async throws -> String
+    func deleteImage(url: String) async throws
 }

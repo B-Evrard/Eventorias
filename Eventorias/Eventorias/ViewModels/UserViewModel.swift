@@ -46,8 +46,12 @@ final class UserViewModel: ObservableObject {
         errorMessage = ""
         if let capturedImage = capturedImage {
             do {
+                let oldUrl = user.imageURL
                 let imageUrl = try await fireStoreService.uploadImage(capturedImage, type: .user)
                 user.imageURL = imageUrl
+                if let oldUrl = oldUrl, !oldUrl.isEmpty {
+                    try await fireStoreService.deleteImage(url: oldUrl)
+                }
             }
             catch {
                 errorMessage = AppMessages.genericError

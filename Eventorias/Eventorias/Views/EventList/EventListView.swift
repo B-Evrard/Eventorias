@@ -20,13 +20,14 @@ struct EventListView: View {
             ZStack {
                 Color("BackgroundColor").ignoresSafeArea()
                 VStack {
-                    EventListSearchView(viewModel: viewModel)
+                    
                     if viewModel.isLoading {
                         Spacer()
                         ProgressViewLoading()
                         Spacer()
                     } else {
                         if (!viewModel.isError) {
+                            EventListSearchView(viewModel: viewModel)
                             EventListContentView(viewModel: viewModel, selectedEvent: $selectedEvent, isShowingDetail: $isShowingDetail)
                             Spacer()
                         } else {
@@ -43,8 +44,10 @@ struct EventListView: View {
                     }
                 }
                 .padding(.horizontal)
-                ButtonAddEvent(viewModel: viewModel)
-                    .zIndex(1)
+                if (!viewModel.isError) {
+                    ButtonAddEvent(viewModel: viewModel)
+                        .zIndex(1)
+                }
             }
             .navigationDestination(isPresented: $isShowingDetail) {
                 if let event = selectedEvent {
@@ -61,7 +64,7 @@ struct EventListView: View {
 }
 
 #Preview {
-    //EventListView(viewModel: EventListViewModel())
+    EventListView(viewModel: EventListViewModel())
 }
 
 
@@ -71,21 +74,25 @@ struct ButtonAddEvent: View {
     @State private var isAddEvent: Bool = false
     
     var body: some View {
-        VStack {
-            Spacer()
-            HStack {
+        GeometryReader { geometry in
+            VStack {
                 Spacer()
-                NavigationLink(destination: AddEventView(viewModel: AddEventViewModel(userManager: userManager))) {
-                    Image(systemName: "plus")
-                        .foregroundColor(.white)
-                        .frame(width: 56, height: 56)
-                        .background(Color("RedEventorias"))
-                        .cornerRadius(16)
+                HStack {
+                    Spacer()
+                    NavigationLink(destination: AddEventView(viewModel: AddEventViewModel(userManager: userManager))) {
+                        Image(systemName: "plus")
+                            .foregroundColor(.white)
+                            .frame(width: 56, height: 56)
+                            .background(Color("RedEventorias"))
+                            .cornerRadius(16)
+                    }
+                    .accessibilityLabel("Add new event")
+                    .accessibilityHint("Opens form to create new event")
+                    .position(
+                            x: geometry.size.width - 66,
+                            y: geometry.size.height - 64
+                        )
                 }
-                .accessibilityLabel("Add new event")
-                .accessibilityHint("Opens form to create new event")
-                .padding(.trailing, 20)
-                .padding(.bottom, 70)
             }
         }
     }

@@ -12,7 +12,7 @@ import SDWebImageSwiftUI
 struct EventView: View {
     
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var viewModel: EventViewModel
+    @StateObject var viewModel: EventViewModel
     var body: some View {
         ZStack {
             

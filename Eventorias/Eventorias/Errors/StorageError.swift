@@ -6,8 +6,10 @@
 //
 
 
-enum ImageUploadError: Error {
+enum StorageError: Error {
     case imageConversionFailed
     case uploadFailed(Error)
+    case deleteFailed(Error)
     case urlRetrievalFailed(Error?)
+    case invalidURL
 }

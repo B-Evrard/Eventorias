@@ -72,16 +72,12 @@ class CameraService: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleB
     
     private func startSession() {
         DispatchQueue.global(qos: .background).async {
-            [weak self] in
-            guard let self = self else { return }
-            self.captureSession.startRunning()
+           self.captureSession.startRunning()
         }
     }
     
     func stopSession() {
         DispatchQueue.global(qos: .background).async {
-            [weak self] in
-            guard let self = self else { return }
             self.captureSession.stopRunning()
         }
     }
@@ -117,13 +113,12 @@ class CameraService: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleB
     }
     
     func switchCamera() {
-        captureQueue.async { [weak self] in
-            guard let self else { return }
-            
-            let newPosition: AVCaptureDevice.Position = (currentCameraPosition == .back) ? .front : .back
+        captureQueue.async {
+            let newPosition: AVCaptureDevice.Position = (self.currentCameraPosition == .back) ? .front : .back
             DispatchQueue.main.async {
-                        self.currentCameraPosition = newPosition
-                    }
+                self.currentCameraPosition = newPosition
+            }
+            
             self.captureSession.beginConfiguration()
             self.addCameraInput(position: newPosition)
             
@@ -152,8 +147,6 @@ class CameraService: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleB
 extension CameraService {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         DispatchQueue.main.async {
-            [weak self] in
-            guard let self = self else { return }
             let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
             var ciImage = CIImage(cvPixelBuffer: imageBuffer!)
             ciImage = ciImage.oriented(forExifOrientation: 6)
