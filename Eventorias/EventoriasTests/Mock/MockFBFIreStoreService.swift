@@ -13,6 +13,7 @@ class MockFBFIreStoreService: DataStore {
     
     var usersValid = MockUsers.mockUsers
     var shouldSucceed: Bool = true
+    var uploadShouldSucceed: Bool = true
     var events = MockEventGenerator.generateEvents()
     
     func fetchEvents(sortBy: Eventorias.SortOption, filterBy: String) async throws -> [Eventorias.Event] {
@@ -101,7 +102,7 @@ class MockFBFIreStoreService: DataStore {
     }
     
     func uploadImage(_ image: UIImage, type: Eventorias.PictureType) async throws -> String {
-        if shouldSucceed {
+        if uploadShouldSucceed {
             return "https://eventorias.com/img/event/mock.jpg"
         } else {
             throw NSError(domain: "MockFBFIreStoreService", code: 1, userInfo: nil) as Error
@@ -109,7 +110,7 @@ class MockFBFIreStoreService: DataStore {
     }
     
     func deleteImage(url: String) async throws {
-        if shouldSucceed {
+        if uploadShouldSucceed {
             guard let _ = URL(string: url) else {
                 throw StorageError.invalidURL
             }

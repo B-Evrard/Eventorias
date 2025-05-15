@@ -16,6 +16,7 @@ final class AddEventViewModelTest: XCTestCase {
         
         let userManager = UserManager()
         let fireStoreService = MockFBFIreStoreService()
+        let locationSearchService = MockLocationSearchService()
         // Login
         
         let loginViewModel = LoginViewModel(
@@ -32,7 +33,7 @@ final class AddEventViewModelTest: XCTestCase {
         let viewModel = AddEventViewModel(
         userManager: userManager,
         fireStoreService: fireStoreService,
-        locationSearchService: MockLocationSearchService())
+        locationSearchService: locationSearchService)
         
         var validate = await viewModel.validate()
         XCTAssertFalse(validate)
@@ -80,15 +81,15 @@ final class AddEventViewModelTest: XCTestCase {
     }
     
     @MainActor
-    func testValidateFBFireStoreServiceFail() async {
+    func testValidateServiceFail() async {
         
         let userManager = UserManager()
         let fireStoreService = MockFBFIreStoreService()
-        fireStoreService.shouldSucceed = false
+        let locationSearchService = MockLocationSearchService()
         let viewModel = AddEventViewModel(
         userManager: userManager,
         fireStoreService: fireStoreService,
-        locationSearchService: MockLocationSearchService())
+        locationSearchService: locationSearchService)
         
         var events: [Event] = []
         do {
@@ -111,7 +112,9 @@ final class AddEventViewModelTest: XCTestCase {
         viewModel.event.address = "Louvre Museum, Paris"
         viewModel.adresseResult = AddressResult(title: "Louvre Museum", subtitle: "Paris")
         
-        let validate = await viewModel.validate()
+        // Fail fireStoreService upload
+        fireStoreService.uploadShouldSucceed = false
+        var validate = await viewModel.validate()
         XCTAssertFalse(validate)
         XCTAssertEqual(viewModel.errorMessage, AppMessages.genericError)
         
@@ -122,6 +125,38 @@ final class AddEventViewModelTest: XCTestCase {
             XCTFail("Error fetching events \(error)")
         }
         XCTAssertEqual(events.count, nbEventsBefore)
+        
+        // Fail fireStoreService addEvent
+        fireStoreService.uploadShouldSucceed = true
+        fireStoreService.shouldSucceed = false
+        validate = await viewModel.validate()
+        XCTAssertFalse(validate)
+        XCTAssertEqual(viewModel.errorMessage, AppMessages.genericError)
+        
+        do {
+            events = try await fireStoreService.fetchEvents(sortBy: .date, filterBy: "")
+        }
+        catch {
+            XCTFail("Error fetching events \(error)")
+        }
+        XCTAssertEqual(events.count, nbEventsBefore)
+        
+        // Fail locationSearchService
+        fireStoreService.shouldSucceed = true
+        locationSearchService.shouldSucceed = false
+        validate = await viewModel.validate()
+        XCTAssertFalse(validate)
+        XCTAssertEqual(viewModel.errorMessage, AppMessages.adressNotFound)
+        
+        do {
+            events = try await fireStoreService.fetchEvents(sortBy: .date, filterBy: "")
+        }
+        catch {
+            XCTFail("Error fetching events \(error)")
+        }
+        XCTAssertEqual(events.count, nbEventsBefore)
+        
+        
     }
     
     @MainActor

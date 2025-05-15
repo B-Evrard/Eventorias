@@ -11,9 +11,17 @@ import MapKit
 
 class MockLocationSearchService: PlaceResolving {
     
+    var shouldSucceed: Bool = true
+    
     func getPlace(from address: Eventorias.AddressResult) async throws -> CLLocationCoordinate2D {
-        let location = CLLocationCoordinate2D(latitude: 48.8606, longitude: 2.3376)
-        return location
+        if (shouldSucceed) {
+            let location = CLLocationCoordinate2D(latitude: 48.8606, longitude: 2.3376)
+            return location
+        } else {
+            throw GeocodingError.noResults
+        }
+        
+        
     }
     
 }
