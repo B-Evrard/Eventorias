@@ -55,6 +55,7 @@ struct EventRowView: View {
                 Image(systemName: "photo.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
+                    .foregroundColor(.white)
                     .frame(width: 136, height: 80)
                     .cornerRadius(12)
             }
